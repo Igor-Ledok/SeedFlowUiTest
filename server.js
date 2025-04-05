@@ -4,7 +4,7 @@ const path = require('path');
 const app = express();
 
 // Указываем Express использовать статические файлы из папки сборки Angular
-app.use(express.static(path.join(__dirname, '/dist/crowd-fund-platform/browser/index.html')));
+app.use(express.static(path.join(__dirname, '/dist/crowd-fund-platform/browser')));
 
 // Обрабатываем все остальные маршруты и возвращаем index.html
 app.get('*', (req, res) => {
