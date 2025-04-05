@@ -1,5 +1,5 @@
 export const environment = {
-  baseUrl: 'http://seedflow.s3-website.eu-north-1.amazonaws.com',
+  baseUrl: 'http://localhost:4200',
   // baseUrl разработка: http://localhost:4200
   // baseUrl продакшен: http://seedflow.s3-website.eu-north-1.amazonaws.com/
 
