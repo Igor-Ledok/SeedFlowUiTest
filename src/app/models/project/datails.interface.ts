@@ -1,22 +1,22 @@
 export interface details {
     shortDescription: string;
-    detailedDescription: string;
     phone: string;
     telegram: string;
     viber: string;
     whatsApp: string;
     linkedIn: string;
+    YouTubeVideoUrl: string;
 
     email: string;
     address: string;
 
+    BudgetArticles: string;
     BudgetArticlesUrl: string;
+    BudgetArticlesFileName: string;
 
     instagram: string;
     facebook: string;
     telegramChannel: string;
     twitter: string;
     linkedInGroup: string;
-
-    selectedFileNameDocxB: string; // Название файла .docx
-}
+} 

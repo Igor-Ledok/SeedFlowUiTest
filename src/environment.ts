@@ -1,7 +1,7 @@
 export const environment = {
-  baseUrl: 'http://localhost:4200',
+  baseUrl: 'https://testui-8c034b20e03d.herokuapp.com/',
   // baseUrl разработка: http://localhost:4200
-  // baseUrl продакшен: http://seedflow.s3-website.eu-north-1.amazonaws.com/
+  // baseUrl продакшен: https://testui-8c034b20e03d.herokuapp.com/
 
   baseApiUrl: 'https://peaceful-ridge-38908-36bf3f3e0719.herokuapp.com/api',
   //https://localhost:7193/api

@@ -16,50 +16,60 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
 <header class="header">
-  <div class="header-left">
-    <img src="assets/images/greenCoin.png" class="logo" alt="Seed Flow Logo" />
-    <span class="brand-name">Seed Flow</span>
-  </div>
-
-   <!-- Блок поиска -->
+    <div class="header-left">
+      <img src="assets/images/greenCoin.png" class="logo" alt="Seed Flow Logo" />
+      <span class="brand-name">Seed Flow</span>
+    </div>
+  
+    <!-- Блок поиска -->
 <div class="search-container" #searchContainer>
+
+    <!-- Затемняющий фон -->
+    <div class="overlay" *ngIf="showDropdown" (click)="closeDropdown()"></div>
+
   <input 
-    style="font-family: 'Montserrat';"
+    style="font-family: 'Montserrat'; background-image: url('assets/images/search2.png'); background-repeat: no-repeat; background-position: 5px center; padding-left: 40px;"
     type="text"
     class="search-input"
-    placeholder="🔍"
+    placeholder=" "
     (focus)="showDropdown = true"
     (input)="filterResults()"
     [(ngModel)]="searchText"
   />
+
+  <img src="assets/images/search.png" 
+  alt="Search Icon" 
+  class="search-icon"
+  (click)="toggleDropdown()" />
   
+
   <div *ngIf="showDropdown" class="search-dropdown" [style.height]="getDropdownHeight()">
     <!-- 3 основные кнопки: СТАРТАПИ, СОЦІАЛЬНІ, ГУМАНІТАРНІ -->
     <div class="button-row wide-buttons">
       <button class="button wide-button"
         [ngClass]="{ 'active': activeCategoryIndex === 0 }"
         (click)="onCategoryButtonPress(0)">
-        СТАРТАПИ</button>
+       {{"СТАРТАПИ" | transloco}}</button>
       <button class="button wide-button"
         [ngClass]="{ 'active': activeCategoryIndex === 1 }"
         (click)="onCategoryButtonPress(1)">
-        СОЦІАЛЬНІ</button>
+        {{"СОЦІАЛЬНІ" | transloco}}</button>
       <button class="button wide-button"
         [ngClass]="{ 'active': activeCategoryIndex === 2 }"
         (click)="onCategoryButtonPress(2)">
-        ГУМАНІТАРНІ</button>
+        {{"ГУМАНІТАРНІ" | transloco}}</button>
     </div>
   
     <!-- Кнопки для СТАРТАПИ -->
     <div *ngIf="activeCategoryIndex === 0">
-      <div class="button-row" *ngFor="let row of startupRows">
-        <button *ngFor="let button of row" class="button rounded-button"
+      <div class="button-row2" *ngFor="let row of startupRows">
+        <button *ngFor="let button of row" class="button2 rounded-button"
           [ngClass]="{ 'active': activeStartupButtonIndex === button.index }"
           (click)="onButtonPress('startup', button.index)">
-          {{ button.label }}
+          {{ button.label | transloco }}
         </button>
       </div>
-    </div>
+    </div>    
   
     <!-- Кнопки для СОЦІАЛЬНІ -->
     <div *ngIf="activeCategoryIndex === 1">
@@ -67,7 +77,7 @@
         <button *ngFor="let button of socialButtons" class="button rounded-button"
           [ngClass]="{ 'active': activeSocialButtonIndex === button.index }"
           (click)="onButtonPress('social', button.index)">
-          {{ button.label }}
+          {{ button.label | transloco }}
         </button>
       </div>
     </div>
@@ -78,80 +88,217 @@
         <button *ngFor="let button of humanitarianButtons" class="button rounded-button"
           [ngClass]="{ 'active': activeHumanitarianButtonIndex === button.index }"
           (click)="onButtonPress('humanitarian', button.index)">
-          {{ button.label }}
+          {{ button.label | transloco }}
         </button>
       </div>
     </div>
 
     <div class="hot-projects">
-      <span class="hot-projects-text">ГАРЯЧІ ПРОЄКТИ</span>
+      <span class="hot-projects-text">{{"ГАРЯЧІ ПРОЄКТИ" | transloco}}</span>
       <hr class="hot-projects-line" />
     </div>
 
-<!-- Результаты поиска (фото и описание) -->
-<div *ngIf="filteredItems.length > 0; else noResults">
+<!-- Проверяем режим отображения -->
+<div *ngIf="isGridView; else carouselView">
   <div class="search-items">
-    <div *ngFor="let item of filteredItems" class="search-item">
-       <!-- Контейнер для фото и описания, чтобы добавить рамку -->
-       <div class="search-item-content">
-
+    <div *ngFor="let item of filteredItems; let i = index" class="search-item"
+    (mouseenter)="isHoveredArray[i] = true" 
+    (mouseleave)="isHoveredArray[i] = false"  
+    [ngClass]="{'hovered': isHoveredArray[i]}"
+    >
+      <div class="search-item-content">
         <div class="icon-top-left">
-          <img src="assets/images/LeftUpAngle.png" alt="icon" class="top-left-icon" />
+          <img [src]="item.topLeftImage" alt="Custom Image" class="top-left-icon" />
         </div>
 
-        <div class="icon-top-right">
-          <img src="assets/images/rocket.png" alt="icon 2" class="top-right-icon" />
+        <!-- Блок с лайком -->
+        <img
+        class="like-icon"
+        [src]="likedProjects[i] ? 'assets/images/likeRed.png' : 'assets/images/like.png'"
+        (click)="toggleLike(i)"
+        [ngClass]="{'hovered': isHoveredArray[i]}" 
+        style="
+        width: 28px;
+        height: 25px;
+        position: absolute;
+        top: 320px; 
+        right: 10px;
+        cursor: pointer;
+        z-index: 10;
+        transition: transform 0.3s ease;
+        "
+        />
+
+        <!-- Блок с изображением социального медиа поверх лайка для каждой карточки -->
+        <div class="social-media-container" 
+        (click)="toggleSocialMediaList(i)"
+        style="position: absolute; top: 285px; right: 10px; z-index: 20;">
+        <img
+          class="social-media-icon"
+          src="assets/images/socialMedia.png"
+          style="height: 25px; cursor: pointer; transition: transform 0.3s ease;"
+        />
+        </div>
+
+        <!-- Выпадающий список -->
+        <div *ngIf="isSocialMediaListVisible[i] && showDropdown" 
+        class="social-media-dropdown" 
+        style="position: absolute; top: 310px; right: 10px; z-index: 30;">
+          <ul>
+            <li>
+              <a href="https://www.facebook.com/profile.php?id=61573153085556" target="_blank">
+                <img style="width: 20px; height: 20px;" src="assets/images/facebook.png">
+              </a>
+            </li>
+            <li>                
+              <a href="https://www.instagram.com/seedflow_itstep/" target="_blank">
+                <img style="width: 20px; height: 20px;" src="assets/images/Instagram.png">
+              </a>
+            </li>
+            <li><img style="width: 25px; height: 25px;" src="assets/images/twitter.png"></li>
+            <li><img style="width: 25px; height: 25px;" src="assets/images/linkSmall.png"></li>
+          </ul>
         </div>
 
 
-      <!-- Фото элемента -->
-      <img [src]="item.image" alt="image" class="search-item-img" />
-      
-      <!-- Название с суммой и прогресс-баром -->
-      <div class="search-item-body">
-        <p class="search-item-title">{{ item.title }}</p>
-        <!-- Сумма сверху прогресс-бара -->
-        <div class="progress-info">
-          <span class="progress-from">135 457 грн</span>
-          <span class="progress-to">500 000 грн</span>
+        <img [src]="item.image" alt="image" class="search-item-img" />
+        <div class="search-item-body">
+          <p class="search-item-title">{{ item.title | transloco }}</p>
+          <div class="progress-info">
+            <span class="progress-from">135 457 {{"грн" | transloco}}</span>
+            <span class="progress-to">500 000 {{"грн" | transloco}}</span>
+          </div>
+          <progress class="progress-bar" [value]="item.progress" max="100"></progress>
         </div>
-        
-        <!-- Прогресс-бар -->
-        <progress class="progress-bar" [value]="item.progress" max="100"></progress>
-      </div>
-
-      <!-- Иконка справа внизу под фото -->
-      <div class="icon-container">
-        <img src="assets/images/socialMedia.png" alt="icon" class="search-item-icon" />
-        <br>
-        <img src="assets/images/like.png" alt="new icon" class="search-item-icon" />
-      </div>
-
-      <!-- Иконки и числа под прогресс-баром -->
-      <div class="icons-container">
-        <div class="icon-item">
-          <img src="assets/images/people.png" alt="icon 1" class="icon-img" />
-          <p class="icon-number">{{ item.value1 }}</p>
+        <div class="icons-container">
+          <div class="icon-item">
+            <img src="assets/images/people.png" alt="icon 1" class="icon-img" />
+            <p class="icon-number">{{ item.value1 }}</p>
+          </div>
+          <div class="icon-item">
+            <img src="assets/images/comments.png" alt="icon 2" class="icon-img" />
+            <p class="icon-number">{{ item.value2 }}</p>
+          </div>
+          <div class="icon-item">
+            <img src="assets/images/money.png" alt="icon 3" class="icon-img" />
+            <p class="icon-number">{{ item.value3 }}%</p>
+          </div>
+          <button class="support-button2"  [routerLink]="'/donation-page'">{{"ПІДТРИМАТИ" | transloco}}</button>
         </div>
-        <div class="icon-item">
-          <img src="assets/images/comments.png" alt="icon 2" class="icon-img" />
-          <p class="icon-number">{{ item.value2 }}</p>
+        <div class="search-item-text">
+          Lorem, ipsum dolor sit amet consectetur adipisicing elit. Quia recusandae aliquam rem expedita itaque.
         </div>
-        <div class="icon-item">
-          <img src="assets/images/money.png" alt="icon 3" class="icon-img" />
-          <p class="icon-number">{{ item.value3 }}%</p>
-        </div>
-
-        <button class="support-button2">ПІДТРИМАТИ</button>
-      </div>
-
-      <div class="search-item-text">
-        Lorem, ipsum dolor sit amet consectetur adipisicing elit. Quia recusandae aliquam rem expedita itaque.
       </div>
     </div>
   </div>
 </div>
-</div>
+
+<!-- Карусель -->
+<ng-template #carouselView>
+  <div class="carousel-container">
+    <button class="carousel-arrow left" (click)="prevSlide()">‹</button>
+    <div class="carousel-wrapper" [style.transform]="'translateX(-' + currentIndex * 100 + '%)'">
+      <div *ngFor="let item of filteredItems; let i = index" class="search-item"
+          (mouseenter)="isHoveredArray[i] = true" 
+          (mouseleave)="isHoveredArray[i] = false"
+          [ngClass]="{'hovered': isHoveredArray[i]}"
+          >
+        <div class="search-item-content">
+          <div class="icon-top-left">
+            <img [src]="item.topLeftImage" alt="Custom Image" class="top-left-icon" />
+          </div>
+
+          <img [src]="item.image" alt="image" class="search-item-img" />
+
+        <!-- Блок с лайком -->
+        <img
+        class="like-icon"
+        [src]="likedProjects[i] ? 'assets/images/likeRed.png' : 'assets/images/like.png'"
+        (click)="toggleLike(i)"
+        [ngClass]="{'hovered': isHoveredArray[i]}" 
+        style="
+        width: 28px;
+        height: 25px;
+        position: absolute;
+        top: 320px; 
+        right: 10px;
+        cursor: pointer;
+        z-index: 10;
+        transition: transform 0.3s ease;
+        "
+        />
+
+        <div class="social-media-container"
+        (click)="toggleSocialMediaList(i)"  
+        style="position: absolute; top: 285px; right: 10px; z-index: 20;">
+        <img
+          class="social-media-icon"
+          src="assets/images/socialMedia.png"
+          style="height: 25px; cursor: pointer; transition: transform 0.3s ease;"
+        />
+        </div>
+
+        <!-- Выпадающий список -->
+        <div *ngIf="isSocialMediaListVisible[i] && showDropdown" 
+          class="social-media-dropdown" 
+          style="position: absolute; top: 305px; right: 10px; z-index: 30;">
+            <ul>
+              <li>
+                <a href="https://www.facebook.com/profile.php?id=61573153085556" target="_blank">
+                  <img style="width: 20px; height: 20px;" src="assets/images/facebook.png">
+                </a>
+              </li>
+              <li>
+                <a href="https://www.instagram.com/seedflow_itstep/" target="_blank">
+                  <img style="width: 20px; height: 20px;" src="assets/images/Instagram.png">
+                </a>
+              </li>
+              <li><img style="width: 25px; height: 25px;" src="assets/images/twitter.png"></li>
+              <li><img style="width: 25px; height: 25px;" src="assets/images/linkSmall.png"></li>
+            </ul>
+        </div>
+
+
+          <div class="search-item-body">
+            <p class="search-item-title">{{ item.title | transloco }}</p>
+            <div class="progress-info">
+              <span class="progress-from">135 457 {{"грн" | transloco}}</span>
+              <span class="progress-to">500 000 {{"грн" | transloco}}</span>
+            </div>
+            <progress class="progress-bar" [value]="item.progress" max="100"></progress>
+          </div>
+
+          <!-- Иконки для карусели (под прогресс-баром) -->
+          <div class="icons-container">
+            <div class="icon-item">
+              <img src="assets/images/people.png" alt="icon 1" class="icon-img" />
+              <p class="icon-number">{{ item.value1 }}</p>
+            </div>
+            <div class="icon-item">
+              <img src="assets/images/comments.png" alt="icon 2" class="icon-img" />
+              <p class="icon-number">{{ item.value2 }}</p>
+            </div>
+            <div class="icon-item">
+              <img src="assets/images/money.png" alt="icon 3" class="icon-img" />
+              <p class="icon-number">{{ item.value3 }}%</p>
+            </div>
+            <button class="support-button2" [routerLink]="'/donation-page'">{{"ПІДТРИМАТИ" | transloco}}</button>
+          </div>
+
+          <!-- Текст с описанием -->
+          <div class="search-item-text">
+            Lorem, ipsum dolor sit amet consectetur adipisicing elit. Quia recusandae aliquam rem expedita itaque.
+          </div>
+        </div>
+      </div>
+    </div>
+    <button class="carousel-arrow right" (click)="nextSlide()">›</button>
+  </div>
+</ng-template>
+
+
+
+
 
 
 
@@ -164,23 +311,94 @@
   </div>
 </div>
   
+    <div class="header-right">
+      <img src="assets/images/slashes.png" class="new-photo" alt="New Photo" (click)="openWindow()">
+      <button class="submit-project-btn" [routerLink]="'/general-page'">{{"Подати проєкт" | transloco}}</button>
+      <img src="assets/images/profile.png" class="profile-icon" alt="User Profile" [routerLink]="'/profile-page'">
+    </div>
 
-  <div class="header-right">
-    <button class="submit-project-btn">{{"Подати проєкт" | transloco}}</button>
-    <img src="assets/images/profile.png" class="profile-icon" alt="User Profile">
+<!-- Окошко, которое будет открываться -->
+<div *ngIf="isWindowOpen" class="popup-window" (click)="closeWindow()">
+  <div class="popup-content" (click)="$event.stopPropagation()">
+    <!-- Левый верхний блок с фото профиля и дополнительным фото -->
+    <div class="header-left2">
+      <img src="assets/images/profile.png" class="profile-icon" alt="User Profile" [routerLink]="'/profile-page'">
+      <img src="assets/images/bell.png" class="other-photo" alt="Other Photo">
+    </div>
+
+    <!-- Правый верхний блок с language switcher -->
+    <div class="header-right2">
+      <div class="language-switcher2" style="color: #898268;"><img src="assets/images/language.png" class="logo2">
+
+        <mat-select [formControl]="selectedLanguage" style="width: 55px;" (selectionChange)="onLanguageChange($event)">
+          <mat-option style="font-family: 'Montserrat';" *ngFor="let lang of languages" [value]="lang.code">
+            {{ lang.name }}
+          </mat-option>
+        </mat-select>
+    </div>
+    </div>
+
+    <!-- Линия ниже окна -->
+  <div class="bottom-line"></div>
+
+   <!-- Кнопки ниже черты -->
+  <div class="button-container">
+    <button class="popup-button" (click)="onButtonClick('Проєкти')" [routerLink]="'/projects-list-page'">
+      <img src="assets/images/projects.png" alt="Проєкти" class="button-icon">
+      <span class="button-text">{{"Проєкти" | transloco}}</span>
+    </button>
+
+    <div class="separator"></div>
+
+    <button class="popup-button" (click)="onButtonClick('Про нас')" [routerLink]="'/about-us-page'">
+      <img src="assets/images/aboutUs.png" alt="Про нас" class="button-icon">
+      <span class="button-text">{{"Про нас" | transloco}}</span>
+    </button>
+
+    <div class="separator"></div>
+
+    <button class="popup-button" (click)="onButtonClick('Акаунт')" [routerLink]="'/profile-page'">
+      <img src="assets/images/account.png" alt="Акаунт" class="button-icon">
+      <span class="button-text">{{"Акаунт" | transloco}}</span>
+    </button>
+
+    <div class="separator"></div>
+
+    <button class="popup-button" (click)="onButtonClick('Підтримка')" [routerLink]="'/support-page'">
+      <img src="assets/images/help.png" alt="Підтримка" class="button-icon">
+      <span class="button-text">{{"Підтримка" | transloco}}</span>
+    </button>
+
+    <div class="separator"></div>
+
+    <button class="popup-button" (click)="onButtonClick('Магазин')" [routerLink]="'/shop-main-page-page'">
+      <img src="assets/images/shop.png" alt="Магазин" class="button-icon">
+      <span class="button-text">{{"Магазин" | transloco}}</span>
+    </button>
+  </div>
   </div>
 
-  <div class="language-switcher" style="color: #898268;"><img src="assets/images/language.png" class="logo2">
-
-    <mat-select [formControl]="selectedLanguage" style="width: 55px;" (selectionChange)="onLanguageChange($event)">
-      <mat-option style="font-family: 'Montserrat';" *ngFor="let lang of languages" [value]="lang.code">
-        {{ lang.name }}
-      </mat-option>
-    </mat-select>
+   <!-- Ссылка "Вийти" -->
+   <div class="logout-container">
+    <a href="#" class="logout-link">{{"Вийти" | transloco}}</a>
+  </div>
 </div>
-</header>
 
-<hr>
+    <div class="language-switcher" style="color: #898268;"><img src="assets/images/language.png" class="logo2">
+
+      <mat-select [formControl]="selectedLanguage" style="width: 55px;" (selectionChange)="onLanguageChange($event)">
+        <mat-option style="font-family: 'Montserrat';" *ngFor="let lang of languages" [value]="lang.code">
+          {{ lang.name }}
+        </mat-option>
+      </mat-select>
+  </div>
+
+   
+  </header>
+
+  <hr>
+
+
 
 <div class="tabs-container">
   <div class="tabs">
@@ -193,68 +411,193 @@
   </div>
 </div>
 
+<button class="fixed-button" (click)="scrollToTop()">
+  <i class="fas fa-arrow-up"></i>
+</button>
+
+<div class="container">
+  <img 
+  *ngFor="let img of images; let i = index"
+  [src]="activeIndex === i ? img.active : img.gray"
+  alt="Image"
+  class="image"
+  [class.active]="activeIndex === i"
+  (click)="onImageClick(img.link)">
+</div>
+
+<form [formGroup]="projectForm">
 <div class="form-group">
     <div class="form-row">
       <div class="fields">
         <div class="input-group">
           <label class="form-label">{{"Назва організації" | transloco}}</label>
-          <input type="text" class="form-input" placeholder='{{"Введіть назву організації" | transloco}}' [(ngModel)]="projectData.organizationName"/>
+          <input 
+          type="text" 
+          class="form-input" 
+          placeholder='{{"Введіть назву організації" | transloco}}' 
+          formControlName="organizationName"
+          [(ngModel)]="projectData.OrganizationName"/>
+
+          <div class="error" *ngIf="organizationName?.invalid && organizationName?.touched">
+            <span *ngIf="organizationName?.errors?.['required']">{{"Обов'язкове поле" | transloco}}</span>
+            <span *ngIf="organizationName?.errors?.['minlength']">{{"Мінімальна довжина 3 символи" | transloco}}</span>
+          </div>
         </div>
   
         <div class="input-group">
           <label class="form-label">{{"ЄДРПОУ/ІПН" | transloco}}</label>
-          <input type="text" class="form-input" placeholder='{{"Введіть ЄДРПОУ або ІПН" | transloco}}' [(ngModel)]="projectData.edrpou"/>
+          <input 
+          type="text" 
+          class="form-input" 
+          placeholder='{{"Введіть ЄДРПОУ або ІПН" | transloco}}' 
+          formControlName="edrpou"
+          [(ngModel)]="projectData.Edrpou"/>
+
+          <div class="error" *ngIf="edrpou?.invalid && edrpou?.touched">
+            <span *ngIf="edrpou?.errors?.['required']">{{"Обов'язкове поле" | transloco}}</span>
+            <span *ngIf="edrpou?.errors?.['invalidEdrpouOrIpn']">{{ "Невірний формат ЄДРПОУ або ІПН" | transloco }}</span>
+          </div>
         </div>
   
         <div class="input-group">
           <label class="form-label">{{"Повна адреса, індекс" | transloco}}</label>
-          <input type="text" class="form-input" placeholder='{{"Введіть адресу" | transloco}}' [(ngModel)]="projectData.fullAddress"/>
+          <input 
+          type="text" 
+          class="form-input" 
+          placeholder='{{"Введіть адресу" | transloco}}' 
+          formControlName="fullAddress"
+          [(ngModel)]="projectData.FullAddress"/>
+
+          <div class="error" *ngIf="fullAddress?.invalid && fullAddress?.touched">
+            <span *ngIf="fullAddress?.errors?.['required']">{{"Обов'язкове поле" | transloco}}</span>
+            <span *ngIf="fullAddress?.errors?.['invalidAddress']">{{"Помилка (Улица з великої букви, номер будинку і поштовий індекс)" | transloco}}</span>
+          </div>
         </div>
   
         <div class="input-group">
           <label class="form-label">{{"Місто" | transloco}}</label>
-          <input type="text" class="form-input" placeholder='{{"Введіть місто" | transloco}}' [(ngModel)]="projectData.city"/>
+          <input 
+          type="text" 
+          class="form-input" 
+          placeholder='{{"Введіть місто" | transloco}}' 
+          formControlName="city"
+          [(ngModel)]="projectData.City"/>
+
+          <div class="error" *ngIf="city?.invalid && city?.touched">
+            <span *ngIf="city?.errors?.['required']">{{"Обов'язкове поле" | transloco}}</span>
+            <span *ngIf="city?.errors?.['invalidCityName']">{{"Введіть коректну назву міста (тільки букви та пробіли)" | transloco}}</span>
+          </div>
         </div>
   
         <div class="input-group">
           <label class="form-label">{{"Номер рахунку в форматі IBAN" | transloco}}</label>
-          <input type="text" class="form-input" placeholder="UA123456789..." [(ngModel)]="projectData.iban" />
+          <input 
+          type="text" 
+          class="form-input" 
+          placeholder="UA123456789..." 
+          formControlName="iban" 
+          [(ngModel)]="projectData.Iban"/>
+
+          <div class="error" *ngIf="iban?.invalid && iban?.touched">
+            <span *ngIf="iban?.errors?.['required']">{{"Обов'язкове поле" | transloco}}</span>
+            <span *ngIf="iban?.errors?.['invalidIban']">{{"Невірний формат IBAN" | transloco}}</span>
+          </div>
         </div>
   
         <div class="input-group">
           <label class="form-label">{{"Назва банку" | transloco}}</label>
-          <input type="text" class="form-input" placeholder='{{"Введіть назву банку" | transloco}}'[(ngModel)]="projectData.bankName" />
+          <input 
+          type="text" 
+          class="form-input" 
+          placeholder='{{"Введіть назву банку" | transloco}}'
+          formControlName="bankName" 
+          [(ngModel)]="projectData.BankName"/>
+
+          <div class="error" *ngIf="bankName?.invalid && bankName?.touched">
+            <span *ngIf="bankName?.errors?.['required']">{{"Обов'язкове поле" | transloco}}</span>
+            <span *ngIf="bankName?.errors?.['minLength']">{{"Назва банку повинна містити не менше 3 символів" | transloco}}</span>
+            <span *ngIf="bankName?.errors?.['invalidCharacter']">{{"Використовуються недозволені символи" | transloco}}</span>
+          </div>
         </div>
   
         <div class="input-group">
           <label class="form-label">{{"МФО" | transloco}}</label>
-          <input type="text" class="form-input" placeholder='{{"Введіть МФО" | transloco}}' [(ngModel)]="projectData.mfo"/>
+          <input 
+          type="text" 
+          class="form-input" 
+          placeholder='{{"Введіть МФО" | transloco}}' 
+          formControlName="mfo"
+          [(ngModel)]="projectData.Mfo"/>
+
+          <div class="error" *ngIf="mfo?.invalid && mfo?.touched">
+            <span *ngIf="mfo?.errors?.['required']">{{"Обов'язкове поле" | transloco}}</span>
+            <span *ngIf="mfo?.errors?.['invalidMfo']">{{"МФО має складатися з 5 цифр" | transloco}}</span>
+          </div>
         </div>
   
         <div class="input-group">
-          <label class="form-label">{{"Підписант" | transloco}}</label>
-          <input type="text" class="form-input" placeholder='{{"Посада, прізвище, ім&#39;я та по-батькові" | transloco}}' [(ngModel)]="projectData.signatory"/>
+          <label class="form-label">
+            {{"Підписант" | transloco}}:<br>
+            <label style="font-weight: 500; font-size: 15px;">{{"(Роль, Прізвище, Ім'я та По-батькові)" | transloco}}</label>
+          </label>
+          <input
+            type="text"
+            class="form-input"
+            placeholder='{{"Роль, Прізвище, Ім&#39;я та По-батькові" | transloco}}'
+            formControlName="signatory"
+            [(ngModel)]="projectData.Signatory"
+            />
+        
+          <div class="error" *ngIf="signatory?.invalid && signatory?.touched">
+            <span *ngIf="signatory?.errors?.['required']">{{"Обов'язкове поле" | transloco}}</span>
+            <span *ngIf="signatory?.errors?.['invalidFormat']">
+              {{"Формат: Роль з великої літери, кома, Прізвище Ім'я По-батькові" | transloco}}
+            </span>
+          </div>
         </div>
+        
   
         <div class="input-group">
           <label class="form-label">{{"Контактний телефон" | transloco}}</label>
-          <input type="text" class="form-input" placeholder='{{"Введіть телефон" | transloco}}' [(ngModel)]="projectData.contactnumber"/>
+          <input 
+          type="text" 
+          class="form-input" 
+          placeholder='{{"Введіть телефон" | transloco}}' 
+          formControlName="contactNumber"
+          [(ngModel)]="projectData.Contactnumber"/>
+          
+          <div class="error" *ngIf="contactNumber?.invalid && contactNumber?.touched">
+            <span *ngIf="contactNumber?.errors?.['required']">{{"Обов'язкове поле" | transloco}}</span>
+            <span *ngIf="contactNumber?.errors?.['invalidPhoneNumber']">{{"Невірний номер телефону (потрібен формат міжнародного номера)" | transloco}}</span>
+          </div>
         </div>
+
+        <div class="input-group">
+          <label class="form-label">{{"Договір" | transloco}}</label>
+          <input 
+          type="email" 
+          class="form-input" 
+          placeholder='{{"Вкажіть актуальний e-mail, на який буде надіслано договір" | transloco}}' 
+          formControlName="contract"
+          [(ngModel)]="projectData.Contract"/>
+          
+          <div class="error" *ngIf="contract?.invalid && contract?.touched">
+            <span *ngIf="contract?.errors?.['required']">{{ 'Обов\'язкове поле' | transloco }}</span>
+            <span *ngIf="contract?.errors?.['email']">{{ 'Введіть правильний email' | transloco }}</span>
+          </div>
+        </div>
+
+
       </div>
     </div>
+
+    
   </div>
+
+  <br>
   
   <div class="form-group contract-section">
-    <div class="form-row">
-      <label class="form-label">{{"Договір" | transloco}}</label>
-  
-      <div class="fields">
-        <div class="input-wrapper">
-          <input type="email" class="form-input" placeholder='{{"Вкажіть актуальний e-mail, на який буде надіслано договір" | transloco}}' [(ngModel)]="projectData.contract"/>
-        </div>
-      </div>
-    </div>
-  
+
     <div class="form-row">
       <span class="form-description">
         <strong>{{"Зверніть увагу!" | transloco}}</strong>  
@@ -263,17 +606,23 @@
   
       <div class="fields">
         <div class="checkbox-container">
-          <input type="checkbox" id="agreement" />
-          <label for="agreement">{{"Я даю згоду на обробку моїх персональних даних" | transloco}}</label>
+          <input type="checkbox" id="agreement" formControlName="agreement"/>
+          <label class="agreement" for="agreement">{{"Я даю згоду на обробку моїх персональних даних" | transloco}}</label>
+          <div class="error3" *ngIf="agreement?.invalid && agreement?.touched">
+            <span *ngIf="agreement?.errors?.['required']">{{ 'Необхідна згода' | transloco }}</span>
+          </div>
         </div>
       </div>
+
     </div>
   </div>
   
   <!-- Кнопки -->
   <div class="form-buttons">
+    <!-- <div class="line"></div> -->
     <button class="btn btn-secondary" (click)="saveGeneralData()">{{"ЗБЕРЕГТИ ЗМІНИ" | transloco}}</button>
-    <button class="btn btn-primary" (click)="submitProject()">{{"ДАЛІ" | transloco}}</button>
+    <button class="btn btn-primary" (click)="submitProject(); nextStep()">{{"ДАЛІ" | transloco}}</button>
+    <!-- <div class="line2"></div> -->
   </div>
   
 
@@ -287,12 +636,12 @@
         <hr class="footer-line" />
       </div>
 
-      <div class="subscription" style="background-color: #bde7d6; margin-left: 345px; padding: 25px; text-align: center; border-radius: 8px; margin-bottom: 20px; width: 80%; display: flex; align-items: center; justify-content: center; box-sizing: border-box;">
-        <span style="font-family: 'Montserrat'; font-size: 18px; font-weight: 500; color: #247a60;position: relative; right: 50px; white-space: nowrap;">
+      <div class="subscription">
+        <span class="podpiska">
           {{"ПІДПИШИСЬ НА НАШІ НОВИНИ" | transloco}}
         </span>
-        <input type="email" placeholder="{{'Введіть адресу електронної пошти' | transloco }}" style="padding: 8px; border: none; border-radius: 5px; width: 750px; font-family: 'Montserrat';" />
-        <button style="padding: 12px 15px; border: none; background-color: #247a60; color: white; font-weight: 500; border-radius: 5px; position: relative; left: 50px; cursor: pointer; font-family: 'Montserrat';">
+        <input type="email" placeholder="{{'Введіть адресу електронної пошти' | transloco }}" class="email2" />
+        <button class="btn2">
           {{"ВІДПРАВИТИ" | transloco }}
         </button>
       </div>
@@ -303,8 +652,8 @@
           <ul>
             <li><a href="#">{{"Політика конфіденційності" | transloco}}</a></li>
             <li><a href="#">{{"Правила користування порталом" | transloco}}</a></li>
+            <li><a href="#">{{"Правила використання файлів Cookie" | transloco}}</a></li>
             <li><a href="#">{{"Про нас" | transloco}}</a></li>
-            <li><a href="#">{{"Супровід" | transloco}}</a></li>
           </ul>
         </div>
         <div class="footer-column">
@@ -339,24 +688,16 @@
         <div class="footer-column">
           <h4>{{"МАГАЗИН" | transloco}}</h4>
           <ul>
-            <li><a href="#">{{"Політика конфіденційності" | transloco}}</a></li>
-            <li><a href="#">{{"Правила користування порталом" | transloco}}</a></li>
-            <li><a href="#">{{"Про нас" | transloco}}</a></li>
-            <li><a href="#">{{"Карта сайту" | transloco}}</a></li>
+            <li><a href="#">{{"Всі товари" | transloco}}</a></li>
+            <li><a href="#">{{"Оплата і доставка" | transloco}}</a></li>
+            <li><a href="#">{{"Кошик" | transloco}}</a></li>
           </ul>
         </div>
       </div>
     </div>
 
     <hr
-    style="
-      border-top: 3px solid #ffcf33;
-      width: 38%;
-      margin-top: 60px;
-      justify-content: left;
-      position: relative;
-      left: -440px;
-    "
+    class="yellowLine"
   />
   <div class="footer-social">
     <h4 style="font-family: 'Montserrat'">
@@ -372,14 +713,8 @@
   </div>
 
   <hr
-    style="
-      border-top: 3px solid #ffcf33;
-      width: 38%;
-      margin-top: 80px;
-      justify-content: left;
-      position: relative;
-      left: 365px;
-    "
+  class="yellowLine2"
+
   />
 
   <div class="footer-bottom">

@@ -64,6 +64,10 @@ import { EndTovarPageComponent } from "./end-tovar-page/end-tovar-page.component
 import { BasketComponent } from "./basket/basket.component";
 import { ProductRegistrationComponent } from "./product-registration/product-registration.component";
 import { ShopSuccessComponent } from "./shop-success/shop-success.component";
+import { CookieRoolsComponent } from "./cookie-rools/cookie-rools.component";
+import { AllCardsComponent } from "./all-cards/all-cards.component";
+import { PolicyComponent } from "./policy/policy.component";
+import { UsingRoolsComponent } from "./using-rools/using-rools.component";
 
 @Component({
   selector: 'app-root',
@@ -133,7 +137,11 @@ import { ShopSuccessComponent } from "./shop-success/shop-success.component";
     EndTovarPageComponent,
     BasketComponent,
     ProductRegistrationComponent,
-    ShopSuccessComponent
+    ShopSuccessComponent,
+    CookieRoolsComponent,
+    AllCardsComponent,
+    PolicyComponent,
+    UsingRoolsComponent
 ],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],

@@ -59,6 +59,8 @@ import { EndTovarPageComponent } from './end-tovar-page/end-tovar-page.component
 import { BasketComponent } from './basket/basket.component';
 import { ProductRegistrationComponent } from './product-registration/product-registration.component';
 import { ShopSuccessComponent } from './shop-success/shop-success.component';
+import { CookieRoolsComponent } from './cookie-rools/cookie-rools.component';
+import { PolicyComponent } from './policy/policy.component';
 
 export const routes: Routes =
  [
@@ -122,6 +124,8 @@ export const routes: Routes =
     { path: 'end-tovar-page', component: EndTovarPageComponent},
     { path: 'basket-page', component: BasketComponent},
     { path: 'product-registration-page', component: ProductRegistrationComponent},
-    { path: 'shop-success-page', component: ShopSuccessComponent}
+    { path: 'shop-success-page', component: ShopSuccessComponent},
+    { path: 'cookie-rools-page', component: CookieRoolsComponent},
+    { path: 'policy-page', component: PolicyComponent}
  
    ];

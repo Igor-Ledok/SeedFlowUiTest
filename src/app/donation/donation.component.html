@@ -23,6 +23,10 @@
   
     <!-- Блок поиска -->
 <div class="search-container" #searchContainer>
+
+    <!-- Затемняющий фон -->
+    <div class="overlay" *ngIf="showDropdown" (click)="closeDropdown()"></div>
+
   <input 
     style="font-family: 'Montserrat'; background-image: url('assets/images/search2.png'); background-repeat: no-repeat; background-position: 5px center; padding-left: 40px;"
     type="text"
@@ -97,14 +101,66 @@
 <!-- Проверяем режим отображения -->
 <div *ngIf="isGridView; else carouselView">
   <div class="search-items">
-    <div *ngFor="let item of filteredItems" class="search-item">
+    <div *ngFor="let item of filteredItems; let i = index" class="search-item"
+    (mouseenter)="isHoveredArray[i] = true" 
+    (mouseleave)="isHoveredArray[i] = false"  
+    [ngClass]="{'hovered': isHoveredArray[i]}"
+    >
       <div class="search-item-content">
         <div class="icon-top-left">
-          <img src="assets/images/LeftUpAngle.png" alt="icon" class="top-left-icon" />
+          <img [src]="item.topLeftImage" alt="Custom Image" class="top-left-icon" />
         </div>
-        <div class="icon-top-right">
-          <img src="assets/images/rocket.png" alt="icon 2" class="top-right-icon" />
+
+        <!-- Блок с лайком -->
+        <img
+        class="like-icon"
+        [src]="likedProjects[i] ? 'assets/images/likeRed.png' : 'assets/images/like.png'"
+        (click)="toggleLike(i)"
+        [ngClass]="{'hovered': isHoveredArray[i]}" 
+        style="
+        width: 28px;
+        height: 25px;
+        position: absolute;
+        top: 320px; 
+        right: 10px;
+        cursor: pointer;
+        z-index: 10;
+        transition: transform 0.3s ease;
+        "
+        />
+
+        <!-- Блок с изображением социального медиа поверх лайка для каждой карточки -->
+        <div class="social-media-container" 
+        (click)="toggleSocialMediaList(i)"
+        style="position: absolute; top: 285px; right: 10px; z-index: 20;">
+        <img
+          class="social-media-icon"
+          src="assets/images/socialMedia.png"
+          style="height: 25px; cursor: pointer; transition: transform 0.3s ease;"
+        />
         </div>
+
+        <!-- Выпадающий список -->
+        <div *ngIf="isSocialMediaListVisible[i] && showDropdown" 
+        class="social-media-dropdown" 
+        style="position: absolute; top: 310px; right: 10px; z-index: 30;">
+          <ul>
+            <li>
+              <a href="https://www.facebook.com/profile.php?id=61573153085556" target="_blank">
+                <img style="width: 20px; height: 20px;" src="assets/images/facebook.png">
+              </a>
+            </li>
+            <li>                
+              <a href="https://www.instagram.com/seedflow_itstep/" target="_blank">
+                <img style="width: 20px; height: 20px;" src="assets/images/Instagram.png">
+              </a>
+            </li>
+            <li><img style="width: 25px; height: 25px;" src="assets/images/twitter.png"></li>
+            <li><img style="width: 25px; height: 25px;" src="assets/images/linkSmall.png"></li>
+          </ul>
+        </div>
+
+
         <img [src]="item.image" alt="image" class="search-item-img" />
         <div class="search-item-body">
           <p class="search-item-title">{{ item.title | transloco }}</p>
@@ -142,15 +198,67 @@
   <div class="carousel-container">
     <button class="carousel-arrow left" (click)="prevSlide()">‹</button>
     <div class="carousel-wrapper" [style.transform]="'translateX(-' + currentIndex * 100 + '%)'">
-      <div *ngFor="let item of filteredItems" class="search-item">
+      <div *ngFor="let item of filteredItems; let i = index" class="search-item"
+          (mouseenter)="isHoveredArray[i] = true" 
+          (mouseleave)="isHoveredArray[i] = false"
+          [ngClass]="{'hovered': isHoveredArray[i]}"
+          >
         <div class="search-item-content">
           <div class="icon-top-left">
-            <img src="assets/images/LeftUpAngle.png" alt="icon" class="top-left-icon" />
+            <img [src]="item.topLeftImage" alt="Custom Image" class="top-left-icon" />
           </div>
-          <div class="icon-top-right">
-            <img src="assets/images/rocket.png" alt="icon 2" class="top-right-icon" />
-          </div>
+
           <img [src]="item.image" alt="image" class="search-item-img" />
+
+        <!-- Блок с лайком -->
+        <img
+        class="like-icon"
+        [src]="likedProjects[i] ? 'assets/images/likeRed.png' : 'assets/images/like.png'"
+        (click)="toggleLike(i)"
+        [ngClass]="{'hovered': isHoveredArray[i]}" 
+        style="
+        width: 28px;
+        height: 25px;
+        position: absolute;
+        top: 320px; 
+        right: 10px;
+        cursor: pointer;
+        z-index: 10;
+        transition: transform 0.3s ease;
+        "
+        />
+
+        <div class="social-media-container"
+        (click)="toggleSocialMediaList(i)"  
+        style="position: absolute; top: 285px; right: 10px; z-index: 20;">
+        <img
+          class="social-media-icon"
+          src="assets/images/socialMedia.png"
+          style="height: 25px; cursor: pointer; transition: transform 0.3s ease;"
+        />
+        </div>
+
+        <!-- Выпадающий список -->
+        <div *ngIf="isSocialMediaListVisible[i] && showDropdown" 
+          class="social-media-dropdown" 
+          style="position: absolute; top: 305px; right: 10px; z-index: 30;">
+            <ul>
+              <li>
+                <a href="https://www.facebook.com/profile.php?id=61573153085556" target="_blank">
+                  <img style="width: 20px; height: 20px;" src="assets/images/facebook.png">
+                </a>
+              </li>
+              <li>
+                <a href="https://www.instagram.com/seedflow_itstep/" target="_blank">
+                  <img style="width: 20px; height: 20px;" src="assets/images/Instagram.png">
+                </a>
+              </li>
+              <li><img style="width: 25px; height: 25px;" src="assets/images/twitter.png"></li>
+              <li><img style="width: 25px; height: 25px;" src="assets/images/linkSmall.png"></li>
+            </ul>
+        </div>
+
+
           <div class="search-item-body">
             <p class="search-item-title">{{ item.title | transloco }}</p>
             <div class="progress-info">
@@ -205,8 +313,8 @@
   
     <div class="header-right">
       <img src="assets/images/slashes.png" class="new-photo" alt="New Photo" (click)="openWindow()">
-      <button class="submit-project-btn">{{"Подати проєкт" | transloco}}</button>
-      <img src="assets/images/profile.png" class="profile-icon" alt="User Profile">
+      <button class="submit-project-btn" [routerLink]="'/general-page'">{{"Подати проєкт" | transloco}}</button>
+      <img src="assets/images/profile.png" class="profile-icon" alt="User Profile" [routerLink]="'/profile-page'">
     </div>
 
 <!-- Окошко, которое будет открываться -->
@@ -214,7 +322,7 @@
   <div class="popup-content" (click)="$event.stopPropagation()">
     <!-- Левый верхний блок с фото профиля и дополнительным фото -->
     <div class="header-left2">
-      <img src="assets/images/profile.png" class="profile-icon" alt="User Profile">
+      <img src="assets/images/profile.png" class="profile-icon" alt="User Profile" [routerLink]="'/profile-page'">
       <img src="assets/images/bell.png" class="other-photo" alt="Other Photo">
     </div>
 
@@ -235,35 +343,35 @@
 
    <!-- Кнопки ниже черты -->
   <div class="button-container">
-    <button class="popup-button" (click)="onButtonClick('Проєкти')">
+    <button class="popup-button" (click)="onButtonClick('Проєкти')" [routerLink]="'/projects-list-page'">
       <img src="assets/images/projects.png" alt="Проєкти" class="button-icon">
       <span class="button-text">{{"Проєкти" | transloco}}</span>
     </button>
 
     <div class="separator"></div>
 
-    <button class="popup-button" (click)="onButtonClick('Про нас')">
+    <button class="popup-button" (click)="onButtonClick('Про нас')" [routerLink]="'/about-us-page'">
       <img src="assets/images/aboutUs.png" alt="Про нас" class="button-icon">
       <span class="button-text">{{"Про нас" | transloco}}</span>
     </button>
 
     <div class="separator"></div>
 
-    <button class="popup-button" (click)="onButtonClick('Акаунт')">
+    <button class="popup-button" (click)="onButtonClick('Акаунт')" [routerLink]="'/profile-page'">
       <img src="assets/images/account.png" alt="Акаунт" class="button-icon">
       <span class="button-text">{{"Акаунт" | transloco}}</span>
     </button>
 
     <div class="separator"></div>
 
-    <button class="popup-button" (click)="onButtonClick('Підтримка')">
+    <button class="popup-button" (click)="onButtonClick('Підтримка')" [routerLink]="'/support-page'">
       <img src="assets/images/help.png" alt="Підтримка" class="button-icon">
       <span class="button-text">{{"Підтримка" | transloco}}</span>
     </button>
 
     <div class="separator"></div>
 
-    <button class="popup-button" (click)="onButtonClick('Магазин')">
+    <button class="popup-button" (click)="onButtonClick('Магазин')" [routerLink]="'/shop-main-page-page'">
       <img src="assets/images/shop.png" alt="Магазин" class="button-icon">
       <span class="button-text">{{"Магазин" | transloco}}</span>
     </button>

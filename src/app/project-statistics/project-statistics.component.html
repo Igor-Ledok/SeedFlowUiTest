@@ -382,7 +382,7 @@
 
 
 
-<hr
+<!-- <hr
   style="
     border-top: 2px solid #ffcf33;
     width: 99.9%;
@@ -390,9 +390,9 @@
     height: 2px;
     background-color: #ffcf33;
   "
-/>
+/> -->
 
-<hr
+<!-- <hr
   style="
     border-top: 2px solid #ffcf33;
     width: 54.2%;
@@ -401,130 +401,105 @@
     margin-right: 13%;
     top: 133px;
   "
-/>
+/> -->
 
 <footer class="footer">
-
-    <div class="container3">
+  <div class="footer-container">
+    <div class="footer-header">
       <div class="footer-logo">
-        <img
-          src="assets/images/greenCoin.png"
-          style="width: 35px; height: 35px; position: relative; top: -40px"
-          alt="Seed Flow"
-        />
-        <span
-          style="
-            font-family: 'Montserrat Alternates';
-            font-weight: 500;
-            font-size: 32px;
-            margin-left: 10px;
-            position: relative;
-            top: -40px;
-          "
-          >Seed Flow</span
-        >
+        <img src="assets/images/greenCoin.png" alt="Seed Flow" />
+        <span>Seed Flow</span>
       </div>
-  
-      <div class="subscription" style="background-color: #bde7d6; margin-left: 240px; padding: 25px; text-align: center; border-radius: 8px; margin-bottom: 20px; width: 95%; display: flex; align-items: center; justify-content: center; box-sizing: border-box;">
-        <span style="font-family: 'Montserrat'; font-size: 18px; font-weight: 500; color: #247a60; margin-right: 15px; white-space: nowrap;">
-          {{"ПІДПИШИСЬ НА НАШІ НОВИНИ" | transloco}}
-        </span>
-        <input type="email" placeholder="{{'Введіть адресу електронної пошти' | transloco }}" style="padding: 8px; border: none; border-radius: 5px; width: 600px; font-family: 'Montserrat';" />
-        <button style="padding: 12px 15px; border: none; background-color: #247a60; color: white; font-weight: 500; border-radius: 5px; position: relative; left: 20px; cursor: pointer; font-family: 'Montserrat';">
-          {{"ВІДПРАВИТИ" | transloco }}
-        </button>
+      <hr class="footer-line" />
+    </div>
+
+    <div class="subscription">
+      <span class="podpiska">
+        {{"ПІДПИШИСЬ НА НАШІ НОВИНИ" | transloco}}
+      </span>
+      <input type="email" placeholder="{{'Введіть адресу електронної пошти' | transloco }}" class="email2" />
+      <button class="btn2">
+        {{"ВІДПРАВИТИ" | transloco }}
+      </button>
+    </div>
+
+    <div class="footer-links">
+      <div class="footer-column">
+        <h4>{{"ПРО НАС" | transloco}}</h4>
+        <ul>
+          <li><a href="#">{{"Політика конфіденційності" | transloco}}</a></li>
+          <li><a href="#">{{"Правила користування порталом" | transloco}}</a></li>
+          <li><a href="#">{{"Правила використання файлів Cookie" | transloco}}</a></li>
+          <li><a href="#">{{"Про нас" | transloco}}</a></li>
+        </ul>
       </div>
-  
-      <div class="footer-columns">
-        <div class="footer-column">
-          <h4>{{"ПРО НАС" | transloco}}</h4>
-          <ul>
-            <li><a href="#">{{"Політика конфіденційності" | transloco}}</a></li>
-            <li><a href="#">{{"Правила користування порталом" | transloco}}</a></li>
-            <li><a href="#">{{"Про нас" | transloco}}</a></li>
-            <li><a href="#">{{"Супровід" | transloco }}</a></li>
-          </ul>
-        </div>
-        <div class="footer-column" id="second">
-          <h4> {{ "ПРОЄКТИ" | transloco }}</h4>
-          <ul>
-            <li><a href="#">{{"Список проєктів" | transloco}}</a></li>
-            <li><a href="#">{{"Пошук" | transloco }}</a></li>
-            <li><a href="#">{{"Викласти проєкт" | transloco }}</a></li>
-          </ul>
-        </div>
-        <div class="footer-column">
-          <h4>{{"АКАУНТ" | transloco}}</h4>
-          <ul>
-            <li><a href="#">{{"Налаштування акаунта" | transloco}}</a></li>
-            <li><a href="#">{{"Повідомлення" | transloco }}</a></li>
-            <li><a href="#">{{"Перегляд транзакцій" | transloco }}</a></li>
-            <li><a href="#">{{"Підтримані проєкти" | transloco }}</a></li>
-            <li><a href="#">{{"Вподобані проєкти" | transloco }}</a></li>
-            <li><a href="#">{{"Вподобані товари" | transloco }}</a></li>
-            <li><a href="#">{{"Історія покупок" | transloco }}</a></li>
-          </ul>
-        </div>
-        <div class="footer-column">
-          <h4>{{ "ПІДТРИМКА" | transloco }}</h4>
-          <ul>
-            <li><a href="#">FAQ</a></li>
-            <li><a href="#">{{ "Супровід проєкту" | transloco }}</a></li>
-            <li><a href="#">{{"Семінари/вебінари" | transloco }}</a></li>
-            <li><a href="#">{{"Блог" | transloco }}</a></li>
-          </ul>
-        </div>
-        <div class="footer-column">
-          <h4>{{ "МАГАЗИН" | transloco }}</h4>
-          <ul>
-            <li><a href="#">{{ "Політика конфіденційності" | transloco }}</a></li>
-            <li><a href="#">{{ "Правила користування порталом" | transloco}}</a></li>
-            <li><a href="#">{{ "Про нас" | transloco }}</a></li>
-            <li><a href="#">{{"Карта сайту" | transloco}}</a></li>
-          </ul>
-        </div>
+      <div class="footer-column">
+        <h4>{{"ПРОЄКТИ" | transloco}}</h4>
+        <ul>
+          <li><a href="#">{{"Список проєктів" | transloco}}</a></li>
+          <li><a href="#">{{"Пошук" | transloco}}</a></li>
+          <li><a href="#">{{"Викласти проєкт" | transloco}}</a></li>
+        </ul>
       </div>
-      <hr
-        style="
-          border-top: 2px solid #ffcf33;
-          width: 48%;
-          margin-top: 60px;
-          justify-content: left;
-          position: relative;
-          margin-left: 0px;
-        "
-      />
-      <div class="footer-social">
-        <h4 style="font-family: 'Montserrat'">
-          <p class="underline-center">{{"МИ У СОЦМЕРЕЖАХ" | transloco }}</p>
-        </h4>
-  
-        <div class="social-icons">
-          <a href="#"><i class="fa-brands fa-instagram"></i></a>
-          <a href="#"><i class="fa-brands fa-telegram"></i></a>
-          <a href="#"><i class="fa-brands fa-youtube"></i></a>
-          <a href="#"><i class="fa-brands fa-linkedin"></i></a>
-        </div>
+      <div class="footer-column">
+        <h4>{{"АКАУНТ" | transloco}}</h4>
+        <ul>
+          <li><a href="#">{{"Налаштування акаунта" | transloco}}</a></li>
+          <li><a href="#">{{"Повідомлення" | transloco}}</a></li>
+          <li><a href="#">{{"Перегляд транзакцій" | transloco}}</a></li>
+          <li><a href="#">{{"Підтримані проєкти" | transloco}}</a></li>
+          <li><a href="#">{{"Вподобані проєкти" | transloco}}</a></li>
+          <li><a href="#">{{"Вподобані товари" | transloco}}</a></li>
+          <li><a href="#">{{"Історія покупок" | transloco}}</a></li>
+        </ul>
       </div>
-  
-      <hr
-        style="
-          border-top: 2px solid #ffcf33;
-          width: 50%;
-          margin-top: 80px;
-          justify-content: left;
-          position: relative;
-          margin-right: -9%;
-        "
-      />
-  
-      <div class="footer-bottom2">
-        <p style="font-weight: 400">
-          Всі права збережені | All rights save © 2025
-        </p>
+      <div class="footer-column">
+        <h4>{{"ПІДТРИМКА" | transloco}}</h4>
+        <ul>
+          <li><a href="#">FAQ</a></li>
+          <li><a href="#">{{"Супровід проєкту" | transloco}}</a></li>
+          <li><a href="#">{{"Семінари/вебінари" | transloco}}</a></li>
+          <li><a href="#">{{"Блог" | transloco}}</a></li>
+        </ul>
+      </div>
+      <div class="footer-column">
+        <h4>{{"МАГАЗИН" | transloco}}</h4>
+        <ul>
+          <li><a href="#">{{"Всі товари" | transloco}}</a></li>
+          <li><a href="#">{{"Оплата і доставка" | transloco}}</a></li>
+          <li><a href="#">{{"Кошик" | transloco}}</a></li>
+        </ul>
       </div>
     </div>
-  </footer>
+  </div>
+
+  <hr
+  class="yellowLine"
+/>
+<div class="footer-social">
+  <h4 style="font-family: 'Montserrat'">
+    <p class="underline-center">{{"МИ У СОЦМЕРЕЖАХ" | transloco }}</p>
+  </h4>
+
+  <div class="social-icons">
+    <a href="#"><i class="fa-brands fa-instagram"></i></a>
+    <a href="#"><i class="fa-brands fa-telegram"></i></a>
+    <a href="#"><i class="fa-brands fa-youtube"></i></a>
+    <a href="#"><i class="fa-brands fa-linkedin"></i></a>
+  </div>
+</div>
+
+<hr
+class="yellowLine2"
+
+/>
+
+<div class="footer-bottom">
+  <p style="font-weight: 400;">
+    Всі права збережені | All rights save © 2025
+  </p>
+</div>
+</footer>
   
 
 

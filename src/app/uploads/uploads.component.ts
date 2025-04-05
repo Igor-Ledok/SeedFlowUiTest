@@ -101,7 +101,17 @@ export class UploadsComponent {
 
   }
 
-  ngOnInit(): void {
+  @HostListener('window:resize', ['$event'])
+  onResize() {
+    this.checkScreenSize();
+  }
+
+  checkScreenSize() {
+    this.isGridView = window.innerWidth > 1350;
+  }
+
+  ngOnInit(): void 
+  {
     // Reward
     this.sizeReward = this.projectService.getProjectDataRewardsSize();
     for (let i = 0; i < this.sizeReward; i++) {
@@ -125,7 +135,12 @@ export class UploadsComponent {
     for (let i = 0; i < this.secondaryPhotosSize; i++) {
       this.secondaryPhotos.push(this.projectService.returnProjectDataDetailsProjectPhotos(i));
     }
+
+    this.checkScreenSize();    
+    this.likedProjects = new Array(this.filteredItems.length).fill(false);
+    this.totalSlides = this.filteredItems.length; 
   }
+
   public getImage(): string {
     return this.image;
 }
@@ -234,10 +249,38 @@ convertBase64ToImage(base64String: string): void {
   showDropdown = false;
   
   items = [
-    { title: 'Врятуймо степового лисицю', description: 'Збір на порятунок лисиці', image: 'assets/images/photo1.png', progress: 45, value1: 25, value2: 36, value3: 25 },
-    { title: 'Зливи не вщухають', description: 'Допомога постраждалим', image: 'assets/images/startups.png', progress: 45, value1: 25, value2: 36, value3: 25 },
-    { title: 'Майстерня "Гуцульськ"', description: 'Розвиток творчих майстерень', image: 'assets/images/ventureCapital.png', progress: 45, value1: 25, value2: 36, value3: 25 }
+    { 
+      title: 'Врятуймо степового лисицю', 
+      description: 'Збір на порятунок лисиці', 
+      image: 'assets/images/photo1.png',
+      topLeftImage: 'assets/images/rocketBig.png', 
+      progress: 45, 
+      value1: 25,
+      value2: 36, 
+      value3: 25 
+    },
+    { 
+      title: 'Зливи не вщухають', 
+      description: 'Допомога постраждалим', 
+      image: 'assets/images/startups.png',
+      topLeftImage: 'assets/images/socialBig.png', 
+      progress: 45, 
+      value1: 25, 
+      value2: 36, 
+      value3: 25 
+    },
+    { 
+      title: 'Майстерня «Гуцульськ»', 
+      description: 'Розвиток творчих майстерень', 
+      image: 'assets/images/ventureCapital.png',
+      topLeftImage: 'assets/images/HumanitarianBig.png', 
+      progress: 45,
+      value1: 25, 
+      value2: 36, 
+      value3: 25 
+    }
   ];
+  
   
   filteredItems = this.items;
   
@@ -282,4 +325,65 @@ convertBase64ToImage(base64String: string): void {
         }
       });;
     }
+
+    onButtonClick(buttonName: string) 
+    {
+      console.log(`Клик по кнопке: ${buttonName}`);
+    }
+  
+    isWindowOpen: boolean = false; // Флаг для управления состоянием окна
+  
+    closeWindow() {
+      this.isWindowOpen = false; // Закрытие окна
+    }
+  
+    openWindow() {
+      this.isWindowOpen = true; // Открытие окна
+    }
+  
+    isGridView = true;
+    currentIndex = 0;
+    totalSlides = 0;
+  
+    prevSlide() {
+      if (this.currentIndex > 0) {
+        this.currentIndex--;
+      }
+      else {
+        this.currentIndex = this.totalSlides - 1; // Переход на последний слайд
+      }
+    }
+  
+    nextSlide() {
+      if (this.currentIndex < this.filteredItems.length - 1) {
+        this.currentIndex++;
+      }
+      else {
+        this.currentIndex = 0; // Возвращаемся к первому слайду
+      }
+    }
+  
+    isSocialMediaListVisible: boolean[] = []; // Массив для отслеживания видимости списка
+  
+    toggleSocialMediaList(index: number) {
+      this.isSocialMediaListVisible[index] = !this.isSocialMediaListVisible[index];
+    }
+  
+    isHoveredArray: boolean[] = new Array(this.filteredItems.length).fill(false);
+    likedProjects: boolean[] = new Array(this.filteredItems.length).fill(false);
+  
+  
+    toggleLike(index: number): void {
+      this.likedProjects[index] = !this.likedProjects[index];
+    }
+  
+      // Закрытие выпадающего меню
+      closeDropdown() {
+        this.showDropdown = false;
+      }
+  
+      toggleDropdown() {
+        this.showDropdown = !this.showDropdown;
+      }
+
 }

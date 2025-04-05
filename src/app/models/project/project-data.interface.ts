@@ -1,39 +1,41 @@
-export interface ProjectData {
-    title: string;
-    shortDescription?: string;
-    detailedDescription: string;
-    collectionAmount: number;
-    collectionDuration: number;
-    selectedCategoryId: number;
-    
+export interface ProjectData 
+{
+    Title: string;
+    ShortDescription?: string;
+    CollectionAmount: number;
+    CollectionDuration: number;
+    SelectedCategoryId: string;
+
     BudgetPlan: string;
+    BudgetPlanUrl: string; 
     YouTubeVideoUrl: string;
     MainPhotoUrl: string;
+    BudgetArticles: string;
     BudgetArticlesUrl: string;
 
-    phone: string;
-    telegram: string;
-    viber: string;
-    whatsApp: string;
-    linkedIn: string;
+    Phone: string;
+    Telegram: string;
+    Viber: string;
+    WhatsApp: string;
+    LinkedIn: string;
 
-    address: string;
-    email: string;
+    Address: string;
+    Email: string;
 
-    instagram: string;
-    facebook: string;
-    telegramChannel: string;
-    twitter: string;
-    linkedInGroup: string;
+    Instagram: string;
+    Facebook: string;
+    TelegramChannel: string;
+    Twitter: string;
+    LinkedInGroup: string;
 
-    organizationName: string;
-    edrpou: string;
-    fullAddress: string;
-    city: string;
-    iban: string;
-    bankName: string;
-    mfo: string;
-    signatory: string;
-    contactnumber: string;
-    contract: string;
+    OrganizationName: string;
+    Edrpou: string;
+    FullAddress: string;
+    City: string;
+    Iban: string;
+    BankName: string;
+    Mfo: string;
+    Signatory: string;
+    Contactnumber: string;
+    Contract: string;
   }

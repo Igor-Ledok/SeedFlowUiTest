@@ -1,11 +1,11 @@
 export interface TopicDto {
-    id: number;
+    id: string;
     name: string;
     categories: CategoryDto[];
   }
   
   export interface CategoryDto {
-    id: number;
+    id: string;
     name: string;
     photo?: string;
     topicId: number;

@@ -1,8 +1,8 @@
 export interface Reward {
-    amount: number;
-    limit: number;
-    description: string; 
-    collection: number;
+    Amount: number;
+    Limit: number;
+    Description: string; 
     PhotoUrl: string | "null";
-    imageName: string | "null";
+    ImageName: string | "null";
+    Collection: number | 1;
   }

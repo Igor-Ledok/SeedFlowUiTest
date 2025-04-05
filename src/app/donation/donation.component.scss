@@ -647,6 +647,16 @@ button.rounded-button:hover
 
 // АДАПТИВ ПОШУК ТА HEADER
 
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.5); /* Затемнение */
+  z-index: 9; /* Должен быть ниже, чем dropdown */
+}
+
 @media(max-width: 1920px)
 {
   .header-right
@@ -721,6 +731,11 @@ button.rounded-button:hover
 
 @media (max-width: 1350px) 
 {
+  .social-media-dropdown
+  {
+    margin-left: 105px;
+  }
+
   .header-right
   {
     right: 620px;
@@ -1103,7 +1118,7 @@ button.rounded-button:hover
 /* Стиль для модального окна */
 .popup-window {
   position: fixed;
-  top: 20px;
+  top: 0px;
   left: 0;
   width: 100%;
   height: 100%;
@@ -1212,6 +1227,7 @@ button.rounded-button:hover
   color: #333;
   text-decoration: underline;
   cursor: pointer;
+  white-space: nowrap;
 }
 
 
@@ -1501,7 +1517,7 @@ button.rounded-button:hover
 {
   .search-dropdown 
   {
-    left: 630px;
+    left: 580px;
   } 
   
   .search-container
@@ -2030,6 +2046,58 @@ h2
     font-weight: 600;
     font-family: 'Montserrat';
 }
+
+/* Стили для лайка */
+.like-icon {
+  transition: transform 0.3s ease; /* Плавное изменение трансформации */
+}
+
+/* При наведении поднимаем лайк */
+.like-icon.hovered {
+  transform: translateY(-70px); /* Поднимаем лайк на 50% его высоты */
+}
+
+/* При наведении на карточку поднимаем символ соцмедиа */
+.search-item.hovered .social-media-icon {
+  transform: translateY(-70px); /* Поднимаем на 70px (регулируйте по желанию) */
+  transition: transform 0.3s ease;
+}
+
+/* Стили для выпадающего списка */
+.social-media-dropdown {
+  background-color: white;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  padding: 10px;
+  width: 20px;
+  display: block;
+  transition: transform 0.3s ease; /* Плавное изменение положения */
+  transform: translateY(0); /* Начальное положение */
+  position: relative;
+  left: 350px;
+  margin-top: 5px;
+  height: 110px;
+}
+
+/* Когда на карточке наведено, выпадающий список поднимется */
+.search-item.hovered .social-media-dropdown {
+  transform: translateY(-70px); /* Поднимем на 50% от высоты окна */
+}
+
+.social-media-dropdown ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.social-media-dropdown li {
+  padding: 5px 0;
+  cursor: pointer;
+  width: 20px;
+  height: 20px;
+}
+
 
 form input[type="yourMoney"]
 {

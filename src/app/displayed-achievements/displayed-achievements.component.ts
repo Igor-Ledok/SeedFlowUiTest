@@ -151,14 +151,46 @@ export class DisplayedAchievementsComponent {
           this.activeHumanitarianButtonIndex = index;
         }
     }
+
+  goBack() 
+  {
+    this.router.navigate(['/profile-page']);
+  }
     
     searchText = '';
     showDropdown = false;
     
     items = [
-      { title: 'Врятуймо степового лисицю', description: 'Збір на порятунок лисиці', image: 'assets/images/photo1.png', progress: 45, value1: 25, value2: 36, value3: 25 },
-      { title: 'Зливи не вщухають', description: 'Допомога постраждалим', image: 'assets/images/startups.png', progress: 45, value1: 25, value2: 36, value3: 25 },
-      { title: 'Майстерня "Гуцульськ"', description: 'Розвиток творчих майстерень', image: 'assets/images/ventureCapital.png', progress: 45, value1: 25, value2: 36, value3: 25 }
+      { 
+        title: 'Врятуймо степового лисицю', 
+        description: 'Збір на порятунок лисиці', 
+        image: 'assets/images/photo1.png',
+        topLeftImage: 'assets/images/rocketBig.png', 
+        progress: 45, 
+        value1: 25,
+        value2: 36, 
+        value3: 25 
+      },
+      { 
+        title: 'Зливи не вщухають', 
+        description: 'Допомога постраждалим', 
+        image: 'assets/images/startups.png',
+        topLeftImage: 'assets/images/socialBig.png', 
+        progress: 45, 
+        value1: 25, 
+        value2: 36, 
+        value3: 25 
+      },
+      { 
+        title: 'Майстерня «Гуцульськ»', 
+        description: 'Розвиток творчих майстерень', 
+        image: 'assets/images/ventureCapital.png',
+        topLeftImage: 'assets/images/HumanitarianBig.png', 
+        progress: 45,
+        value1: 25, 
+        value2: 36, 
+        value3: 25 
+      }
     ];
     
     filteredItems = this.items;
@@ -194,9 +226,24 @@ export class DisplayedAchievementsComponent {
     
     
       constructor(
-        private route: ActivatedRoute,
-        private eRef: ElementRef,
-        private languageService: LanguageService ) {}
+      private route: ActivatedRoute,
+      private eRef: ElementRef,
+      private languageService: LanguageService,
+      private router: Router 
+      ) 
+      {
+
+      }
+
+      
+  @HostListener('window:resize', ['$event'])
+  onResize() {
+    this.checkScreenSize();
+  }
+
+  checkScreenSize() {
+    this.isGridView = window.innerWidth > 1350;
+  }
     
       ngOnInit() 
       {
@@ -207,18 +254,82 @@ export class DisplayedAchievementsComponent {
         const savedLanguage = localStorage.getItem('selectedLanguage') ||'ua'; 
         this.selectedLanguage.setValue(savedLanguage);
         this.onLanguageChange({ value: savedLanguage });
+        
+        this.checkScreenSize();    
+        this.likedProjects = new Array(this.filteredItems.length).fill(false);
+        this.totalSlides = this.filteredItems.length;
       }
 
       achievements = [
-        { image: 'assets/images/achievement1.png', title: 'Першопрохідник', description: 'Зареєструватись на сайті' },
-        { image: 'assets/images/achievement1.png', title: 'Перші кроки', description: 'Лайкнути перший проєкт' },
-        { image: 'assets/images/achievement1.png', title: 'Перше вкладення', description: 'Підтримати перший проєкт' },
+        { image: 'assets/images/Achievement2.png', title: 'Першопрохідник', description: 'Зареєструватись на сайті' },
+        { image: 'assets/images/Achievement3.png', title: 'Перші кроки', description: 'Лайкнути перший проєкт' },
+        { image: 'assets/images/Achievement4.png', title: 'Перше вкладення', description: 'Підтримати перший проєкт' },
         { image: 'assets/images/achievement1.png', title: 'Еко-друг', description: 'Підтримати 3 екологічні проєкти' },
-        { image: 'assets/images/achievement1.png', title: 'Марафонівець', description: 'Підтримувати проєкти 10 днів поспіль' },
-        { image: 'assets/images/achievement1.png', title: 'Коментатор', description: 'Залишити 5 коментарів' },
-        { image: 'assets/images/achievement1.png', title: 'Паросток', description: 'Підтримати 5 проєктів' },
-        { image: 'assets/images/achievement1.png', title: 'Першопрохідник', description: 'Підтримати 10 проєктів' },
-        { image: 'assets/images/achievement1.png', title: 'Дбайливий садівник', description: 'Підтримати 20 проєктів' },
+        { image: 'assets/images/Achievement13.png', title: 'Марафонівець', description: 'Підтримувати проєкти 10 днів поспіль' },
+        { image: 'assets/images/Achievement7.png', title: 'Коментатор', description: 'Залишити 5 коментарів' },
+        { image: 'assets/images/Achievement5.png', title: 'Паросток', description: 'Підтримати 5 проєктів' },
+        { image: 'assets/images/Achievement6.png', title: 'Першопрохідник', description: 'Підтримати 10 проєктів' },
+        { image: 'assets/images/Achievement8.png', title: 'Дбайливий садівник', description: 'Підтримати 20 проєктів' }
       ];
       
+
+      onButtonClick(buttonName: string) 
+      {
+        console.log(`Клик по кнопке: ${buttonName}`);
+      }
+    
+      isWindowOpen: boolean = false; // Флаг для управления состоянием окна
+    
+      closeWindow() {
+        this.isWindowOpen = false; // Закрытие окна
+      }
+    
+      openWindow() {
+        this.isWindowOpen = true; // Открытие окна
+      }
+    
+      isGridView = true;
+      currentIndex = 0;
+      totalSlides = 0;
+    
+      prevSlide() {
+        if (this.currentIndex > 0) {
+          this.currentIndex--;
+        }
+        else {
+          this.currentIndex = this.totalSlides - 1; // Переход на последний слайд
+        }
+      }
+    
+      nextSlide() {
+        if (this.currentIndex < this.filteredItems.length - 1) {
+          this.currentIndex++;
+        }
+        else {
+          this.currentIndex = 0; // Возвращаемся к первому слайду
+        }
+      }
+    
+      isSocialMediaListVisible: boolean[] = []; // Массив для отслеживания видимости списка
+    
+      toggleSocialMediaList(index: number) {
+        this.isSocialMediaListVisible[index] = !this.isSocialMediaListVisible[index];
+      }
+    
+      isHoveredArray: boolean[] = new Array(this.filteredItems.length).fill(false);
+      likedProjects: boolean[] = new Array(this.filteredItems.length).fill(false);
+    
+    
+      toggleLike(index: number): void {
+        this.likedProjects[index] = !this.likedProjects[index];
+      }
+    
+        // Закрытие выпадающего меню
+        closeDropdown() {
+          this.showDropdown = false;
+        }
+    
+        toggleDropdown() {
+          this.showDropdown = !this.showDropdown;
+        }
 }

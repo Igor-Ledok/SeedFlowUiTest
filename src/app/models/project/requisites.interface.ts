@@ -1,12 +1,12 @@
 export interface requisites {
-    organizationName: string;
-    edrpou: string;
-    fullAddress: string;
-    city: string;
-    iban: string;
-    bankName: string;
-    mfo: string;
-    signatory: string;
-    contactnumber: string;
-    contract: string;
+    OrganizationName: string;
+    Edrpou: string;
+    FullAddress: string;
+    City: string;
+    Iban: string;
+    BankName: string;
+    Mfo: string;
+    Signatory: string;
+    Contactnumber: string;
+    Contract: string;
 }

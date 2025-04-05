@@ -1,13 +1,14 @@
-import { Component, ElementRef, HostListener } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { TranslocoModule } from '@jsverse/transloco';
-import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { LanguageService } from '../services/language.service';
 import { MatSelectModule } from '@angular/material/select';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { details } from '../models/project/datails.interface';
 import { ProjectService } from '../services/project.service';
+import { detailsdescription } from '../models/project/datailsDescription.interface';
 
 @Component({
   selector: 'app-details',
@@ -35,6 +36,8 @@ export class DetailsComponent
   projectPhotosSize: number = 0;
   projectPhotos: string[] = [];
 
+  projectDescriptionSize: number = 0;
+  projectDescription: detailsdescription[] = [];
 
   projectData: details = {} as details;
 
@@ -162,9 +165,36 @@ searchText = '';
 showDropdown = false;
 
 items = [
-  { title: 'Врятуймо степового лисицю', description: 'Збір на порятунок лисиці', image: 'assets/images/photo1.png', progress: 45, value1: 25, value2: 36, value3: 25 },
-  { title: 'Зливи не вщухають', description: 'Допомога постраждалим', image: 'assets/images/startups.png', progress: 45, value1: 25, value2: 36, value3: 25 },
-  { title: 'Майстерня "Гуцульськ"', description: 'Розвиток творчих майстерень', image: 'assets/images/ventureCapital.png', progress: 45, value1: 25, value2: 36, value3: 25 }
+  { 
+    title: 'Врятуймо степового лисицю', 
+    description: 'Збір на порятунок лисиці', 
+    image: 'assets/images/photo1.png',
+    topLeftImage: 'assets/images/rocketBig.png', 
+    progress: 45, 
+    value1: 25,
+    value2: 36, 
+    value3: 25 
+  },
+  { 
+    title: 'Зливи не вщухають', 
+    description: 'Допомога постраждалим', 
+    image: 'assets/images/startups.png',
+    topLeftImage: 'assets/images/socialBig.png', 
+    progress: 45, 
+    value1: 25, 
+    value2: 36, 
+    value3: 25 
+  },
+  { 
+    title: 'Майстерня «Гуцульськ»', 
+    description: 'Розвиток творчих майстерень', 
+    image: 'assets/images/ventureCapital.png',
+    topLeftImage: 'assets/images/HumanitarianBig.png', 
+    progress: 45,
+    value1: 25, 
+    value2: 36, 
+    value3: 25 
+  }
 ];
 
 filteredItems = this.items;
@@ -197,14 +227,29 @@ filteredItems = this.items;
     this.showDropdown = false;
   }
 
-
-
   constructor(
     private router: Router, 
     private route: ActivatedRoute,
     private eRef: ElementRef,
     private languageService: LanguageService,
-    private projectService: ProjectService ) {}
+    private projectService: ProjectService,
+    private cdr: ChangeDetectorRef ) 
+    {
+      
+    }
+
+
+    @HostListener('window:resize', ['$event'])
+    onResize() {
+      this.checkScreenSize();
+    }
+  
+    checkScreenSize() {
+      this.isGridView = window.innerWidth > 1350;
+    }
+
+
+
 
   ngOnInit() 
   {
@@ -218,9 +263,36 @@ filteredItems = this.items;
       this.projectPhotos.push(this.projectService.returnProjectDataDetailsProjectPhotos(i));
     }
 
+    this.projectDescriptionSize = this.projectService.getProjectDataDetailsProjectDescriptionSize();
+    for (let i = 0; i < this.projectDescriptionSize; i++){
+      const description = this.projectService.returnProjectDataDetailsProjectDescription(i);
+      if (i === 0) {
+        this.dynamicFields[0] = {
+          titleDetailedDescription: description.TitleDetailedDescription,
+          detailedDescription: description.DetailedDescription,
+          subtitleError: false,
+          descriptionError: false,
+          charCount2: 0
+        };
+      } else { 
+        this.dynamicFields.push({
+          titleDetailedDescription: description.TitleDetailedDescription,
+          detailedDescription: description.DetailedDescription,
+          subtitleError: false,
+          descriptionError: false,
+          charCount2: 0
+        });
+      }
+    }
+
     const savedLanguage = localStorage.getItem('selectedLanguage') ||'ua'; 
     this.selectedLanguage.setValue(savedLanguage);
     this.onLanguageChange({ value: savedLanguage });
+
+    this.checkScreenSize();    
+    this.likedProjects = new Array(this.filteredItems.length).fill(false);
+    this.totalSlides = this.filteredItems.length; // Инициализация общего количества слайдов
+    this.phone = this.projectData.phone;
   }
 
   onFileSelectedDocx(event: Event): void {
@@ -229,10 +301,8 @@ filteredItems = this.items;
   
     if (file) {
       const reader = new FileReader();
-      this.projectData.selectedFileNameDocxB = file.name; // Отображаем название файла
       
       reader.onload = () => {
-        
         // Пытаемся привести result к строке
         const base64File = reader.result as string;
   
@@ -247,11 +317,6 @@ filteredItems = this.items;
       
       reader.readAsDataURL(file); // Читаем файл и конвертируем в Base64
     }
-  }
-  clearFile(): void {
-    this.projectData.selectedFileNameDocxB = null;
-    this.projectData.BudgetArticlesUrl = '';
-    console.log('Файл видалено');
   }
 
 
@@ -278,23 +343,8 @@ filteredItems = this.items;
   }
 
   changePhoto(index: number): void {
-    // Триггерим клик по соответствующему input
-    document.getElementById(`changePhotoInput${index}`)?.click();
+    document.getElementById('additionalPhotos')?.click();
   }
-  
-  onPhotoChanged(event: Event, index: number): void {
-    const input = event.target as HTMLInputElement;
-    if (input.files && input.files[0]) {
-      const reader = new FileReader();
-      reader.onload = (e: any) => {
-        // Меняем фото по индексу
-        this.projectPhotos[index] = e.target.result;
-        console.log(`Фото с индексом ${index} изменено`);
-      };
-      reader.readAsDataURL(input.files[0]);
-    }
-  }
-  
 
   saveDetailData(): void {
     console.log('кнопка сохранить работает');
@@ -306,8 +356,324 @@ filteredItems = this.items;
     for (let i = 0; i < this.projectPhotos.length; i++){
       this.projectService.getProjectDataDetailsProjectPhotos(this.projectPhotos[i]);
     }
+    this.projectService.ProjectDataDetailsProjectDescriptionClear();
+    for (let i = 0; i < this.dynamicFields.length; i++){
+      this.projectService.getProjectDataDetailsProjectDescription({TitleDetailedDescription: this.dynamicFields[i].titleDetailedDescription, DetailedDescription: this.dynamicFields[i].detailedDescription});
+    }
+
   }
-  submitProject(): void {
-    console.log('кнопка отправить работает');
+
+  budgetDescription: string = '';
+  budgetCharCount: number = 0;
+
+updateBudgetCharCount() {
+    this.budgetCharCount = this.budgetDescription.length;
+}
+
+  charCount: number = 0;
+  charCount2: number = 0;
+
+  updateCharCount() {
+    this.charCount = this.projectData.shortDescription?.length || 0;
+    this.budgetCharCount = this.projectData.BudgetArticles?.length || 0;
   }
+
+  updateCharCount2(index: number) 
+  {
+    this.dynamicFields[index].charCount2 = this.dynamicFields[index].detailedDescription.length;
+  }
+
+  onSubmit(form: any) 
+  {
+    if (form.valid) 
+    {
+      console.log('Форма валидна:', this.projectData);
+    } 
+    else 
+    {
+      console.log('Форма содержит ошибки');
+      form.control.markAllAsTouched();
+    }
+  }
+
+  shortDescriptionError: boolean = false;
+  budgetError: boolean = false;
+  isValidationDone: boolean = false;
+  cityError: boolean = false;
+  emailError: boolean = false;
+  fileError: boolean = false;
+  phoneError: boolean = false;
+
+  dynamicFields = [
+    { 
+      titleDetailedDescription: '',
+      detailedDescription: '', 
+      subtitleError: false, 
+      descriptionError: false, 
+      charCount2: 0
+   }
+  ];
+
+  addField() 
+  {
+    this.dynamicFields.push({
+      titleDetailedDescription: '',
+      detailedDescription: '',
+      subtitleError: false,
+      descriptionError: false,
+      charCount2: 0
+    });
+  }
+
+  phone: string = '';
+  file: File | null = null;
+
+  validateCity() 
+  {
+    const city = this.projectData.address?.trim();
+    this.cityError = !(city && /^[A-ZА-ЯЁ]/.test(city));
+  }
+
+  validateEmail() {
+    const email = this.projectData.email?.trim();
+    
+    // Регулярное выражение для простой валидации email
+    const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
+
+    // Проверяем, что email не пустой и соответствует паттерну
+    this.emailError = !(email && emailPattern.test(email));
+    console.log('emailError:', this.emailError); // Логирование для отладки
+  }
+  
+
+  validateBudget() 
+  {
+    const hasText = this.projectData.BudgetArticles?.trim().length > 0;
+    const hasFile = !!this.projectData.BudgetArticlesUrl;
+  
+    this.budgetError = !(hasText || hasFile);
+    this.isValidationDone = true;
+  
+    console.log("budgetError:", this.budgetError);
+  }
+
+  validateShortDescription() 
+  {
+    this.shortDescriptionError = !this.projectData.shortDescription?.trim();
+  }
+
+  validateDetailedDescription(i: number, fieldName: string) 
+  {
+    if (fieldName === 'titleDetailedDescription') 
+    {
+      this.dynamicFields[i].subtitleError = !this.dynamicFields[i].titleDetailedDescription.trim();
+    }
+  
+    if (fieldName === 'detailedDescription') 
+    {
+      this.dynamicFields[i].descriptionError = !this.dynamicFields[i].detailedDescription.trim();
+    }
+  }
+
+  validatePhone() 
+  {
+    const phonePatterns: { [key: string]: RegExp } = {
+      'UA': /^\+380\d{9}$/,   // Украина (пример)
+      'US': /^\+1\d{10}$/,    // США
+      'IT': /^\+39\d{10}$/,   // Италия
+      'DE': /^\+49\d{10,11}$/, // Германия
+      'FR': /^\+33\d{9}$/,    // Франция
+      'ES': /^\+34\d{9}$/     // Испания
+    };
+  
+    let isValid = false;
+    
+    for (let country in phonePatterns) 
+    {
+      const pattern = phonePatterns[country];
+      if (pattern.test(this.phone.trim())) 
+      {
+        isValid = true;
+        break;
+      }
+    }
+  
+    this.phoneError = !isValid;
+  }
+  
+  
+  
+
+  validateAllFields() 
+  {
+    this.isValidationDone = true;
+  
+    this.dynamicFields.forEach((field, i) => {
+      this.validateDetailedDescription(i, 'shortDescription');
+      this.validateDetailedDescription(i, 'detailedDescription');
+    });
+  
+    this.validateShortDescription();
+    this.validateBudget();
+    this.validateEmail();
+    this.validateCity();
+    this.validatePhone();
+  }
+
+
+
+  onFileSelected(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    const file = input.files?.[0];
+  
+    const allowedFileTypes = [
+      'application/msword',
+      'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+      'application/pdf'
+    ];
+  
+    if (file && allowedFileTypes.includes(file.type)) {
+      const reader = new FileReader();
+      reader.onload = () => {
+        const base64 = reader.result as string;
+        this.projectData.BudgetArticlesUrl = base64;
+        this.projectData.BudgetArticlesFileName = file.name; // ✅ Добавить имя файла
+        this.fileError = false;
+        this.validateBudget();
+      };
+      reader.readAsDataURL(file);
+    } else {
+      this.projectData.BudgetArticlesUrl = '';
+      this.projectData.BudgetArticlesFileName = null;
+      this.fileError = true;
+      this.validateBudget();
+    }
+
+    console.log(this.projectData.BudgetArticlesFileName);
+    console.log(this.projectData.BudgetArticlesUrl);
+
+  }
+
+  clearFile(): void {
+    this.projectData.BudgetArticlesUrl = null;
+    this.projectData.BudgetArticlesFileName = null;
+    this.validateBudget();
+  }
+
+
+  submitProject() 
+  {
+    this.validateCity();
+
+    this.validateEmail();
+
+    this.validateAllFields();
+  
+    if (this.shortDescriptionError) 
+    {
+      console.log("Ошибка: Короткий опис не может быть пустым");
+      return;
+    }
+  
+    let hasError = false;
+  
+    this.dynamicFields.forEach((field) => 
+    {
+      if (field.subtitleError || field.descriptionError)
+      {
+        hasError = true;
+      }
+    });
+  
+    if (hasError) 
+    {
+      console.log("Ошибка: Детальний опис содержит ошибки");
+      return;
+    }
+  
+    console.log("Данные отправлены", this.projectData);
+  }
+
+  scrollToTop(): void 
+  {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  activeIndex: number | null = null;
+
+  images = [
+    { gray: 'assets/images/projects.png', active: 'assets/images/projectsGray.png', link: '/projects-list-page' },
+    { gray: 'assets/images/aboutUs.png', active: 'assets/images/infoGray.png', link: '/about-us-page' },
+    { gray: 'assets/images/account.png', active: 'assets/images/accountGray.png', link: '/profile-page' },
+    { gray: 'assets/images/help.png', active: 'assets/images/helpGray.png', link: '/support-page' },
+    { gray: 'assets/images/shop.png', active: 'assets/images/shopGray.png', link: '/shop-main-page-page' }
+  ];
+
+  onImageClick(link: string): void 
+  {
+    this.router.navigate([link]);
+  }
+
+            onButtonClick(buttonName: string) 
+            {
+              console.log(`Клик по кнопке: ${buttonName}`);
+            }
+          
+            isWindowOpen: boolean = false;
+          
+            closeWindow() 
+            {
+              this.isWindowOpen = false;
+            }
+          
+            openWindow() {
+              this.isWindowOpen = true;
+            }
+          
+            isGridView = true;
+            currentIndex = 0;
+            totalSlides = 0;
+          
+            prevSlide() {
+              if (this.currentIndex > 0) {
+                this.currentIndex--;
+              }
+              else {
+                this.currentIndex = this.totalSlides - 1;
+              }
+            }
+          
+            nextSlide() 
+            {
+              if (this.currentIndex < this.filteredItems.length - 1) 
+              {
+                this.currentIndex++;
+              }
+              else {
+                this.currentIndex = 0;
+              }
+            }
+          
+            isSocialMediaListVisible: boolean[] = [];
+          
+            toggleSocialMediaList(index: number) {
+              this.isSocialMediaListVisible[index] = !this.isSocialMediaListVisible[index];
+            }
+          
+            isHoveredArray: boolean[] = new Array(this.filteredItems.length).fill(false);
+            likedProjects: boolean[] = new Array(this.filteredItems.length).fill(false);
+          
+          
+            toggleLike(index: number): void {
+              this.likedProjects[index] = !this.likedProjects[index];
+            }
+          
+              // Закрытие выпадающего меню
+              closeDropdown() {
+                this.showDropdown = false;
+              }
+          
+              toggleDropdown() {
+                this.showDropdown = !this.showDropdown;
+              }
 }

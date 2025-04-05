@@ -169,9 +169,36 @@ export class DonationComponent
   showDropdown = false;
   
   items = [
-    { title: 'Врятуймо степового лисицю', description: 'Збір на порятунок лисиці', image: 'assets/images/photo1.png', progress: 45, value1: 25, value2: 36, value3: 25 },
-    { title: 'Зливи не вщухають', description: 'Допомога постраждалим', image: 'assets/images/startups.png', progress: 45, value1: 25, value2: 36, value3: 25 },
-    { title: 'Майстерня «Гуцульськ»', description: 'Розвиток творчих майстерень', image: 'assets/images/ventureCapital.png', progress: 45, value1: 25, value2: 36, value3: 25 }
+    { 
+      title: 'Врятуймо степового лисицю', 
+      description: 'Збір на порятунок лисиці', 
+      image: 'assets/images/photo1.png',
+      topLeftImage: 'assets/images/rocketBig.png', 
+      progress: 45, 
+      value1: 25,
+      value2: 36, 
+      value3: 25 
+    },
+    { 
+      title: 'Зливи не вщухають', 
+      description: 'Допомога постраждалим', 
+      image: 'assets/images/startups.png',
+      topLeftImage: 'assets/images/socialBig.png', 
+      progress: 45, 
+      value1: 25, 
+      value2: 36, 
+      value3: 25 
+    },
+    { 
+      title: 'Майстерня «Гуцульськ»', 
+      description: 'Розвиток творчих майстерень', 
+      image: 'assets/images/ventureCapital.png',
+      topLeftImage: 'assets/images/HumanitarianBig.png', 
+      progress: 45,
+      value1: 25, 
+      value2: 36, 
+      value3: 25 
+    }
   ];
   
   filteredItems = this.items;
@@ -312,10 +339,12 @@ export class DonationComponent
 
   isGridView = true;
   currentIndex = 0;
+  totalSlides = 0;
 
   ngOnInit() {
     this.checkScreenSize();
-
+    this.likedProjects = new Array(this.filteredItems.length).fill(false);
+    this.totalSlides = this.filteredItems.length; // Инициализация общего количества слайдов
   }
 
   @HostListener('window:resize', ['$event'])
@@ -331,11 +360,17 @@ export class DonationComponent
     if (this.currentIndex > 0) {
       this.currentIndex--;
     }
+    else {
+      this.currentIndex = this.totalSlides - 1; // Переход на последний слайд
+    }
   }
 
   nextSlide() {
     if (this.currentIndex < this.filteredItems.length - 1) {
       this.currentIndex++;
+    }
+    else {
+      this.currentIndex = 0; // Возвращаемся к первому слайду
     }
   }
 
@@ -369,4 +404,17 @@ export class DonationComponent
     this.showDropdown = false;
   }
 
+
+  likedProjects: boolean[] = new Array(this.filteredItems.length).fill(false);
+  isHoveredArray: boolean[] = new Array(this.filteredItems.length).fill(false);
+
+  isSocialMediaListVisible: boolean[] = []; // Массив для отслеживания видимости списка
+
+  toggleSocialMediaList(index: number) {
+    this.isSocialMediaListVisible[index] = !this.isSocialMediaListVisible[index];
+  }
+
+  toggleLike(index: number): void {
+    this.likedProjects[index] = !this.likedProjects[index];
+  }
 }

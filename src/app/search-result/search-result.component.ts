@@ -190,9 +190,36 @@ export class SearchResultComponent {
         showDropdown = false;
         
         items = [
-          { title: 'Врятуймо степового лисицю', description: 'Збір на порятунок лисиці', image: 'assets/images/photo1.png', progress: 45, value1: 25, value2: 36, value3: 25 },
-          { title: 'Зливи не вщухають', description: 'Допомога постраждалим', image: 'assets/images/startups.png', progress: 45, value1: 25, value2: 36, value3: 25 },
-          { title: 'Майстерня "Гуцульськ"', description: 'Розвиток творчих майстерень', image: 'assets/images/ventureCapital.png', progress: 45, value1: 25, value2: 36, value3: 25 }
+          { 
+            title: 'Врятуймо степового лисицю', 
+            description: 'Збір на порятунок лисиці', 
+            image: 'assets/images/photo1.png',
+            topLeftImage: 'assets/images/rocketBig.png', 
+            progress: 45, 
+            value1: 25,
+            value2: 36, 
+            value3: 25 
+          },
+          { 
+            title: 'Зливи не вщухають', 
+            description: 'Допомога постраждалим', 
+            image: 'assets/images/startups.png',
+            topLeftImage: 'assets/images/socialBig.png', 
+            progress: 45, 
+            value1: 25, 
+            value2: 36, 
+            value3: 25 
+          },
+          { 
+            title: 'Майстерня «Гуцульськ»', 
+            description: 'Розвиток творчих майстерень', 
+            image: 'assets/images/ventureCapital.png',
+            topLeftImage: 'assets/images/HumanitarianBig.png', 
+            progress: 45,
+            value1: 25, 
+            value2: 36, 
+            value3: 25 
+          }
         ];
         
         filteredItems = this.items;
@@ -307,6 +334,15 @@ export class SearchResultComponent {
            {
   
            }
+
+           @HostListener('window:resize', ['$event'])
+           onResize() {
+             this.checkScreenSize();
+           }
+         
+           checkScreenSize() {
+             this.isGridView = window.innerWidth > 1350;
+           }
         
           ngOnInit() 
           {
@@ -317,5 +353,69 @@ export class SearchResultComponent {
             const savedLanguage = localStorage.getItem('selectedLanguage') ||'ua'; 
             this.selectedLanguage.setValue(savedLanguage);
             this.onLanguageChange({ value: savedLanguage });
+
+            this.checkScreenSize();    
+            this.likedProjects = new Array(this.filteredItems.length).fill(false);
+            this.totalSlides = this.filteredItems.length;
           }
+
+          onButtonClick(buttonName: string) 
+          {
+            console.log(`Клик по кнопке: ${buttonName}`);
+          }
+        
+          isWindowOpen: boolean = false;
+        
+          closeWindow() {
+            this.isWindowOpen = false;
+          }
+        
+          openWindow() {
+            this.isWindowOpen = true;
+          }
+        
+          isGridView = true;
+          currentIndex = 0;
+          totalSlides = 0;
+        
+          prevSlide() {
+            if (this.currentIndex > 0) {
+              this.currentIndex--;
+            }
+            else {
+              this.currentIndex = this.totalSlides - 1;
+            }
+          }
+        
+          nextSlide() {
+            if (this.currentIndex < this.filteredItems.length - 1) {
+              this.currentIndex++;
+            }
+            else {
+              this.currentIndex = 0; // Возвращаемся к первому слайду
+            }
+          }
+        
+          isSocialMediaListVisible: boolean[] = []; // Массив для отслеживания видимости списка
+        
+          toggleSocialMediaList(index: number) {
+            this.isSocialMediaListVisible[index] = !this.isSocialMediaListVisible[index];
+          }
+        
+          isHoveredArray: boolean[] = new Array(this.filteredItems.length).fill(false);
+          likedProjects2: boolean[] = new Array(this.filteredItems.length).fill(false);
+        
+        
+          toggleLike2(index: number): void {
+            this.likedProjects2[index] = !this.likedProjects2[index];
+          }
+        
+            // Закрытие выпадающего меню
+            closeDropdown() {
+              this.showDropdown = false;
+            }
+        
+            toggleDropdown() {
+              this.showDropdown = !this.showDropdown;
+            }
 }

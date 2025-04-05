@@ -1,4 +1,4 @@
-import { Component, ElementRef, HostListener } from '@angular/core';
+import { Component, ElementRef, HostListener, QueryList, ViewChildren } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
@@ -8,6 +8,7 @@ import { LanguageService } from '../services/language.service';
 import { MatSelectModule } from '@angular/material/select';
 import { TeamMember } from '../models/project/team-member.interface';
 import { ProjectService } from '../services/project.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-team',
@@ -32,7 +33,8 @@ export class TeamComponent {
   private projectData: TeamMember[] = [];
 
 
-  defaultPhoto = 'assets/default-avatar.png';
+  defaultPhoto = 'assets/images/greenEllipse.png';
+  
   teamMembers = [
     { photo: '', name: '', role: '', phone: '', viber: '', telegram: '', email: '' }
   ];
@@ -80,7 +82,8 @@ export class TeamComponent {
     constructor(
       private eRef: ElementRef,
       private languageService: LanguageService,
-      private projectService: ProjectService)
+      private projectService: ProjectService, 
+      private router: Router)
     {
 
     }
@@ -179,9 +182,36 @@ export class TeamComponent {
   showDropdown = false;
   
   items = [
-    { title: 'Врятуймо степового лисицю', description: 'Збір на порятунок лисиці', image: 'assets/images/photo1.png', progress: 45, value1: 25, value2: 36, value3: 25 },
-    { title: 'Зливи не вщухають', description: 'Допомога постраждалим', image: 'assets/images/startups.png', progress: 45, value1: 25, value2: 36, value3: 25 },
-    { title: 'Майстерня "Гуцульськ"', description: 'Розвиток творчих майстерень', image: 'assets/images/ventureCapital.png', progress: 45, value1: 25, value2: 36, value3: 25 }
+    { 
+      title: 'Врятуймо степового лисицю', 
+      description: 'Збір на порятунок лисиці', 
+      image: 'assets/images/photo1.png',
+      topLeftImage: 'assets/images/rocketBig.png', 
+      progress: 45, 
+      value1: 25,
+      value2: 36, 
+      value3: 25 
+    },
+    { 
+      title: 'Зливи не вщухають', 
+      description: 'Допомога постраждалим', 
+      image: 'assets/images/startups.png',
+      topLeftImage: 'assets/images/socialBig.png', 
+      progress: 45, 
+      value1: 25, 
+      value2: 36, 
+      value3: 25 
+    },
+    { 
+      title: 'Майстерня «Гуцульськ»', 
+      description: 'Розвиток творчих майстерень', 
+      image: 'assets/images/ventureCapital.png',
+      topLeftImage: 'assets/images/HumanitarianBig.png', 
+      progress: 45,
+      value1: 25, 
+      value2: 36, 
+      value3: 25 
+    }
   ];
   
   filteredItems = this.items;
@@ -214,11 +244,26 @@ export class TeamComponent {
       this.showDropdown = false;
     }
 
-    ngOnInit() {
+    @HostListener('window:resize', ['$event'])
+    onResize() {
+      this.checkScreenSize();
+    }
+  
+    checkScreenSize() {
+      this.isGridView = window.innerWidth > 1350;
+    }
+
+    ngOnInit() 
+    {
       this.sizeTeamOld = this.projectService.getProjectDataTeamSize();
-      for (let i = 0; i < this.sizeTeamOld; i++) {
+      for (let i = 0; i < this.sizeTeamOld; i++) 
+      {
         this.projectDataOld.push(this.projectService.returnProjectDataTeam(i));
       }
+
+      this.checkScreenSize();    
+      this.likedProjects = new Array(this.filteredItems.length).fill(false);
+      this.totalSlides = this.filteredItems.length;
     }
     saveGeneralData(): void {
       this.sizeTeam = this.projectDataOld.length;
@@ -230,6 +275,7 @@ export class TeamComponent {
         this.projectService.getProjectDataTeam(this.projectData[i]);
       }
     }
+    
 
     uploadImage(event: any, index: number): void {
       const file = event.target.files[0];
@@ -245,7 +291,129 @@ export class TeamComponent {
       }
     }
 
-    submitProject(): void {
-      console.log('submitProject');
-      };
+    member = { name: '', role: '', phone: '', email: '' };
+
+    nameError = '';
+    roleError = '';
+    phoneError = '';
+    emailError = '';
+    contactError = '';
+
+
+    @ViewChildren('photoInput') photoInputs!: QueryList<any>;
+    @ViewChildren('nameInput') nameInputs!: QueryList<any>;
+    @ViewChildren('roleInput') roleInputs!: QueryList<any>;
+    @ViewChildren('phoneInput') phoneInputs!: QueryList<any>;
+    @ViewChildren('emailInput') emailInputs!: QueryList<any>;
+    
+    submitProject() 
+    {
+    this.photoInputs.forEach(input => input.control.markAsTouched());
+    this.nameInputs.forEach(input => input.control.markAsTouched());
+    this.roleInputs.forEach(input => input.control.markAsTouched());
+    this.phoneInputs.forEach(input => input.control.markAsTouched());
+    this.emailInputs.forEach(input => input.control.markAsTouched());
+
+    const invalidPhoto = this.photoInputs.find(input => input.invalid);
+    const invalidName = this.nameInputs.find(input => input.invalid);
+    const invalidRole = this.roleInputs.find(input => input.invalid);
+    const invalidPhone = this.phoneInputs.find(input => input.invalid);
+    const invalidEmail = this.emailInputs.find(input => input.invalid);
+
+    if (invalidPhoto || invalidName || invalidRole || invalidPhone || invalidEmail) 
+    {
+      console.log("Некорректно введені дані");
+      return;
+    }
+
+
+    this.router.navigate(['/rewards-page']);
+  }
+
+    scrollToTop(): void 
+    {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    activeIndex: number | null = null;
+
+    images = [
+      { gray: 'assets/images/projects.png', active: 'assets/images/projectsGray.png', link: '/projects-list-page' },
+      { gray: 'assets/images/aboutUs.png', active: 'assets/images/infoGray.png', link: '/about-us-page' },
+      { gray: 'assets/images/account.png', active: 'assets/images/accountGray.png', link: '/profile-page' },
+      { gray: 'assets/images/help.png', active: 'assets/images/helpGray.png', link: '/support-page' },
+      { gray: 'assets/images/shop.png', active: 'assets/images/shopGray.png', link: '/shop-main-page-page' }
+    ];
+
+    onImageClick(link: string): void 
+    {
+      this.router.navigate([link]);
+    }
+  
+    changeImage(index: number): void 
+    {
+      this.activeIndex = index;
+    }
+
+
+
+      onButtonClick(buttonName: string) 
+      {
+        console.log(`Клик по кнопке: ${buttonName}`);
+      }
+    
+      isWindowOpen: boolean = false; // Флаг для управления состоянием окна
+    
+      closeWindow() {
+        this.isWindowOpen = false; // Закрытие окна
+      }
+    
+      openWindow() {
+        this.isWindowOpen = true; // Открытие окна
+      }
+    
+      isGridView = true;
+      currentIndex = 0;
+      totalSlides = 0;
+    
+      prevSlide() {
+        if (this.currentIndex > 0) {
+          this.currentIndex--;
+        }
+        else {
+          this.currentIndex = this.totalSlides - 1; // Переход на последний слайд
+        }
+      }
+    
+      nextSlide() {
+        if (this.currentIndex < this.filteredItems.length - 1) {
+          this.currentIndex++;
+        }
+        else {
+          this.currentIndex = 0; // Возвращаемся к первому слайду
+        }
+      }
+    
+      isSocialMediaListVisible: boolean[] = []; // Массив для отслеживания видимости списка
+    
+      toggleSocialMediaList(index: number) {
+        this.isSocialMediaListVisible[index] = !this.isSocialMediaListVisible[index];
+      }
+    
+      isHoveredArray: boolean[] = new Array(this.filteredItems.length).fill(false);
+      likedProjects: boolean[] = new Array(this.filteredItems.length).fill(false);
+    
+    
+      toggleLike(index: number): void {
+        this.likedProjects[index] = !this.likedProjects[index];
+      }
+    
+        // Закрытие выпадающего меню
+        closeDropdown() {
+          this.showDropdown = false;
+        }
+    
+        toggleDropdown() {
+          this.showDropdown = !this.showDropdown;
+        }
 }

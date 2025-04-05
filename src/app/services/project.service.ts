@@ -12,6 +12,7 @@ import { AuthService } from './auth.service';
 import { CompleteProjectData } from '../models/project/completeproject-data';
 import { ProjectList } from '../models/project/project-list-data';
 import { TopicDto } from '../models/project/topic.interface';
+import { detailsdescription } from '../models/project/datailsDescription.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -21,8 +22,9 @@ export class ProjectService {
   private teamMembers: TeamMember[] = [];
   private rewards: Reward[] = [];
   private projectPhotos: string[] = [];
-  private selectedFileNameDocx: string = '';
-  private selectedFileNameDocxB: string = '';
+  private Descriptions: detailsdescription[] = [];
+  selectedFileNameDocx: string = '';
+  BudgetArticlesFileName: string = '';
   
   baseUrl = environment.baseApiUrl + '/project';
 
@@ -35,20 +37,26 @@ export class ProjectService {
   }
   returnProjectDataGeneral(): general {
     return {
-      title: this.projectData.title,
-      collectionAmount: this.projectData.collectionAmount,
-      collectionDuration: this.projectData.collectionDuration,
-      BudgetPlanUrl: this.projectData.BudgetPlan,
+      title: this.projectData.Title,
+      collectionAmount: this.projectData.CollectionAmount,
+      BudgetPlan: this.projectData.BudgetPlan,
+      selectedFileNameDocx: this.selectedFileNameDocx,
+      collectionDuration: this.projectData.CollectionDuration,
+      BudgetPlanUrl: this.projectData.BudgetPlanUrl,
       YouTubeVideoUrl: this.projectData.YouTubeVideoUrl,
       MainPhotoUrl: this.projectData.MainPhotoUrl,
-      selectedFileNameDocx: this.selectedFileNameDocx,
-      selectedCategoryId: this.projectData.selectedCategoryId
+      selectedCategoryId: this.projectData.SelectedCategoryId,
     };
   }
   //Details
   getProjectDataDetails(details: details): void {
     this.projectData = { ...this.projectData, ...details };
-    this.selectedFileNameDocxB = details.selectedFileNameDocxB;
+    this.BudgetArticlesFileName = details.BudgetArticlesFileName;
+  }
+  getProjectDataDetailsProjectDescription(detailsDescription: detailsdescription): void {
+    if (detailsDescription){
+      this.Descriptions.push(detailsDescription);
+    }
   }
   getProjectDataDetailsProjectPhotos(projectPhotos: string): void {
     if (projectPhotos){
@@ -58,26 +66,33 @@ export class ProjectService {
   getProjectDataDetailsProjectPhotosSize(): number {
     return this.projectPhotos.length;
   }
+  getProjectDataDetailsProjectDescriptionSize(): number {
+    return this.Descriptions.length;
+  }
+  
   returnProjectDataDetails(): details {
-    const modeldetails = {
-      shortDescription: this.projectData.shortDescription,
-      detailedDescription: this.projectData.detailedDescription,
-      phone: this.projectData.phone,
-      telegram: this.projectData.telegram,
-      viber: this.projectData.viber,
-      whatsApp: this.projectData.whatsApp,
-      linkedIn: this.projectData.linkedIn,
-      email: this.projectData.email,
-      address: this.projectData.address,
+    return {
+      shortDescription: this.projectData.ShortDescription,
+      phone: this.projectData.Phone,
+      telegram: this.projectData.Telegram,
+      viber: this.projectData.Viber,
+      whatsApp: this.projectData.WhatsApp,
+      linkedIn: this.projectData.LinkedIn,
+      YouTubeVideoUrl: this.projectData.YouTubeVideoUrl,
+      email: this.projectData.Email,
+      address: this.projectData.Address, 
+      BudgetArticles: this.projectData.BudgetArticles,
       BudgetArticlesUrl: this.projectData.BudgetArticlesUrl,
-      instagram: this.projectData.instagram,
-      facebook: this.projectData.facebook,
-      telegramChannel: this.projectData.telegramChannel,
-      twitter: this.projectData.twitter,
-      linkedInGroup: this.projectData.linkedInGroup,
-      selectedFileNameDocxB: this.selectedFileNameDocxB,
+      BudgetArticlesFileName: this.BudgetArticlesFileName,
+      instagram: this.projectData.Instagram,
+      facebook: this.projectData.Facebook,
+      telegramChannel: this.projectData.TelegramChannel,
+      twitter: this.projectData.Twitter,
+      linkedInGroup: this.projectData.LinkedInGroup
     };
-    return modeldetails;
+  }
+  returnProjectDataDetailsProjectDescription(index: number): detailsdescription {
+    return this.Descriptions[index];
   }
   returnProjectDataDetailsProjectPhotos(index: number): string {
     return this.projectPhotos[index];
@@ -85,6 +100,10 @@ export class ProjectService {
   ProjectDataDetailsProjectPhotosClear(): void {
     this.projectPhotos = [];
   }
+  ProjectDataDetailsProjectDescriptionClear() : void {
+    this.Descriptions = [];
+  }
+
   //Team
   getProjectDataTeam(team: TeamMember): void {
     if (team){
@@ -138,7 +157,7 @@ export class ProjectService {
       return throwError(() => new Error('Token not found.'));
     }
   
-    if (!this.projectData || Object.keys(this.projectData).length === 0) {
+    if (!this.projectData) { // || Object.keys(this.projectData).length === 0
       console.error('No project data to send.');
       return throwError(() => new Error('No project data.'));
     }
@@ -148,19 +167,22 @@ export class ProjectService {
       'Authorization': `Bearer ${token}`,
     });
   
-    const completeProjectData: CompleteProjectData = {
-      project: this.projectData,
-      teamMembers: this.teamMembers,
-      rewards: this.rewards,
-      projectPhoto: this.projectPhotos
+    const completeProjectData: CompleteProjectData = 
+    {
+      Project: this.projectData,
+      TeamMembers: this.teamMembers,
+      Rewards: this.rewards,
+      ProjectPhoto: this.projectPhotos,
+      Descriptions: this.Descriptions,
     };
 
     console.log('Sending project data:', completeProjectData);
   
-    return this.http.post("https://peaceful-ridge-38908-36bf3f3e0719.herokuapp.com/api/project/add", completeProjectData, { headers:headers });
+    return this.http.post( this.baseUrl + "/add", completeProjectData, { headers:headers });
   }
 
-  private handleError(error: HttpErrorResponse) {
+  private handleError(error: HttpErrorResponse) 
+  {
     debugger; // Добавляем debugger
     let errorMessage = 'An unknown error occurred!';
     if (error.error instanceof ErrorEvent) {
@@ -176,10 +198,9 @@ export class ProjectService {
 
 
   getProjects(): Observable<ProjectList[]> {
-    return this.http.get<ProjectList[]>("https://localhost:7193/api/project/list");
+    return this.http.get<ProjectList[]>(this.baseUrl + "/list");
   }
-
   getTopics(): Observable<TopicDto[]> {
-    return this.http.get<TopicDto[]>("https://peaceful-ridge-38908-36bf3f3e0719.herokuapp.com/api/project/topics");
+    return this.http.get<TopicDto[]>(this.baseUrl + "/topics");
   }
 }
