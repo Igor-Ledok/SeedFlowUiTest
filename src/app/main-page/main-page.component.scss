@@ -1,0 +1,2685 @@
+.sidebar 
+{
+  position: fixed;
+  left: 25px;
+  top: 130px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 10px;
+  z-index: 10;
+  transition: opacity 0.3s ease-in-out, visibility 0.3s;
+}
+
+.highlighted 
+{
+  border: 2px solid #247A60;
+  border-radius: 7px;
+}
+
+.icon-container 
+{
+  position: relative;
+  cursor: pointer;
+  box-sizing: border-box;
+}
+
+.icon-inside 
+{
+  position: absolute;
+  top: 10px;
+  left: 13px;
+  width: 50%;
+  height: 55%;
+  pointer-events: none;
+  transition: filter 0.3s ease; 
+}
+
+.sidebar.hidden 
+{
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.fixed-button 
+{
+  position: fixed;
+  bottom: 80px;
+  right: 60px;
+  width: 60px;
+  height: 60px;
+  background-color: rgba(255, 255, 255, 0.5);
+  color: rgba(128, 128, 128, 0.9);
+  border: none;
+  border-radius: 50%;
+  border: solid 1px rgba(128, 128, 128, 0.9);
+  font-size: 24px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  transition: background-color 0.3s, transform 0.2s;
+  z-index: 20;
+}
+
+.fixed-button:hover 
+{
+  background-color: rgba(255, 255, 255, 0.9);
+  transform: scale(1.1);
+}
+
+.button-container 
+{
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    transform: translateX(-50%);
+    flex-direction: row;
+    gap: 20px;
+    margin-top: 20px;
+    z-index: 10;
+    left: 50%;
+    top:75%;
+    height: 120px;
+    font-weight: 600;
+}
+
+.projectImg
+{
+  position: absolute;
+  top: 70px;
+  left: 80px;
+  width:60px;
+  height: 60px;
+}
+
+.aboutUs
+{
+  position: absolute;
+  top: 70px;
+  left: 83px;
+}
+
+.account
+{
+  position: absolute;
+  top: 70px;
+  left: 80px;
+  width:60px;
+  height: 60px;
+}
+
+.help
+{
+  position: absolute;
+  top: 70px;
+  left: 85px;
+  width:50px;
+  height: 60px;
+}
+
+.shop
+{
+  position: absolute;
+  top: 70px;
+  left: 80px;
+  width:60px;
+  height: 60px;
+}
+
+button.support-btn
+{
+  width: 250px;
+  font-family: 'Montserrat';
+  font-weight: 500;
+  position: relative;
+  left: 220px;
+  top: -15px;
+}
+
+.button 
+{
+    display: flex;
+    align-items: center;
+    padding: 15px 25px;
+    background-color: #ffffff;
+    text-align: center;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 24px;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+    position: relative;
+    flex-direction: column;
+    height: 140px;
+    width: 170px;
+    border-radius: 5px;
+}
+
+.button:hover 
+{
+    transform: scale(1.1);
+    font-size: 21px;
+}
+
+body 
+{
+    background: linear-gradient(to bottom, #ffffff, #3bb78f);
+    background-attachment: fixed;
+    margin: 0;
+    font-family: 'Montserrat', sans-serif;
+}
+
+.container 
+{
+  position: relative;
+  background-size: cover;
+  background-position: center 20%;
+  display: flex;
+  flex-direction: column;
+  font-family: Arial, sans-serif;
+  min-height: 100vh;
+  overflow: hidden;
+}
+
+.container::before 
+{
+  content: '';
+  position: absolute;
+  top: 10%;
+  left: 0;
+  width: 100%;
+  height: 90%;
+  background: url('/assets/images/vector1.svg') no-repeat center center; 
+  background-size: 100% 100%;
+  background-position: center center;
+  z-index: 1;  
+}
+
+.container::after 
+{
+    content: '';
+    position: absolute;
+    top: 25%;
+    left: 0;
+    width: 100%;
+    height: 90%;
+    background: url('/assets/images/vector2.svg') no-repeat center center; 
+    background-size: 100% 100%;
+    background-position: center center;
+    z-index: 2; 
+  }
+
+  .coin-background 
+  {
+    position: absolute;
+    top: 43%;
+    left: 13%;
+    width: 80px; 
+    height: 80px;
+    background-image: url('/assets/images/greenCoin.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    transform: translate(-50%, -50%);
+    z-index: 10; 
+    opacity: 1;
+    display: block; 
+}
+
+.textVidIdey
+{
+  position: absolute;
+    top: 59%;
+    left: 43%;
+    width: 320px; 
+    height: 80px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    transform: translate(-50%, -50%);
+    z-index: 10; 
+    opacity: 1;
+    display: block;
+    transform: rotate(-4deg);
+    transform-origin: center;
+    color: white;
+    letter-spacing: 5px;
+    font-size: 20px;
+}
+
+div#second.coin-background
+{
+  position: absolute;
+  top: 66%;
+  left: 3%;
+  width: 40px; 
+  height: 40px;
+  background-image: url('/assets/images/greenCoin.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+  transform: translate(-50%, -50%);
+  z-index: 10; 
+  opacity: 1;
+  display: block; 
+}
+
+div#five.coin-background
+{
+  position: absolute;
+  top: 71%;
+  left: 86.5%;
+  width: 80px; 
+  height: 80px;
+  background-image: url('/assets/images/greenCoin.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+  transform: translate(-50%, -50%);
+  z-index: 10; 
+  opacity: 1;
+  display: block; 
+}
+
+.graphic
+{
+  position: absolute;
+  top: 49%;
+  left: 72%;
+  width: 520px; 
+  height: 520px;
+  background-image: url('/assets/images/grapfic.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+  transform: translate(-50%, -50%);
+  z-index: 10; 
+  opacity: 1;
+  display: block; 
+}
+
+.pig-background
+{
+  position: absolute;
+  top: 46%;
+  left: 48%;
+  width:400px; 
+  height: 400px;
+  background-image: url('/assets/images/pig.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+  transform: translate(-50%, -50%);
+  z-index: 10; 
+  opacity: 1;
+  display: block; 
+}
+
+div#third.coin-background
+{
+  position: absolute;
+  top: 45%;
+  left: 28%;
+  width: 40px; 
+  height: 40px;
+  background-image: url('/assets/images/greenCoin.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+  transform: translate(-50%, -50%);
+  z-index: 10; 
+  opacity: 1;
+  display: block; 
+}
+
+div#seven.coin-background
+{
+  position: absolute;
+  top: 21.5%;
+  left: 89%;
+  width: 40px; 
+  height: 40px;
+  background-image: url('/assets/images/greenCoin.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+  transform: translate(-50%, -50%);
+  z-index: 10; 
+  opacity: 1;
+  display: block; 
+}
+
+div#eight.coin-background
+{
+  position: absolute;
+  top: 34%;
+  left: 78.5%;
+  width: 100px; 
+  height: 100px;
+  background-image: url('/assets/images/greenCoin.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+  transform: translate(-50%, -50%);
+  z-index: 10; 
+  opacity: 1;
+  display: block; 
+}
+
+.firstBtn
+{
+  position: absolute;
+  top: 31.2%;
+  left: 73%;
+  width: 140px; 
+  height: 140px;
+  background-image: url('/assets/images/firstBtn.svg');
+  background-size: contain;
+  background-repeat: no-repeat;
+  z-index: 10; 
+  display: inline-block;
+  cursor: pointer;
+  transition: transform 0.3s ease; 
+}
+
+.firstBtn:hover
+{
+  transform: translate(-10px, 10px);
+}
+
+.secondBtn
+{
+  position: absolute;
+  top: 23%;
+  left: 73.3%;
+  width: 107px; 
+  height: 100px;
+  background-image: url('/assets/images/secondBtn.svg');
+  background-size: contain;
+  background-repeat: no-repeat;
+  z-index: 10; 
+  display: inline-block;
+  cursor: pointer;
+  transition: transform 0.3s ease; 
+  background-color: none;
+}
+
+.secondBtn:hover
+{
+  transform: translate(-10px, -10px);
+}
+
+.thirdBtn
+{
+  position: absolute;
+  top: 22.7%;
+  left: 76.8%;
+  width: 150px; 
+  height: 235px;
+  background-image: url('/assets/images/thirdBtn.svg');
+  background-size: cover;
+  background-repeat: no-repeat;
+  z-index: 10; 
+  display: inline-block;
+  cursor: pointer;
+  transition: transform 0.3s ease; 
+  transform: rotate(-1deg) translate(2px, 2px);
+}
+
+.thirdBtn:hover 
+{
+  transform: translate(10px);
+}
+
+div#fourth.coin-background
+{
+  position: absolute;
+  top: 64%;
+  left: 20%;
+  width: 40px; 
+  height: 40px;
+  background-image: url('/assets/images/greenCoin2.svg');
+  background-size: contain;
+  background-repeat: no-repeat;
+  transform: translate(-50%, -50%);
+  z-index: 10; 
+  opacity: 1;
+  display: block; 
+}
+
+div#six.coin-background
+{
+  position: absolute;
+  top: 50%;
+  left: 95%;
+  width: 40px; 
+  height: 40px;
+  background-image: url('/assets/images/greenCoin2.svg');
+  background-size: contain;
+  background-repeat: no-repeat;
+  transform: translate(-50%, -50%);
+  z-index: 10; 
+  opacity: 1;
+  display: block; 
+}
+
+img.logo3
+{
+  vertical-align: middle;
+  text-align: center;
+  margin: auto;
+  width: 40px;
+  height: 40px;
+  position: relative;
+  top: 3px;
+  left: -45px;
+}
+
+strong
+{
+  position: absolute;
+  top: 32px;
+  left: 47%;
+}
+
+
+
+header 
+{
+  display: flex;
+  justify-content: space-between;
+  padding: 20px;
+  align-items: center;
+  margin-top: -20px;
+}
+
+
+::ng-deep .mat-mdc-checkbox.mat-accent .mdc-checkbox .mdc-checkbox__native-control:enabled:checked ~ .mdc-checkbox__background,
+.mat-mdc-checkbox .mdc-checkbox .mdc-checkbox__native-control:enabled:indeterminate ~ .mdc-checkbox__background,
+.mat-mdc-checkbox .mdc-checkbox .mdc-checkbox .mdc-checkbox__native-control[data-indeterminate=true]:enabled ~ .mdc-checkbox__background 
+{
+  border-color: transparent !important;
+  background-color: #247A60;
+  outline: none;
+}
+
+::ng-deep .mat-mdc-checkbox.mat-accent .mdc-checkbox--selected ~ .mdc-checkbox__ripple
+{
+  background: #66d6aa !important;
+}
+
+div.description p 
+{
+  font-size: 17px;
+  font-weight: 300;
+  position: relative;
+  top: 23px;
+  left: 260px;
+  width: 500px;
+  text-align: left;
+}
+
+.error 
+{
+  color: red;
+  font-size: 14px;
+}
+
+input.ng-invalid.ng-touched 
+{
+  border: 1px solid red;
+}
+
+
+span.ymovaNeed
+{
+  
+  left: 5px;
+}
+
+
+mat-form-field 
+{
+  width: 300px;
+  margin-bottom: 20px;
+}
+
+p {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.logo 
+{
+  vertical-align: middle;
+  text-align: center;
+  margin: auto;
+  width: 50px;
+  height: 50px;
+}
+
+.logo2
+{
+  vertical-align: middle;
+  text-align: center;
+  margin: auto;
+  width: 50px;
+  height: 50px;
+}
+
+.text
+{
+  margin-top: 20px;
+  width: 80px;
+  height: 106px;
+}
+
+#checkbox
+{
+  transform: scale(1.3);
+  opacity: 0,9;
+  cursor: pointer;
+}
+
+.registration-form 
+{
+  display: flex;
+  margin: 50px auto;
+  width: 80%;
+  max-width: 900px;
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  height: 670px;
+}
+
+img#LeftUpAngle
+{
+  width: 119px;
+  height: 60px;
+  position: relative;
+  right: 101.8%;
+  top: 30px;
+}
+
+.left-panel 
+{
+  background-image: url('/assets/images/bg-pattern.png');
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 15px;
+}
+
+.left-panel img 
+{
+  width: 100%;
+  height: auto;
+}
+
+.right-panel 
+{
+  flex: 1;
+  background-color: #fff;
+  padding: 40px;
+}
+
+h2 
+{
+  color: #247A60;
+  margin-bottom: 20px;
+}
+
+.form-group 
+{
+  margin-bottom: 20px;
+}
+
+form input[type="email"],
+form input[type="password"],
+form input[type="text"]
+{
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+
+button:disabled
+{
+  background-color: #ccc;
+  color: #666;
+  cursor: not-allowed;
+  opacity: 0.6;
+  color: white;
+}
+
+form input[type="checkbox"] 
+{
+  margin-right: 10px;
+}
+
+button 
+{
+  background-color: #2C7D59;
+  color: #fff;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+button:hover 
+{
+  background-color: #f0f0f0;
+}
+
+.button:hover #projectImg
+{
+  content: url('/assets/images/yellowProjects.png');
+}
+
+
+.button:hover #aboutUs
+{
+  content: url('/assets/images/yellowAboutUs.png');
+}
+
+
+.button:hover #account
+{
+  content: url('/assets/images/yellowAccount.png');
+}
+
+
+.button:hover #help
+{
+  content: url('/assets/images/yellowHelp.png');
+}
+
+
+.button:hover #shop
+{
+  content: url('/assets/images/yellowShop.png');
+}
+
+a 
+{
+  color: #2C7D59;
+  text-decoration: none;
+}
+
+.header 
+{
+    position: fixed;
+    top: 0;
+    z-index: 1000;
+    background-color: white;
+    align-items: center;
+    height: 100px;
+    width: 100%;
+    background-color: white;
+    padding: 10px 0;
+}
+
+.header-content 
+{
+    display: flex;
+    align-items: center;
+}
+
+
+.submit-project-btn 
+{
+  position: absolute;
+  left: 200px;   
+  display: block;
+  margin: 0 auto;  
+  background-color: white;   
+  color: #247A60;            
+  padding: 12px 24px;
+  border-radius: 5px;
+  border: 2px solid #247A60;
+  font-size: 16px;
+  cursor: pointer;
+  text-align: center;
+  width: 176px;
+  transition: all 0.3s ease; 
+  top:38px;
+}
+
+.submit-project-btn:hover 
+{
+    background-color: #247A60;  
+    color: white;              
+    border: 2px solid #247A60; 
+}
+
+.submit-project-btn:focus 
+{
+    outline: none;
+}
+
+/* Стили для слайдера */
+.photo-slider 
+{
+  position: relative;
+  top: 50px;
+  left: -240px;
+  padding-bottom: 80px;
+  width: 1700px;
+  // max-width: 1200px;
+  height: 500px;
+  margin: auto;
+  overflow: hidden;
+}
+
+.like-icon {
+  width: 30px;
+  height: 25px;
+  position: relative;
+  right: 60px;
+  top: 25px;
+  cursor: pointer;
+  transition: opacity 0.3s ease-in-out;
+}
+
+.like-icon:hover 
+{
+  opacity: 1;
+}
+
+.nazva
+{
+  position: absolute;
+  color: #247A60;
+  font-size: 40px;
+  font-weight: 500;
+  top: 530px;
+  width: 563px;
+  height: 65px;
+  font-family: 'Unbounded';
+}
+
+.slider 
+{
+  display: flex;
+  transition: transform 0.5s ease-in-out;
+  width: 100%;
+  height: 100%;
+}
+
+.slider img 
+{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+.dots 
+{
+  text-align: center;
+  margin-top: 10px;
+  position: relative;
+  top: -20px;
+  left: 10px;
+  margin-left: 110px;
+}
+
+.dot 
+{
+  height: 12px;
+  width: 12px;
+  margin: 0 5px;
+  background-color: rgba(150, 150, 150, 0.5);
+  border-radius: 50%;
+  display: inline-block;
+  transition: background-color 0.3s ease;
+  cursor: pointer;
+}
+
+.dot.active 
+{
+  background-color: #247A60;
+  box-shadow: 0 0 15px rgba(36, 122, 96, 0.7); 
+  transform: scale(1.2); 
+}
+
+.prev-btn, .next-btn 
+{
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: rgba(0, 0, 0, 0.5);
+  color: white;
+  border: none;
+  padding: 10px;
+  cursor: pointer;
+  font-size: 40px;
+  z-index: 10;
+  background: none;
+}
+
+.prev-btn:hover, .next-btn:hover 
+{
+  background-color: transparent;
+}
+
+.prev-btn 
+{
+  left: 10px;
+}
+
+.next-btn 
+{
+  right: 10px;
+}
+
+
+.info-block 
+{
+  display: flex;
+  flex-direction: row;
+  gap: 20px;              
+  margin-top: 0px;
+  align-items: center; 
+  width: 100%;         
+}
+
+.progress-bar 
+{
+  position: relative;
+  background-color: lightgray;
+  height: 8px; 
+  width: calc(34.33% - 5px);
+  margin-top: 20px;
+  margin-bottom: 10px;
+  top: -15px;
+  left: -240px;
+}
+
+.progress 
+{
+  background-color: #247A60;
+  height: 100%;
+  transition: width 0.3s ease-in-out; 
+}
+
+
+.progress-text 
+{
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 14px;
+  font-weight: 600;
+  color: #66D6AA;
+  z-index: 10;
+}
+
+.progress-text-start 
+{
+  position: absolute;
+  left: 0;
+  top: -25px;
+  font-size: 16px;
+  font-weight: 500;
+  color: #333027;
+  letter-spacing: 2px;
+  font-family: 'Montserrat';
+}
+
+.progress-text-end 
+{
+  position: absolute;
+  right: 0;
+  top: -25px;
+  font-size: 16px;
+  font-weight: 700;
+ 
+  color: #645740;
+  letter-spacing: 2px;
+  font-family: 'Montserrat';
+}
+
+.description 
+{
+  position: relative;
+  left: 0px;
+  font-size: 5px;
+  line-height: 1.4;
+  // width: 35.33%;
+  height: 152px;
+  text-align: center; 
+  font-weight: normal;
+  font-family: 'Montserrat';
+}
+
+.support-btn 
+{
+  font-size: 18px;
+  cursor: pointer;
+  border-radius: 5px;
+  width: calc(33.33% - 20px);
+  height: 50px;
+  display: block;
+  margin: 0 auto;  
+  background-color: white;   
+  color: #247A60;            
+  border: 2px solid #247A60;
+  text-align: center;
+  transition: all 0.3s ease;
+  margin-right: 30px;
+  margin-top: -130px;
+  z-index: 10;
+}
+
+.support-btn:hover 
+{
+  background-color: #247A60;
+  color: white;              
+  border: 2px solid #247A60; 
+}
+
+.support-btn:focus 
+{
+    outline: none;
+}
+
+
+.container2 
+{
+  max-width: 1200px; 
+  margin: 0 auto;    
+  padding-top: 50px;  
+  padding-left: 15px; 
+  padding-right: 15px; 
+  padding-bottom: 200px;
+  margin-top: 30px;
+}
+
+.language-switcher
+{
+  position: relative;
+  top:5px;
+  left: -240px;
+}
+
+// 3-ий блок
+
+.projects-container
+{
+  position: relative;
+  top: -100px;
+  margin-bottom: -120px;
+}
+
+.projects-grid 
+{
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  justify-content: space-between;
+  margin-bottom: 150px;
+}
+
+.project-card 
+{
+  position: relative;
+  background: white;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  height: 620px;
+  width: 550px;
+  display: flex;
+  flex-direction: column;
+}
+
+.project-overlay 
+{
+  position: absolute;
+  bottom: 0;
+  left: -11px;
+  width: 100%;
+  height: 15%; /* Изначальная высота белого фона */
+  background: white;
+  color: black;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  font-weight: bold;
+  text-align: center;
+  padding: 10px;
+  transition: height 0.2s ease-in-out; /* Плавное изменение высоты */
+  z-index: 2;
+}
+
+.project-card:hover .project-image
+{
+  filter: blur(4px);
+  opacity: 0.8;
+  transition: filter 0.3s ease-in-out, opacity 0.3s ease-in-out;
+}
+
+.project-card-0
+{
+  position: relative;
+  left: 215px;
+}
+
+.project-card-1
+{
+  position: relative;
+  left: 83px;
+}
+
+.project-card-2
+{
+  position: relative;
+  left: -48px;
+}
+
+.project-card-3
+{
+  position: relative;
+  left: 216px;
+  top: 25px;
+}
+
+.project-card-4
+{
+  position: relative;
+  left: 83px;
+  top: 25px;
+}
+
+.project-card-5
+{
+  position: relative;
+  left: -47px;
+  top: 25px;
+}
+
+.project-card:hover .project-overlay 
+{
+  height: 45%; /* Белый фон поднимается до полной высоты карточки */
+}
+
+.project-extra 
+{
+  opacity:1;
+  transition: opacity 0.4s ease;
+  top:10px;
+  position: relative;
+}
+
+.project-card:hover .project-extra 
+{
+  opacity: 1; 
+  top:10px;
+}
+
+.progress-bar2 
+{
+  height: 8px;
+  background: #eee;
+  border-radius: 4px;
+  margin-top: 10px;
+  position: relative;
+  overflow: hidden;
+  top: 130px;
+  width: 49.5%;
+  left: -7px;
+}
+
+.progress2 
+{
+  height: 100%;
+  background: #247A60;
+  border-radius: 4px;
+  width: 30%; 
+  transition: width 0.4s ease-in-out;
+}
+
+.project-image 
+{
+  width: 100%;
+  height: 400px;
+  object-fit: cover; 
+  position: relative;
+  top: -104px;
+}
+
+.support-button 
+{
+  background: #247A60;
+  color: #247A60;
+  width: 200px;
+  cursor: pointer;
+  border-radius: 5px;
+  border: 2px solid #247A60;
+  font-size: 14px;
+  height: 50px;
+  display: block; 
+  background-color: white;
+  text-align: center;
+  transition: all 0.3s ease;
+  position: relative;
+  left: 310px;
+  top:-128px;
+  font-weight: 500;
+  font-family: 'Montserrat';
+}
+
+.support-button:hover 
+{
+  background: #247A60;
+  color: white;
+}
+
+.project-title 
+{
+  top: 90px;
+  left: 15px;
+  font-size: 22px;
+  width: 550px;
+  font-weight: bold;
+  position: relative;
+  text-align: left;
+  font-family: 'Unbounded';
+  color: #645740;
+}
+
+// Карусель
+
+.carousel-wrapper 
+{
+  background-color: #247A60;
+  padding: 30px 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.carousel-title-text 
+{
+  width: 711px;
+  height: 48px;
+  font-size: 35px;
+  color: white;
+  font-weight: bold;
+  margin-bottom: 20px;
+  font-weight: 500;
+  left: -482px;
+  position: relative;
+  font-family: 'Montserrat';
+}
+
+.carousel-title-text::after 
+{
+  content: ""; 
+  position: absolute;
+  bottom: 25px; 
+  left: 725px;
+  width: 1168px;
+  height: 3px;
+  background-color: white;
+}
+
+.carousel-container 
+{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  max-width: 1700px;
+  margin: auto;
+  padding: 20px 0;
+  left: 12px;
+  width: 1900px;
+}
+
+.carousel 
+{
+  overflow: hidden;
+  width: 100%;
+  border-radius: 5px;
+}
+
+.carousel-track 
+{
+  display: flex;
+  gap: 50px;
+  transition: transform 0.5s ease-in-out;
+  width: 1490px;
+}
+
+.carousel-item 
+{
+  flex: 0 0 calc(100% / 3);
+  text-align: center;
+  background: #fff;
+  border-radius: 6px;
+  overflow: hidden;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 350px;
+  cursor: pointer;
+  position: relative;
+  left: -16px;
+}
+
+.carousel-item img 
+{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease-in-out;
+}
+
+.carousel-info-block 
+{
+  position: absolute;
+  bottom: 0px;
+  left: 0;
+  width: 100%;
+  background-color: white;
+  color: #247A60;
+  padding: 10px;
+  font-family: 'Montserrat';
+  font-size: 18px;
+  font-weight: bold;
+  visibility: visible;
+  opacity: 1;
+  transition: all 0.4s ease-in-out;
+  height: 80px;
+  z-index: 1;
+  transform: translateY(0);
+  box-sizing: border-box;
+  text-align: center;
+}
+
+.carousel-item:hover .carousel-info-block 
+{
+  height: 120px;
+  transform: translateY(0);
+  background-color: white;
+}
+
+.carousel-item:hover .carousel-info-content 
+{
+  opacity: 1;
+  visibility: visible;
+  transition: opacity 0.4s ease-in-out;
+}
+
+.carousel-info-content 
+{
+  opacity: 0;
+  visibility: hidden;
+  text-align: center;
+  font-family: 'Montserrat';
+  font-size: 16px;
+  padding: 5px;
+  align-items: center;
+}
+
+.carousel-info-content p 
+{
+  margin: 2px 0;
+}
+
+.nav-btn 
+{
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  border: none;
+  cursor: pointer;
+  padding: 15px;
+  background: none;
+}
+
+.arrow 
+{
+  display: block;
+  width: 5px;
+  height: 4px;
+  background: transparent;
+  position: relative;
+}
+
+.arrow::before,
+.arrow::after 
+{
+  content: '';
+  position: absolute;
+  width: 30px;
+  height: 2px;
+  background: white;
+}
+
+.arrow-left::before 
+{
+  transform: rotate(-45deg);
+  top: -9px;
+  left: 20px;
+}
+
+.arrow-left::after 
+{
+  transform: rotate(45deg);
+  bottom: -9px;
+  left: 20px;
+}
+
+.arrow-right::before 
+{
+  transform: rotate(45deg);
+  top: -9px;
+  right: -15px;
+}
+
+.arrow-right::after 
+{
+  transform: rotate(-45deg);
+  bottom: -9px;
+  right: -15px;
+}
+
+.nav-btn:hover 
+{
+  background: transparent;
+}
+
+.left 
+{
+  left: -100px;
+  top:140px;
+}
+
+.right 
+{
+  right: -45px;
+  top:140px;
+}
+
+// 6 зеленых квадратов
+
+.blog-container 
+{
+  display: grid;
+  grid-template-columns: repeat(3, 420px);
+  gap: 100px;
+  padding: 20px;
+  justify-content: center;
+  align-items: center;
+  width: 1850px;
+  margin-top: 70px;
+  margin-bottom: -50px;
+}
+
+.blog-card 
+{
+  position: relative;
+  overflow: hidden;
+  border-radius: 5px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  height: 430px;
+  width: 550px;
+  transition: transform 0.3s ease-in-out;
+  position: relative;
+  left: -67px;
+}
+
+.post-0
+{
+  left: 0px;
+}
+
+.post-1
+{
+  left: 54px;
+}
+
+.post-2
+{
+  left: 112px;
+}
+
+.post-3
+{
+  left: 0px;
+  top: -70px;
+}
+
+.post-4
+{
+  left: 54px;
+  top: -70px;
+}
+
+.post-5
+{
+  left: 111px;
+  top: -70px;
+}
+
+
+.blog-card img 
+{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.5s ease-in-out;
+}
+
+.blog-card:hover img 
+{
+  transform: scale(1.15);
+}
+
+.overlay 
+{
+  position: absolute;
+  bottom: -68px;
+  left: 10;
+  width: 100%;
+  height: 140px;
+  background: rgba(36, 122, 96, 0.8);
+  color: white;
+  padding: 10px;
+  text-align: center;
+  transition: bottom 0.3s ease, background-color 0.3s ease;
+}
+
+.blog-card:hover .overlay 
+{
+  bottom: 0;
+  background-color: #247A60;
+}
+
+div.overlay h3
+{
+  position: relative;
+  left: -25px;
+  top:12px;
+  font-family: 'Montserrat';
+  font-size: 18px;
+  width: 450px;
+}
+
+div.overlay p
+{
+  position: relative;
+  left: 25px;
+  top:40px;
+  font-family: 'Montserrat';
+  font-weight: 300;
+  width: 350px;
+  font-size: 16px;
+}
+
+.blog-card:hover .overlay p
+{
+  top: 5px;
+}
+
+.blog-card:hover .overlay h3
+{
+  top: 0px;
+}
+
+// Статистика
+
+.stats-container 
+{
+  background-color: #247A60;
+  color: white;
+  padding: 20px;
+  text-align: center;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  flex-wrap: wrap;
+  position: relative;
+  width: 97.9%; 
+  min-height: 243px;
+  margin-bottom: 100px;
+}
+
+div#first.stat-item.small
+{
+  position: relative;
+  top: -30px;
+  font-size: 24px;
+  font-weight: 300;
+  left: 10px;
+  min-width: 289px;
+  min-height: 36px;
+  font-family: 'Montserrat';
+}
+
+div#second.stat-item.large
+{
+  font-size: 40px;
+  min-width: 787px;
+  position: relative;
+  left: -102px;
+  top:40px;
+  font-family: 'Montserrat';
+}
+
+div#third.stat-item.small
+{
+  position: relative;
+  min-width: 308px;
+  min-height: 48px;
+  font-size: 32px;
+  top: 130px;
+  right: 1380px;
+  font-weight: 600;
+  font-family: 'Montserrat';
+}
+
+div#fourth.stat-item.small
+{
+  position: relative;
+  min-width: 392px;
+  min-height: 36px;
+  font-size: 24px;
+  top: 10px;
+  margin-left: 1220px;
+  font-weight: 300;
+  font-family: 'Montserrat';
+  left: -60px;
+}
+
+.stats-container::before 
+{
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.stat-item 
+{
+  font-size: 18px;
+  font-weight: bold;
+  margin: 10px;
+  flex: 1; 
+  text-align: center;
+}
+
+.main-stat 
+{
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.stat-icon 
+{
+  font-size: 20px;
+  margin: 0 5px;
+  color: #D9EAD3; 
+}
+
+// Креативний простір LOFT
+
+.container4 
+{
+  display: flex;
+  max-width: 1765px;
+  width: 100%;
+  height: 600px;
+  background: white;
+  overflow: hidden;
+  margin: 0 auto;
+  align-items: stretch; 
+  margin-bottom: 100px;
+  left:150px;
+  position: relative;
+  top:-30px;
+}
+
+.image-section 
+{
+  flex: 0 0 60%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.image-section img 
+{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.text-section 
+{
+  flex: 1;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: left;
+}
+
+.title 
+{
+  background: white;
+  color: #0D6CA2; 
+  font-size: 20px;
+  font-weight: bold;
+  padding: 20px 40px;
+  border: 2px solid #0D6CA2; 
+  display: inline-block; 
+  left: -195px;
+  top: -80px;
+  position: relative;
+  width: 340px;
+  font-family: 'Montserrat';
+  
+}
+
+.subtitle
+{
+  position: relative;
+  top: -90px;
+  left: 20px;
+  width: 120px;
+  font-weight: 500;
+  color: black;
+  font-family: 'Montserrat';
+  font-size: 20px;
+}
+
+.description2
+{
+  font-size: 16px;
+  font-weight: 400;
+  height: 20px;
+  width: 350px;
+  top: -90px;
+  left: 20px;
+  position: relative;
+  color: black;
+  font-family: 'Montserrat';
+}
+
+.description3
+{
+  font-size: 16px;
+  font-weight: 400;
+  height: 20px;
+  width: 350px;
+  top: -30px;
+  left: 20px;
+  position: relative;
+  color: black;
+  font-family: 'Montserrat';
+}
+
+.contact
+{
+  font-size: 15px;
+  font-weight: 400;
+  height: 20px;
+  width: 360px;
+  left: 195px;
+  position: relative;
+  color: black;
+  font-family: 'Montserrat';
+}
+
+.more
+{
+  position: relative;
+  top: 100px;
+  left: 312px;
+  text-decoration: underline;
+  color: gray;
+  font-family: 'Montserrat';
+}
+
+// Топ інвестори
+
+.investor:nth-child(1)
+{
+  left: 80px;
+}
+
+.investor:nth-child(2)
+{
+  left: 10px;
+}
+
+.investor:nth-child(3)
+{
+  left: -60px;
+}
+
+.investor:nth-child(4)
+{
+  left: -120px;
+}
+
+.investor:nth-child(5)
+{
+  left: -190px;
+}
+
+.investor:nth-child(6)
+{
+  left: 80px;
+}
+
+.investor:nth-child(7)
+{
+  left: 10px;
+}
+
+.investor:nth-child(8)
+{
+  left: -60px;
+}
+
+.investor:nth-child(9)
+{
+  left: -120px;
+}
+
+.investor:nth-child(10)
+{
+  left: -190px;
+}
+
+
+.top-investors 
+{
+  text-align: center;
+}
+
+.top-investors h2::after 
+{
+  content: "";
+  display: block;
+  width:  1400px;
+  height: 4px;
+  background: #ffcf33;
+  position: absolute;
+  top: 40%;
+  right: 530px;
+}
+
+.investors-grid 
+{
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 50px;
+  justify-content: center;
+  font-family: 'Montserrat';
+  position: relative;
+  left: -10px;
+  top:-50px;
+}
+
+.investor 
+{
+  display: flex;
+  flex-direction: column;
+  margin: 20px;
+  text-align: center;
+  position: relative;
+}
+
+.investName
+{
+  position: relative;
+  left: 60px;
+  font-family: 'Montserrat';
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.investor-photo 
+{
+  position: relative;
+  display: inline-block;
+  border-radius: 50%;
+  overflow: hidden;
+}
+
+.investor-photo img 
+{
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+}
+
+.rank 
+{
+  position: absolute;
+  top: 5px;
+  right: 30px;
+  color: black;            
+  border: 2px solid white;  
+  border-radius: 50%;     
+  padding: 5px;
+  font-weight: bold;       
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;             
+  height: 32px;            
+  font-size: 20px;         
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+}
+
+.yellow 
+{
+  background-color: #ffcf33;
+}
+
+.green-bg 
+{
+  background-color: #66D6AA;
+}
+
+.gold .investor-photo 
+{
+  border: 3px solid #ffcf33;
+}
+
+.green .investor-photo 
+{
+  border: 3px solid #66D6AA;
+}
+
+// Партнери
+
+.partners 
+{
+  text-align: center;
+  padding: 40px 20px;
+  position: relative;
+  height: 460px;
+}
+
+.partners h2 
+{
+  color: #006838;
+  font-size: 24px;
+  font-weight: bold;
+  text-transform: uppercase;
+  display: inline-block;
+  position: relative;
+}
+
+.partners h2::after 
+{
+  content: "";
+  display: block;
+  width:  1550px;
+  height: 4px;
+  background: #ffcf33;
+  position: absolute;
+  top: 40%;
+  right: -1645px;
+}
+
+.partners-list 
+{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 40px;
+  margin-top: 20px;
+}
+
+.partner-logo 
+{
+  width: 150px;
+  filter: grayscale(100%) opacity(50%);
+  transition: filter 0.3s ease-in-out, transform 0.3s ease-in-out;
+}
+
+.partner-logo:hover 
+{
+  filter: grayscale(0%) opacity(100%);
+  transform: scale(1.05);
+}
+
+.logo-0
+{
+  position: relative;
+  left: 400px;
+  width: 358.4px;
+  height: 100px;
+  top: -60px;
+}
+
+.logo-1
+{
+  position: relative;
+  width: 500px;
+  top: -70px;
+  height: 100px;
+  left: 550px;
+}
+
+.logo-2
+{
+  position: relative;
+  width: 359px;
+  top: 80px;
+  left: -250px;
+  height: 100px;
+}
+
+.logo-3
+{
+  position: relative;
+  width: 296px;
+  top:80px;
+  height: 100px;
+  left: 180px;
+}
+
+.logo-4
+{
+  position: relative;
+  width: 292px;
+  height: 100px;
+  top:210px;
+  left: -1300px;  
+}
+
+.logo-5
+{
+  position: relative;
+  width: 589px;
+  top:70px;
+  height: 100px;
+  left: 250px;
+}
+
+
+// Футер
+
+.container3
+{
+  max-width: 1200px; 
+  margin: 0 auto;    
+  padding-top: 50px;  
+  padding-left: 15px; 
+  padding-right: 15px; 
+  padding-bottom: 200px;
+  margin-top: 100px;
+}
+
+.footer 
+{
+  background: #fff;
+  padding: 0px;
+  font-family: Arial, sans-serif;
+}
+
+
+.footer-logo 
+{
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.footer-columns 
+{
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  position: relative;
+  top:-0px;  
+}
+
+div#second.footer-column
+{
+  position: relative;
+  left: 60px;
+}
+
+.footer-column 
+{
+  width: 10%;
+  right: 20px;
+}
+
+.footer-column h4 
+{
+  color: #247A60;
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 10px;
+  font-family: 'Montserrat';
+}
+
+.footer-column ul 
+{
+  list-style: none;
+  padding: 0;
+}
+
+.footer-column ul li 
+{
+  font-family: 'Montserrat';
+  margin: 15px 0;
+  width: 250px;
+}
+
+.footer-column ul li a 
+{
+  text-decoration: none;
+  color: #333;
+}
+
+.footer-social 
+{
+  position: relative;
+  text-align: center;
+  top: 20px;
+  left: 41px;
+  color: #247A60;
+}
+
+.social-icons a 
+{
+  margin: 0 10px;
+  font-size: 28px;
+  color: #333;
+  padding: 4px;
+}
+
+.footer-bottom 
+{
+  position: relative;
+  text-align: center;
+  margin-top: 120px;
+  font-size: 12px;
+  color: #666;
+  left: 30px;
+  font-family: 'Montserrat';
+  margin-bottom: -140px;
+}
+
+.underline-center 
+{
+  display: inline-block;
+  position: relative;
+}
+
+.underline-center::after 
+{
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: -10px;
+  width: 50%;
+  height: 1px;
+  background-color: #247A60;
+  transform: translateX(-50%);
+}
+
+div#people
+{
+  position: relative; 
+  top: 35px; 
+  left: -610px;
+}
+
+span#peoplecount
+{
+  position: relative;
+  top: 65px;
+  left: -650px;
+  font-size: 17px;
+  font-weight: 400;
+  font-family: 'Montserrat';
+}
+
+div#comments
+{
+  position: relative; 
+  top: 35px; 
+  left: -555px;
+}
+
+span#commentscount
+{
+  position: relative;
+  top: 65px;
+  left: -595px;
+  font-size: 17px;
+  font-weight: 400;
+  font-family: 'Montserrat';
+}
+
+div#money2
+{
+  position: relative; 
+  top: 35px; 
+  margin-left: -500px;
+}
+
+span#money2percents
+{
+  position: relative;
+  top: 63px;
+  left: -36px;
+  font-size: 17px;
+  font-weight: 400;
+  font-family: 'Montserrat';
+}
+
+.MediaSocial
+{
+  position: relative;
+  top: -80px;
+  right: -255px;
+  height: 27px;
+  cursor: pointer;
+  width: 24px;
+}
+
+
+.yellowShar
+{
+  display: none;
+}
+
+.blackKontyr
+{
+  display: none;
+}
+
+.blackDollar
+{
+  display: none;
+}
+
+.SeedFlow
+{
+  font-size: 30px;
+  color: #247a60;
+  position: absolute;
+  margin-top: 15px;
+  margin-left: -5px;
+  font-family: 'Montserrat Alternates';
+  font-weight: 500;
+}
+
+.bell
+{
+  display: none;
+}
+
+.profile
+{
+  display: none;
+}
+
+.search
+{
+  display: none;
+}
+
+.select
+{
+  display: none;
+}
+
+.SeedFlowBig
+{
+  display: none;
+}
+
+.lineFour
+{
+  display: none;
+}
+
+.addProject
+{
+  display: none;
+}
+
+span#thirdText
+{
+  position: relative;
+  margin-left: 1527px;
+  top: 88px;
+  width: 300px;
+  z-index: 10;
+  font-family: 'Montserrat Alternates';
+  color: white;
+}
+
+.search-container 
+{
+  position: relative;
+  width: 1200px;
+  font-family: 'Montserrat';
+}
+
+.search-input 
+{
+  width: 50%;
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-sizing: border-box;
+  position: relative;
+  left: 30%;
+}
+
+.search-input:focus {
+  border-color: #bde7d6;  /* Зеленый цвет рамки */
+  background-color: #bde7d6;  /* Светлый голубой фон */
+}
+
+.search-dropdown 
+{
+  position: absolute;
+  top: 155%;
+  left: 50px;
+  width: 100%;
+  background: white;
+  border: 1px solid #ccc;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  height: 800px;
+  overflow-y: auto;
+  border-radius: 5px;
+  padding: 10px;
+  z-index: 10;
+}
+
+.search-item-content 
+{
+  border: 2px solid #ddd; 
+  border-radius: 10px; 
+  padding: 4px; 
+  background-color: #fff; 
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  width: 99%; 
+}
+
+.search-items 
+{
+  display: flex;
+  gap: 15px;
+  justify-content: flex-start;
+}
+
+.search-item 
+{
+  text-align: left;
+  width: 390px; 
+  display: flex;
+  flex-direction: column; 
+  gap: 10px;  
+  align-items: flex-start;  
+}
+
+.search-item-img 
+{
+  width: 100%; 
+  height: 250px; 
+}
+
+.search-item-title 
+{
+  font-weight: bold;
+  margin-top: 10px;
+  font-size: 20px;
+  font-family: 'Montserrat';
+}
+
+.search-item-body 
+{
+  position: relative;
+  padding: 15px;
+  background-color: white;
+  color: black;
+  transition: transform 0.3s ease;
+}
+
+.search-item:hover .search-item-body,
+.search-item:hover .icon-container2,
+.search-item:hover .icons-container 
+{
+  transform: translateY(-70px);
+}
+
+.search-item:hover 
+{
+  background-color: white;
+}
+
+.search-item-text 
+{
+  position: absolute;
+  bottom: 0px; 
+  left: 15px;
+  right: 15px;
+  background-color: rgba(255, 255, 255, 0.9);
+  color: black;
+  padding: 10px;
+  border-radius: 5px;
+  transform: translateY(10px);
+  opacity: 0;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.search-item:hover .search-item-text 
+{
+  bottom: 10px;
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.progress-bar3 
+{
+  position: absolute;
+  width: 56%;
+  height: 8px; 
+  border-radius: 5px; 
+  appearance: none; 
+  background-color: #e0e0e0; 
+  margin-top: 8px;
+}
+
+.progress-bar3::-webkit-progress-bar3 
+{
+  background-color: #e0e0e0; 
+}
+
+.progress-bar3::-webkit-progress-value 
+{
+  background-color: #247A60; 
+}
+
+.progress-bar3::-moz-progress-bar3 
+{
+  background-color: #247A60; 
+}
+
+.search-item-info h4 
+{
+  margin: 0;
+  font-size: 14px;
+}
+
+.search-item-info p {
+  margin: 5px 0 0;
+  font-size: 12px;
+  color: #777;
+}
+
+.search-item-info 
+{
+  flex-grow: 1;
+}
+
+.support-btn2 
+{
+  background-color: #247a60;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.support-btn2:hover 
+{
+  background-color: #247a60;
+}
+
+.no-results 
+{
+  padding: 10px;
+  text-align: center;
+  color: #999;
+}
+
+.button-row 
+{
+  display: flex;
+  justify-content: center; 
+  gap: 10px;
+  margin-bottom: 20px;
+  width: 100%;
+}
+
+.wide-buttons 
+{
+  gap: 80px; 
+  margin-bottom: 50px;
+  margin-top: 20px;
+}
+
+.button-row button 
+{
+  max-width: 350px;
+  padding: 8px 43px;
+  background-color: #bde7d6;
+  color: #333027;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 20px;
+}
+
+.wide-button 
+{
+  width: 300px;
+  height: 45px;
+  padding: 12px 20px;
+  background-color: #bde7d6;
+  color: #333027;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s, color 0.3s;
+  font-family: 'Montserrat';
+}
+
+.rounded-button 
+{
+  padding: 8px 16px;
+  width: 195px;
+  font-size: 18px !important;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 50px !important;
+  cursor: pointer;
+  transition: background-color 0.3s, color 0.3s;
+  font-family: 'Montserrat';
+}
+
+button.wide-button.active, button.rounded-button.active 
+{
+  background-color: #ffcf33;
+  color: #247a60;
+  font-weight: 550;
+}
+
+button.rounded-button:hover 
+{
+  background-color: #ffcf33;
+  color: #247a60;
+  font-weight: 550;
+}
+
+.hot-projects 
+{
+  display: flex;
+  align-items: center;
+  margin-top: 40px;
+  margin-bottom: 30px;
+  margin-left: 10px;
+}
+
+.hot-projects-text 
+{
+  font-size: 18px;
+  font-weight: bold;
+  margin-right: 10px;
+  font-family: 'Montserrat';
+  color: #333;
+}
+
+.hot-projects-line {
+  flex-grow: 1;
+  border: none;
+  border-top: 3px solid #ffcf33;
+  margin-left: 20px;
+}
+
+.progress-info 
+{
+  display: flex;
+  justify-content: space-between;
+  width: 60%;
+  min-width: 200px;
+  font-size: 14px;
+  color: #333;
+  margin-top: -10px;
+}
+
+.progress-from 
+{
+  font-weight: normal;
+  font-family: 'Montserrat';
+}
+
+.progress-to 
+{
+  font-weight: 600;
+  font-family: 'Montserrat';
+}
+
+.icons-container 
+{
+  display: flex;
+  justify-content: space-between;
+  gap: 60px;
+  margin-top: 25px;
+  background: rgba(255, 255, 255, 0.7);
+  margin-left: 30px;
+  font-family: 'Montserrat';
+}
+
+.icon-item 
+{
+  text-align: center;
+  flex-basis: 30%;
+}
+
+.icon-img 
+{
+  width: 20px;
+  height: 20px;
+  margin-bottom: 5px;
+}
+
+.icon-number 
+{
+  margin-top: 5px;
+  font-size: 17px;
+  color: #333;
+  font-weight: 600;
+}
+
+.search-item 
+{
+  position: relative;
+}
+
+.icon-container2 
+{
+  position: absolute;
+  top: 280px;
+  right: 10px;
+  cursor: pointer;
+}
+
+.search-item-icon 
+{
+  width: 20px;
+  height: 20px;
+  margin-top: 10px;
+}
+
+.support-button2 
+{
+  padding: 8px 16px;
+  background-color: #247A60;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  width: 130px;
+  height: 40px;
+  margin-left: 10px;
+  margin-top: 10px;
+  position: relative;
+  left: -45px;
+  font-family: 'Montserrat';
+}
+
+.support-button2:hover 
+{
+  background-color: #247A60;
+}
+
+.icon-top-left 
+{
+  position: absolute;
+  top: 30px;
+  left: 5px;
+  z-index: 10;
+}
+
+.top-left-icon
+{
+  width: 80px;
+  height: 40px;
+}
+
+.top-right-icon
+{
+  width:30px;
+  height: 30px;
+}
+
+.icon-top-right 
+{
+  position: absolute;
+  top: 35px;
+  left: 30px;
+  z-index: 10;
+}

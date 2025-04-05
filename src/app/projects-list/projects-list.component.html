@@ -1,0 +1,835 @@
+<!-- Шрифт Montserrat -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+
+<!-- Шрифт unbounded -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Unbounded:wght@200..900&display=swap" rel="stylesheet">
+
+<!-- Шрифт Montserrat Alternates -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat+Alternates:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Unbounded:wght@200..900&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+<header class="header">
+    <div class="header-left">
+      <img src="assets/images/greenCoin.png" class="logo" alt="Seed Flow Logo" />
+      <span class="brand-name">Seed Flow</span>
+    </div>
+  
+    <!-- Блок поиска -->
+<div class="search-container" #searchContainer>
+  <input 
+    style="font-family: 'Montserrat';"
+    type="text"
+    class="search-input"
+    placeholder="🔍"
+    (focus)="showDropdown = true"
+    (input)="filterResults()"
+    [(ngModel)]="searchText"
+  />
+  
+  <div *ngIf="showDropdown" class="search-dropdown" [style.height]="getDropdownHeight()">
+    <!-- 3 основные кнопки: СТАРТАПИ, СОЦІАЛЬНІ, ГУМАНІТАРНІ -->
+    <div class="button-row wide-buttons">
+      <button class="button wide-button"
+        [ngClass]="{ 'active': activeCategoryIndex === 0 }"
+        (click)="onCategoryButtonPress(0)">
+       {{" СТАРТАПИ" | transloco}}</button>
+      <button class="button wide-button"
+        [ngClass]="{ 'active': activeCategoryIndex === 1 }"
+        (click)="onCategoryButtonPress(1)">
+        СОЦІАЛЬНІ</button>
+      <button class="button wide-button"
+        [ngClass]="{ 'active': activeCategoryIndex === 2 }"
+        (click)="onCategoryButtonPress(2)">
+        ГУМАНІТАРНІ</button>
+    </div>
+  
+    <!-- Кнопки для СТАРТАПИ -->
+    <div *ngIf="activeCategoryIndex === 0">
+      <div class="button-row" *ngFor="let row of startupRows">
+        <button *ngFor="let button of row" class="button rounded-button"
+          [ngClass]="{ 'active': activeStartupButtonIndex === button.index }"
+          (click)="onButtonPress('startup', button.index)">
+          {{ button.label }}
+        </button>
+      </div>
+    </div>
+  
+    <!-- Кнопки для СОЦІАЛЬНІ -->
+    <div *ngIf="activeCategoryIndex === 1">
+      <div class="button-row">
+        <button *ngFor="let button of socialButtons" class="button rounded-button"
+          [ngClass]="{ 'active': activeSocialButtonIndex === button.index }"
+          (click)="onButtonPress('social', button.index)">
+          {{ button.label }}
+        </button>
+      </div>
+    </div>
+  
+    <!-- Кнопки для ГУМАНІТАРНІ -->
+    <div *ngIf="activeCategoryIndex === 2">
+      <div class="button-row">
+        <button *ngFor="let button of humanitarianButtons" class="button rounded-button"
+          [ngClass]="{ 'active': activeHumanitarianButtonIndex === button.index }"
+          (click)="onButtonPress('humanitarian', button.index)">
+          {{ button.label }}
+        </button>
+      </div>
+    </div>
+
+    <div class="hot-projects">
+      <span class="hot-projects-text">ГАРЯЧІ ПРОЄКТИ</span>
+      <hr class="hot-projects-line" />
+    </div>
+
+<!-- Результаты поиска (фото и описание) -->
+<div *ngIf="filteredItems.length > 0; else noResults">
+  <div class="search-items">
+    <div *ngFor="let item of filteredItems" class="search-item">
+       <!-- Контейнер для фото и описания, чтобы добавить рамку -->
+       <div class="search-item-content">
+
+        <div class="icon-top-left">
+          <img src="assets/images/LeftUpAngle.png" alt="icon" class="top-left-icon" />
+        </div>
+
+        <div class="icon-top-right">
+          <img src="assets/images/rocket.png" alt="icon 2" class="top-right-icon" />
+        </div>
+
+
+      <!-- Фото элемента -->
+      <img [src]="item.image" alt="image" class="search-item-img" />
+      
+      <!-- Название с суммой и прогресс-баром -->
+      <div class="search-item-body">
+        <p class="search-item-title">{{ item.title }}</p>
+        <!-- Сумма сверху прогресс-бара -->
+        <div class="progress-info">
+          <span class="progress-from">135 457 грн</span>
+          <span class="progress-to">500 000 грн</span>
+        </div>
+        
+        <!-- Прогресс-бар -->
+        <progress class="progress-bar" [value]="item.progress" max="100"></progress>
+      </div>
+
+      <!-- Иконка справа внизу под фото -->
+      <div class="icon-container">
+        <img src="assets/images/socialMedia.png" alt="icon" class="search-item-icon" />
+        <br>
+        <img src="assets/images/like.png" alt="new icon" class="search-item-icon" />
+      </div>
+
+      <!-- Иконки и числа под прогресс-баром -->
+      <div class="icons-container">
+        <div class="icon-item">
+          <img src="assets/images/people.png" alt="icon 1" class="icon-img" />
+          <p class="icon-number">{{ item.value1 }}</p>
+        </div>
+        <div class="icon-item">
+          <img src="assets/images/comments.png" alt="icon 2" class="icon-img" />
+          <p class="icon-number">{{ item.value2 }}</p>
+        </div>
+        <div class="icon-item">
+          <img src="assets/images/money.png" alt="icon 3" class="icon-img" />
+          <p class="icon-number">{{ item.value3 }}%</p>
+        </div>
+
+        <button class="support-button2">ПІДТРИМАТИ</button>
+      </div>
+
+      <div class="search-item-text">
+        Lorem, ipsum dolor sit amet consectetur adipisicing elit. Quia recusandae aliquam rem expedita itaque.
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+
+
+      
+      
+    
+    <ng-template #noResults>
+      <div class="no-results">Нічого не знайдено</div>
+    </ng-template>
+  </div>
+</div>
+  
+    <div class="header-right">
+      <button class="submit-project-btn">{{"Подати проєкт" | transloco}}</button>
+      <img src="assets/images/profile.png" class="profile-icon" alt="User Profile">
+    </div>
+
+    <div class="language-switcher" style="color: #898268;"><img src="assets/images/language.png" class="logo2">
+
+      <mat-select [formControl]="selectedLanguage" style="width: 55px;" (selectionChange)="onLanguageChange($event)">
+        <mat-option style="font-family: 'Montserrat';" *ngFor="let lang of languages" [value]="lang.code">
+          {{ lang.name }}
+        </mat-option>
+      </mat-select>
+  </div>
+   
+  </header>
+
+  <hr>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <div class="buttons-container">
+    <button (click)="setActiveTab(true)" 
+    [ngClass]="{
+        'active-button': showActive,
+        'inactive-button': !showActive
+      }" 
+      class="actual">{{"АКТУАЛЬНІ" | transloco}}</button>
+    <button (click)="setActiveTab(false)" [ngClass]="{
+        'active-button': !showActive,
+        'inactive-button': showActive
+      }" class="unActual">{{"ЗАВЕРШЕНІ" | transloco}}</button>
+</div>
+
+<div class="filter-container">
+   <img src="assets/images/Sort.png" style="position: relative; left: 35px; cursor:pointer" (click)="toggleSortModal()">
+   <img src="assets/images/Filter.png" style="position: relative; left: 55px; cursor:pointer" (click)="toggleFilterModal()"
+   [style.filter]="isFilterActive ? 'hue-rotate(0deg) saturate(100%) brightness(0%)' : 'none'">
+</div>
+
+<!-- Модальное окно сортировки -->
+<div *ngIf="isSortModalVisible" class="sort-modal-container" (click)="closeSortModal()">
+    <div class="sort-modal" (click)="$event.stopPropagation()">
+      <a 
+        *ngFor="let link of links; let i = index" 
+        (click)="changeColor(i)" 
+        [ngClass]="{'active-link': selectedLinkIndex === i}" 
+        style="font-family: 'Montserrat'; cursor: pointer;"
+      >
+        {{ link }}
+        <br>
+        <br>
+      </a>
+      <br><br>
+    </div>
+  </div>
+  
+
+<!-- Модальное окно с фильтрами -->
+<div *ngIf="isFilterModalOpen" class="filter-modal">
+    <div class="modal-overlay" (click)="toggleFilterModal()"></div>
+    <div class="modal-content">
+      <!-- Ваши элементы фильтра здесь -->
+      <h2 style="font-family: Montserrat; font-weight: 500; position: relative; left: -450px;">Фільтрувати</h2>
+      <h4 style="font-family: Montserrat; font-weight: 500; position: relative; left: -473px; font-size: 18px; top: 20px">КАТЕГОРІЯ</h4>
+      <h4 style="font-family: Montserrat; font-weight: 400; position: relative; left: -508px; font-size: 18px; top: 30px">Всі</h4>
+      <h4 style="font-family: Montserrat; font-weight: 400; position: relative; left: -462px; font-size: 18px; top: 30px;">Стартапи &nbsp; ▼</h4>
+
+      <div style="margin-left: -900px; margin-top: 30px; font-size: 16px;">
+        
+        <section id="checkbox" style="color: #44b36a;">
+            <mat-checkbox style="margin-left: -20px;">
+              <label style="font-weight: 300; position: relative; font-family: 'Montserrat'; display: flex;">
+                <span style="font-size: 18px;">{{"Освіта" | transloco }}</span>
+              </label>
+            </mat-checkbox>
+          </section>
+          
+          <br>
+       
+          <section class="example-margin" id="checkbox" style="color: #44b36a;">
+            <mat-checkbox class="example-margin" style="margin-left: 5px;">
+              <label style="font-weight: 300; position: relative; font-family: 'Montserrat'; display: flex;">
+                <span style="font-size: 18px;">{{"Культура" | transloco }}</span>
+              </label>
+            </mat-checkbox>
+          </section>
+        
+          <br>
+
+          <section class="example-margin" id="checkbox" style="color: #44b36a;">
+            <mat-checkbox class="example-margin" style="margin-left: 22px;">
+              <label style="font-weight: 300; position: relative; font-family: 'Montserrat'; display: flex;">
+                <span style="font-size: 18px;">{{"Медицина" | transloco }}</span>
+              </label>
+            </mat-checkbox>
+          </section>
+
+        <br>
+
+        <section class="example-margin" id="checkbox" style="color: #44b36a;">
+            <mat-checkbox class="example-margin" style="margin-left: 35px;">
+              <label style="font-weight: 300; position: relative; font-family: 'Montserrat'; display: flex;">
+                <span style="font-size: 18px;">{{"Харчування" | transloco }}</span>
+              </label>
+            </mat-checkbox>
+          </section>
+
+        <br>
+
+        <section class="example-margin" id="checkbox" style="color: #44b36a;">
+            <mat-checkbox class="example-margin" style="margin-left: 25px;">
+              <label style="font-weight: 300; position: relative; font-family: 'Montserrat'; display: flex;">
+                <span style="font-size: 18px;">{{"Транспорт" | transloco }}</span>
+              </label>
+            </mat-checkbox>
+          </section>
+
+        <br>
+
+        <section class="example-margin" id="checkbox" style="color: #44b36a;">
+            <mat-checkbox class="example-margin" style="margin-left: -3px;">
+              <label style="font-weight: 300; position: relative; font-family: 'Montserrat'; display: flex;">
+                <span style="font-size: 18px;">{{"Музика" | transloco }}</span>
+              </label>
+            </mat-checkbox>
+          </section>
+
+        <br>
+
+        <section class="example-margin" id="checkbox" style="color: #44b36a;">
+            <mat-checkbox class="example-margin" style="margin-left: -2px;">
+              <label style="font-weight: 300; position: relative; font-family: 'Montserrat'; display: flex;">
+                <span style="font-size: 18px;">{{"Дизайн" | transloco }}</span>
+              </label>
+            </mat-checkbox>
+          </section>
+
+        <br>
+
+        <section class="example-margin" id="checkbox" style="color: #44b36a;">
+            <mat-checkbox class="example-margin" style="margin-left: 30px;">
+              <label style="font-weight: 300; position: relative; font-family: 'Montserrat'; display: flex;">
+                <span style="font-size: 18px;">{{"Література" | transloco }}</span>
+              </label>
+            </mat-checkbox>
+          </section>
+
+        <br>
+
+        <section class="example-margin" id="checkbox" style="color: #44b36a;">
+            <mat-checkbox class="example-margin" style="margin-left: -33px;">
+              <label style="font-weight: 300; position: relative; font-family: 'Montserrat'; display: flex;">
+                <span style="font-size: 18px;">{{"Діти" | transloco }}</span>
+              </label>
+            </mat-checkbox>
+          </section>
+
+        <br>
+
+        <section class="example-margin" id="checkbox" style="color: #44b36a;">
+            <mat-checkbox class="example-margin" style="margin-left: -33px;">
+              <label style="font-weight: 300; position: relative; font-family: 'Montserrat'; display: flex;">
+                <span style="font-size: 18px;">{{"Кіно" | transloco }}</span>
+              </label>
+            </mat-checkbox>
+          </section>
+
+        <br>
+
+        <section class="example-margin" id="checkbox" style="color: #44b36a;">
+            <mat-checkbox class="example-margin" style="margin-left: -15px;">
+              <label style="font-weight: 300; position: relative; font-family: 'Montserrat'; display: flex;">
+                <span style="font-size: 18px;">{{"Медіа" | transloco }}</span>
+              </label>
+            </mat-checkbox>
+          </section>
+
+        <br>
+
+        <section class="example-margin" id="checkbox" style="color: #44b36a;">
+            <mat-checkbox class="example-margin" style="margin-left: 25px;">
+              <label style="font-weight: 300; position: relative; font-family: 'Montserrat'; display: flex;">
+                <span style="font-size: 18px;">{{"Технології" | transloco }}</span>
+              </label>
+            </mat-checkbox>
+          </section>
+        
+        <br>
+
+      </div>
+
+      <div class="social2">
+      <h4 style="font-family: Montserrat; font-weight: 400; position: relative; left: -460px; font-size: 18px; top: -40px;">Соціальні &nbsp; ▼</h4>
+      </div>
+
+      <!-- Контейнер с текстом для Соціальні -->
+<div class="social-content" style="margin-left: -900px; margin-top: -65px; font-size: 16px;">
+    
+    <section id="checkbox" style="color: #44b36a;">
+        <mat-checkbox style="margin-left: -6px;">
+          <label style="font-weight: 300; position: relative; font-family: 'Montserrat'; display: flex;">
+            <span style="font-size: 18px;">{{"Освіта" | transloco }}</span>
+          </label>
+        </mat-checkbox>
+      </section>
+      
+      <br>
+
+      <section class="example-margin2" id="checkbox" style="color: #44b36a;">
+        <mat-checkbox style="margin-left: -7px;">
+          <label style="font-weight: 300; position: relative; font-family: 'Montserrat'; display: flex;">
+            <span style="font-size: 18px;">{{"Наука" | transloco }}</span>
+          </label>
+        </mat-checkbox>
+      </section>
+      
+      <br>
+
+      <section class="example-margin2" id="checkbox" style="color: #44b36a;">
+        <mat-checkbox style="margin-left: 23px;">
+          <label style="font-weight: 300; position: relative; font-family: 'Montserrat'; display: flex;">
+            <span style="font-size: 18px;">{{"Культура" | transloco }}</span>
+          </label>
+        </mat-checkbox>
+      </section>
+      
+      <br>
+
+      <section class="example-margin2" id="checkbox" style="color: #44b36a;">
+        <mat-checkbox style="margin-left: 43px;">
+          <label style="font-weight: 300; position: relative; font-family: 'Montserrat'; display: flex;">
+            <span style="font-size: 18px;">{{"Мистецтво" | transloco }}</span>
+          </label>
+        </mat-checkbox>
+      </section>
+      
+      <br>
+
+      <section class="example-margin2" id="checkbox" style="color: #44b36a;">
+        <mat-checkbox style="margin-left: 40px;">
+          <label style="font-weight: 300; position: relative; font-family: 'Montserrat'; display: flex;">
+            <span style="font-size: 18px;">{{"Медицина" | transloco }}</span>
+          </label>
+        </mat-checkbox>
+      </section>
+      
+      <br>
+
+  </div>
+
+      
+      
+      <div class="filter-buttons">
+      <h4 style="font-family: Montserrat; font-weight: 400; position: relative; left: -450px; font-size: 18px; top: -40px;">Гуманітарні &nbsp; ▼</h4>
+      </div>
+
+      <div class="social-content" style="margin-left: -900px; margin-top: -60px; font-size: 16px;">
+    
+        <section id="checkbox" style="color: #44b36a;">
+            <mat-checkbox style="margin-left: 35px;">
+              <label style="font-weight: 300; position: relative; font-family: 'Montserrat'; display: flex;">
+                <span style="font-size: 18px;">{{"Воєнні дії" | transloco }}</span>
+              </label>
+            </mat-checkbox>
+          </section>
+          
+          <br>
+    
+          <section class="example-margin2" id="checkbox" style="color: #44b36a;">
+            <mat-checkbox style="margin-left: 70px;">
+              <label style="font-weight: 300; position: relative; font-family: 'Montserrat'; display: flex;">
+                <span style="font-size: 18px;">{{"Стихійні лиха" | transloco }}</span>
+              </label>
+            </mat-checkbox>
+          </section>
+          
+          <br>
+    
+          <section class="example-margin2" id="checkbox" style="color: #44b36a;">
+            <mat-checkbox style="margin-left: 162px;">
+              <label style="font-weight: 300; position: relative; font-family: 'Montserrat'; display: flex;">
+                <span style="font-size: 18px;">{{"Техногенні катастрофи" | transloco }}</span>
+              </label>
+            </mat-checkbox>
+          </section>
+          
+          <br>
+    
+          <section class="example-margin2" id="checkbox" style="color: #44b36a;">
+            <mat-checkbox style="margin-left: 28px;">
+              <label style="font-weight: 300; position: relative; font-family: 'Montserrat'; display: flex;">
+                <span style="font-size: 18px;">{{"Екологія" | transloco }}</span>
+              </label>
+            </mat-checkbox>
+          </section>
+          
+          <br>
+    
+      </div>
+
+      <h4  style="font-family: Montserrat; font-weight: 500; position: absolute; left: 490px; font-size: 18px; top: 88px">СУМА ЗБОРУ</h4>
+
+      <div class="progress-bar-container" (mousedown)="startMove($event)" (mousemove)="move($event)" (mouseup)="stopMove()">
+        <div class="progress-bar-fill" [style.width]="progress + '%'"></div>
+        <div class="progress-circle" [style.left]="progress + '%'" (mousedown)="startMove($event)">
+        </div>
+      
+        <!-- Динамическая сумма на начале прогресс-бара -->
+        <div class="progress-label start-label">{{ dynamicStartLabel }} грн</div>
+      
+        <!-- Сумма на конце прогресс-бара -->
+        <div class="progress-label end-label">{{ endLabel }} грн</div>
+      </div>
+      
+      <div class="filter-buttons">
+      <button class="reset" style="color: #247a60; background: white; border: 2px solid #247A60;">СКИНУТИ</button>
+      <button class="filter2">ФІЛЬТРУВАТИ</button>
+    </div>
+    </div>
+  </div>
+
+<div class="projects-container">
+  <div class="projects-grid" *ngIf="showActive">
+    <div
+      class="project-card"
+      *ngFor="let project of projectsList; let i = index"
+      [ngClass]="'project-card-' + i"
+    >
+      <div class="icon-container"></div>
+
+      <div class="project-overlay">
+        <div class="project-title">{{ project.title | transloco }}</div>
+
+        <div class="project-extra">
+          <div class="progress-bar2">
+            <div class="progress2" [style.width]="getProgress(project)"></div>
+          </div>
+          <p class="amount-raised">{{ project.collectionAmount }} {{ "грн" | transloco }}</p>
+          <p class="goal-amount">{{ project.collectedAmount }} {{ "грн" | transloco }}</p>
+
+          <div class="icon-container2">
+            <img src="assets/images/people.png" />
+            <span style="position: relative; top: 30px; left: -20px; font-size: 18px; font-weight: 400; font-family: 'Montserrat';">25</span>
+          </div>
+
+          <div class="icon-container3">
+            <img src="assets/images/comments.png" />
+            <span style="position: relative; top: 28px; left: -20px; font-size: 18px; font-weight: 400; font-family: 'Montserrat';">36</span>
+          </div>
+
+          <div class="icon-container4">
+            <img src="assets/images/money.png" />
+            <span style="position: relative; top: 30px; left: -20px; font-size: 18px; font-weight: 400; font-family: 'Montserrat';">{{PercentageOfMoney(project.collectedAmount,project.collectionAmount)}}</span>
+          </div>
+
+          <div>
+            <img src="assets/images/socialMedia.png" class="social-icon" />
+          </div>
+
+          <div>
+            <img
+              class="like-icon"
+              [src]="project.mainPhotoUrl ? 'assets/images/likeRed.png' : 'assets/images/like.png'"
+              (click)="toggleLike(i)"
+            />
+          </div>
+
+          <button [routerLink]="'/donation-page'" class="support-button">{{ "ПІДТРИМАТИ" | transloco }}</button>
+          
+          <div class="project-description">
+            <p>{{project.shortDescription}}</p>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <img src="assets/images/LeftUpAngle.png" class="angle-icon" />
+      </div>
+      <div>
+        <img src="assets/images/rocket.png" class="rocket-icon" />
+      </div>
+
+      <img [src]="project.mainPhotoUrl" alt="{{ project.title }}" class="project-image" />
+    </div>
+  </div>
+  
+</div>
+<div id="targetSection2"></div>
+
+
+
+<div class="projects-grid2" *ngIf="!showActive">
+    <div
+      class="project-card2 completed"
+      *ngFor="let project of projects; let i = index"
+      [ngClass]="'project-card-' + i"
+    >
+      <div class="icon-container"></div>
+  
+      <div class="project-overlay2">
+        <div class="project-title2">{{ project.title | transloco }}</div>
+  
+        <div class="project-extra2">
+          <p class="completed-text">{{ "Збір закрито" | transloco }}: 
+            <span class="closing-date">{{ project.closingDate }}</span>
+          </p>
+  
+          <p class="participants-text">
+            {{ "Учасників" | transloco }}: 
+            <span class="participants">{{ project.participants }}</span>
+          </p>
+  
+          <p class="amount-raised2">
+            {{ project.amount }} {{ "грн" | transloco }}
+          </p>
+  
+          <p class="goal-percentage">
+            ({{ project.percentage }}%)
+          </p>
+  
+          <div class="icon-container2">
+            <img [src]="" />
+            <span>{{ project.participants }}</span>
+          </div>
+        </div>
+      </div>
+  
+      <img [src]="project.image" alt="{{ project.title }}" class="project-image" />
+    </div>
+  </div>
+  
+
+
+
+
+<div class="yellow-line"></div>
+  
+<!-- Карусель -->
+<div class="carousel-wrapper">
+    <h2 class="carousel-title-text"> {{ "УСПІШНО ЗАВЕРШЕНІ ПРОЄКТИ" | transloco }}</h2>
+  
+    <div class="carousel-container">
+      <button class="nav-btn left" (click)="prevSlide()">
+        <span class="arrow arrow-left"></span>
+      </button>
+  
+      <div class="carousel">
+        <div
+          class="carousel-track"
+          [style.transform]="
+            'translateX(' + -currentIndex * (100 / visibleItems) + '%)'
+          "
+        >
+          <div
+            *ngFor="let project of projects; let i = index"
+            class="carousel-item"
+          >
+            <img [src]="project.image" alt="Project Image" />
+  
+            <div class="carousel-info-block">
+              <div
+                style="
+                  font-size: 25px;
+                  position: relative;
+                  margin-top: 10px;
+                  margin-left: -18px;
+                "
+              >
+                {{ project.title | transloco }}
+              </div>
+              <div class="carousel-info-content">
+                <p
+                  style="
+                    color: black;
+                    font-weight: 400;
+                    position: relative;
+                    left: -100px;
+                    font-size: 14px;
+                    margin-top: 10px;
+                  "
+                >
+                   {{ "Збір закрито" | transloco }}
+                  <span
+                    style="font-weight: 600; position: relative; left: 14px"
+                    >{{ project.closingDate }}</span
+                  >
+                </p>
+                <p
+                  style="
+                    color: black;
+                    font-weight: 400;
+                    position: relative;
+                    left: -135px;
+                    font-size: 14px;
+                    margin-top: 10px;
+                  "
+                >
+                  {{ "Учасників" | transloco }}<span
+                    style="font-weight: 600; position: relative; left: 45px"
+                    >{{ project.participants }}</span
+                  >
+                </p>
+                <p
+                  style="
+                    color: black;
+                    font-size: 20px;
+                    position: relative;
+                    top: -53px;
+                    left: 90px;
+                  "
+                >
+                  {{ project.amount }} {{"грн" | transloco}}
+                </p>
+                <p
+                  style="
+                    color: black;
+                    position: relative;
+                    top: -48px;
+                    font-size: 14px;
+                    font-weight: 400;
+                    left: 55px;
+                  "
+                >
+                  ({{ project.percentage }}%)
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+  
+      <button class="nav-btn right" (click)="nextSlide()">
+        <span class="arrow arrow-right"></span>
+      </button>
+    </div>
+
+    <div class="view-all-text">
+        <a href="#">{{ "Дивитись усі" | transloco }}</a>
+      </div>
+  </div>
+
+
+
+
+  <footer class="footer">
+    <div class="footer-container">
+      <div class="footer-header">
+        <div class="footer-logo">
+          <img src="assets/images/greenCoin.png" alt="Seed Flow" />
+          <span style="font-family: 'Montserrat Alternates';">Seed Flow</span>
+        </div>
+        <hr class="footer-line" />
+      </div>
+
+      <div class="subscription" style="background-color: #bde7d6; margin-left: 345px; padding: 25px; text-align: center; border-radius: 8px; margin-bottom: 20px; width: 80%; display: flex; align-items: center; justify-content: center; box-sizing: border-box;">
+        <span style="font-family: 'Montserrat'; font-size: 18px; font-weight: 500; color: #247a60;position: relative; right: 50px; white-space: nowrap;">
+          {{"ПІДПИШИСЬ НА НАШІ НОВИНИ" | transloco}}
+        </span>
+        <input type="email" placeholder="{{'Введіть адресу електронної пошти' | transloco }}" style="padding: 8px; border: none; border-radius: 5px; width: 750px; font-family: 'Montserrat';" />
+        <button style="padding: 12px 15px; border: none; background-color: #247a60; color: white; font-weight: 500; border-radius: 5px; position: relative; left: 50px; cursor: pointer; font-family: 'Montserrat';">
+          {{"ВІДПРАВИТИ" | transloco }}
+        </button>
+      </div>
+  
+      <div class="footer-links">
+        <div class="footer-column">
+          <h4>{{"ПРО НАС" | transloco}}</h4>
+          <ul>
+            <li><a href="#">{{"Політика конфіденційності" | transloco}}</a></li>
+            <li><a href="#">{{"Правила користування порталом" | transloco}}</a></li>
+            <li><a href="#">{{"Про нас" | transloco}}</a></li>
+            <li><a href="#">{{"Супровід" | transloco}}</a></li>
+          </ul>
+        </div>
+        <div class="footer-column">
+          <h4>{{"ПРОЄКТИ" | transloco}}</h4>
+          <ul>
+            <li><a href="#">{{"Список проєктів" | transloco}}</a></li>
+            <li><a href="#">{{"Пошук" | transloco}}</a></li>
+            <li><a href="#">{{"Викласти проєкт" | transloco}}</a></li>
+          </ul>
+        </div>
+        <div class="footer-column">
+          <h4>{{"АКАУНТ" | transloco}}</h4>
+          <ul>
+            <li><a href="#">{{"Налаштування акаунта" | transloco}}</a></li>
+            <li><a href="#">{{"Повідомлення" | transloco}}</a></li>
+            <li><a href="#">{{"Перегляд транзакцій" | transloco}}</a></li>
+            <li><a href="#">{{"Підтримані проєкти" | transloco}}</a></li>
+            <li><a href="#">{{"Вподобані проєкти" | transloco}}</a></li>
+            <li><a href="#">{{"Вподобані товари" | transloco}}</a></li>
+            <li><a href="#">{{"Історія покупок" | transloco}}</a></li>
+          </ul>
+        </div>
+        <div class="footer-column">
+          <h4>{{"ПІДТРИМКА" | transloco}}</h4>
+          <ul>
+            <li><a href="#">FAQ</a></li>
+            <li><a href="#">{{"Супровід проєкту" | transloco}}</a></li>
+            <li><a href="#">{{"Семінари/вебінари" | transloco}}</a></li>
+            <li><a href="#">{{"Блог" | transloco}}</a></li>
+          </ul>
+        </div>
+        <div class="footer-column">
+          <h4>{{"МАГАЗИН" | transloco}}</h4>
+          <ul>
+            <li><a href="#">{{"Політика конфіденційності" | transloco}}</a></li>
+            <li><a href="#">{{"Правила користування порталом" | transloco}}</a></li>
+            <li><a href="#">{{"Про нас" | transloco}}</a></li>
+            <li><a href="#">{{"Карта сайту" | transloco}}</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+     <hr
+      style="
+        border-top: 3px solid #ffcf33;
+        width: 38%;
+        margin-top: 60px;
+        justify-content: left;
+        position: relative;
+        left: -440px;
+      "
+    />
+    <div class="footer-social">
+      <h4 style="font-family: 'Montserrat'">
+        <p class="underline-center">{{"МИ У СОЦМЕРЕЖАХ" | transloco }}</p>
+      </h4>
+
+      <div class="social-icons">
+        <a href="#"><i class="fa-brands fa-instagram"></i></a>
+        <a href="#"><i class="fa-brands fa-telegram"></i></a>
+        <a href="#"><i class="fa-brands fa-youtube"></i></a>
+        <a href="#"><i class="fa-brands fa-linkedin"></i></a>
+      </div>
+    </div>
+
+    <hr
+      style="
+        border-top: 3px solid #ffcf33;
+        width: 38%;
+        margin-top: 80px;
+        justify-content: left;
+        position: relative;
+        left: 365px;
+      "
+    />
+
+    <div class="footer-bottom">
+      <p style="font-weight: 400;">
+        Всі права збережені | All rights save © 2025
+      </p>
+    </div>
+  </footer>
+
+

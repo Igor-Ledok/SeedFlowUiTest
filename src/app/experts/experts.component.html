@@ -1,0 +1,447 @@
+<!-- Шрифт Montserrat -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+
+<!-- Шрифт unbounded -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Unbounded:wght@200..900&display=swap" rel="stylesheet">
+
+<!-- Шрифт Montserrat Alternates -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat+Alternates:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Unbounded:wght@200..900&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+<header class="header">
+    <div class="header-left">
+      <img src="assets/images/greenCoin.png" class="logo" alt="Seed Flow Logo" />
+      <span class="brand-name">Seed Flow</span>
+    </div>
+  
+    <!-- Блок поиска -->
+<div class="search-container" #searchContainer>
+  <input 
+    style="font-family: 'Montserrat';"
+    type="text"
+    class="search-input"
+    placeholder="🔍"
+    (focus)="showDropdown = true"
+    (input)="filterResults()"
+    [(ngModel)]="searchText"
+  />
+  
+  <div *ngIf="showDropdown" class="search-dropdown" [style.height]="getDropdownHeight()">
+    <!-- 3 основные кнопки: СТАРТАПИ, СОЦІАЛЬНІ, ГУМАНІТАРНІ -->
+    <div class="button-row wide-buttons">
+      <button class="button wide-button"
+        [ngClass]="{ 'active': activeCategoryIndex === 0 }"
+        (click)="onCategoryButtonPress(0)">
+       {{" СТАРТАПИ" | transloco}}</button>
+      <button class="button wide-button"
+        [ngClass]="{ 'active': activeCategoryIndex === 1 }"
+        (click)="onCategoryButtonPress(1)">
+        СОЦІАЛЬНІ</button>
+      <button class="button wide-button"
+        [ngClass]="{ 'active': activeCategoryIndex === 2 }"
+        (click)="onCategoryButtonPress(2)">
+        ГУМАНІТАРНІ</button>
+    </div>
+  
+    <!-- Кнопки для СТАРТАПИ -->
+    <div *ngIf="activeCategoryIndex === 0">
+      <div class="button-row" *ngFor="let row of startupRows">
+        <button *ngFor="let button of row" class="button rounded-button"
+          [ngClass]="{ 'active': activeStartupButtonIndex === button.index }"
+          (click)="onButtonPress('startup', button.index)">
+          {{ button.label }}
+        </button>
+      </div>
+    </div>
+  
+    <!-- Кнопки для СОЦІАЛЬНІ -->
+    <div *ngIf="activeCategoryIndex === 1">
+      <div class="button-row">
+        <button *ngFor="let button of socialButtons" class="button rounded-button"
+          [ngClass]="{ 'active': activeSocialButtonIndex === button.index }"
+          (click)="onButtonPress('social', button.index)">
+          {{ button.label }}
+        </button>
+      </div>
+    </div>
+  
+    <!-- Кнопки для ГУМАНІТАРНІ -->
+    <div *ngIf="activeCategoryIndex === 2">
+      <div class="button-row">
+        <button *ngFor="let button of humanitarianButtons" class="button rounded-button"
+          [ngClass]="{ 'active': activeHumanitarianButtonIndex === button.index }"
+          (click)="onButtonPress('humanitarian', button.index)">
+          {{ button.label }}
+        </button>
+      </div>
+    </div>
+
+    <div class="hot-projects">
+      <span class="hot-projects-text">ГАРЯЧІ ПРОЄКТИ</span>
+      <hr class="hot-projects-line" />
+    </div>
+
+<!-- Результаты поиска (фото и описание) -->
+<div *ngIf="filteredItems.length > 0; else noResults">
+  <div class="search-items">
+    <div *ngFor="let item of filteredItems" class="search-item">
+       <!-- Контейнер для фото и описания, чтобы добавить рамку -->
+       <div class="search-item-content">
+
+        <div class="icon-top-left">
+          <img src="assets/images/LeftUpAngle.png" alt="icon" class="top-left-icon" />
+        </div>
+
+        <div class="icon-top-right">
+          <img src="assets/images/rocket.png" alt="icon 2" class="top-right-icon" />
+        </div>
+
+
+      <!-- Фото элемента -->
+      <img [src]="item.image" alt="image" class="search-item-img" />
+      
+      <!-- Название с суммой и прогресс-баром -->
+      <div class="search-item-body">
+        <p class="search-item-title">{{ item.title }}</p>
+        <!-- Сумма сверху прогресс-бара -->
+        <div class="progress-info">
+          <span class="progress-from">135 457 грн</span>
+          <span class="progress-to">500 000 грн</span>
+        </div>
+        
+        <!-- Прогресс-бар -->
+        <progress class="progress-bar" [value]="item.progress" max="100"></progress>
+      </div>
+
+      <!-- Иконка справа внизу под фото -->
+      <div class="icon-container">
+        <img src="assets/images/socialMedia.png" alt="icon" class="search-item-icon" />
+        <br>
+        <img src="assets/images/like.png" alt="new icon" class="search-item-icon" />
+      </div>
+
+      <!-- Иконки и числа под прогресс-баром -->
+      <div class="icons-container">
+        <div class="icon-item">
+          <img src="assets/images/people.png" alt="icon 1" class="icon-img" />
+          <p class="icon-number">{{ item.value1 }}</p>
+        </div>
+        <div class="icon-item">
+          <img src="assets/images/comments.png" alt="icon 2" class="icon-img" />
+          <p class="icon-number">{{ item.value2 }}</p>
+        </div>
+        <div class="icon-item">
+          <img src="assets/images/money.png" alt="icon 3" class="icon-img" />
+          <p class="icon-number">{{ item.value3 }}%</p>
+        </div>
+
+        <button class="support-button2">ПІДТРИМАТИ</button>
+      </div>
+
+      <div class="search-item-text">
+        Lorem, ipsum dolor sit amet consectetur adipisicing elit. Quia recusandae aliquam rem expedita itaque.
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+
+
+      
+      
+    
+    <ng-template #noResults>
+      <div class="no-results">Нічого не знайдено</div>
+    </ng-template>
+  </div>
+</div>
+  
+    <div class="header-right">
+      <button class="submit-project-btn">{{"Подати проєкт" | transloco}}</button>
+      <img src="assets/images/profile.png" class="profile-icon" alt="User Profile">
+    </div>
+
+    <div class="language-switcher" style="color: #898268;"><img src="assets/images/language.png" class="logo2">
+
+      <mat-select [formControl]="selectedLanguage" style="width: 55px;" (selectionChange)="onLanguageChange($event)">
+        <mat-option style="font-family: 'Montserrat';" *ngFor="let lang of languages" [value]="lang.code">
+          {{ lang.name }}
+        </mat-option>
+      </mat-select>
+  </div>
+   
+  </header>
+
+  <hr>
+
+
+  <div class="container">
+    <img src="assets/images/loftImg.png" alt="Фото">
+    <div class="overlay">{{"ПРОФЕСІЙНІ ПОРАДИ ЩОДО КРАУДФАНДИНГУ НА ПЕРЕПОВНЕНОМУ РИНКУ" | transloco}}</div>
+</div>
+
+<div class="phone-info">
+    <span>{{"Тел." | transloco}} +38 (073) 123-45-67</span>
+    <div class="phone-info-button">
+        <button>{{"ВПОДОБАТИ" | transloco}}</button>
+    </div>
+    <span><a href="#">{{"Більше" | transloco}}</a></span>
+    <div class="more-info-icon">
+        <a href="#"><img src="assets/images/socialMedia.png" alt="Иконка"></a> <!-- Иконка для "Більше" -->
+    </div>
+</div>
+
+<div class="center-container">
+    <div class="center-content">
+        <p class="primary-text">{{"Запуск краудфандингової кампанії на конкурентному ринку може здатися складним, але це також можливість продемонструвати, що робить ваш проект унікальним. Завдяки продуманому підходу та надійній стратегії ви можете виділитися, залучити свою аудиторію та досягти успіху навіть у переповненому полі. Ось кілька професійних порад, які допоможуть вам сяяти:" | transloco}}
+        </p>
+        <p class="secondary-text">
+            {{"1. Визначте свою унікальну цінність" | transloco}}
+        </p>
+        <p class="primary-text2">{{"Чим ваш проект відрізняється від інших на ринку? Чітке визначення вашої унікальної цінності є першим кроком до того, щоб виділитися." | transloco}}
+        </p>
+
+        <p class="primary-text2">{{"Чому це важливо. Потенційним спонсорам потрібна чітка причина, щоб обрати вашу кампанію перед іншими." | transloco}}
+            <br>
+            {{"Як це зробити:" | transloco}}
+            <br>
+            {{"Підкресліть проблему, яку вирішує ваш продукт, і чому він важливий для вашої аудиторії. Підкресліть будь-які унікальні особливості, переваги чи інновації. Поділіться своєю історією — що надихнуло ваш проект і чому ви ним захоплені." | transloco}}
+        </p>    
+        
+        <p class="secondary-text">           
+            {{"2. Створіть сильну присутність перед запуском" | transloco}}
+        </p>
+        <p class="primary-text2">{{"Чудова кампанія починається ще до дня запуску. Використовуйте свою передзапускову фазу, щоб створити галас і підтвердити свою присутність." | transloco}}
+        </p>
+
+
+        <p class="primary-text2">{{"Чому це важливо: серйозні зусилля перед запуском створюють очікування та забезпечують готову аудиторію під час запуску." | transloco}}
+            <br>
+            {{"Як це зробити:" | transloco}}
+            <br>
+            {{"Створіть сторінку перед запуском, щоб збирати адреси електронної пошти та перевіряти інтерес. Діліться тизерами, закулісним вмістом і оновленнями в соціальних мережах. Залучайтеся до своєї мережі та заохочуйте їх поширювати інформацію." | transloco}}
+        </p>    
+
+        <p class="secondary-text">           
+            {{"3. Зосередьтеся на чітких і переконливих повідомленнях" | transloco}}
+        </p>
+        <p class="primary-text2">{{"На переповненому ринку ясність є ключовою. Ваші повідомлення мають миттєво повідомляти про вашу кампанію та чому її варто підтримати." | transloco}}
+        </p>
+        <p class="primary-text2">{{"Чому це важливо: люди, швидше за все, залучатимуться до кампанії, яку легко зрозуміти та емоційно резонансну." | transloco}}
+            <br>
+            {{"Як це зробити:" | transloco}}
+            <br>
+            {{"Використовуйте просту, привабливу мову, яка підкреслює переваги вашого продукту. Зосередьтеся на тому, як ваш проект покращує життя ваших спонсорів. Уникайте жаргону чи надто технічних термінів, які можуть заплутати чи відштовхнути потенційних прихильників." | transloco}}
+        </p> 
+
+        <p class="secondary-text">           
+            {{"4. Створюйте візуальні ефекти, що привертають увагу" | transloco}}
+        </p>
+       
+        <p class="primary-text2">{{"У морі кампаній яскраві візуальні ефекти можуть виділити вашу." | transloco}}
+        </p>
+        <p class="primary-text2">{{"Чому це важливо? Високоякісні зображення та відео привертають увагу та передають професіоналізм." | transloco}}
+            <br>
+            {{"Як це зробити:" | transloco}}
+            <br>
+            {{"Використовуйте професійні фотографії та відео, щоб продемонструвати свій продукт. Додайте чітке, захоплююче презентаційне відео, яке висвітлює функції, переваги та історію вашого продукту. Переконайтеся, що ваші візуальні елементи відповідають вашому бренду та повідомленням." | transloco}}
+        </p> 
+
+        <p class="secondary-text">           
+            {{"5. Пропонуйте непереборні бонуси" | transloco}}
+        </p>
+
+        <p class="primary-text2">{{"Ваші бонуси є головним стимулом для спонсорів, тому зробіть їх привабливими та цінними." | transloco}}
+
+        </p>
+        <p class="primary-text2">{{"Чому це важливо: привабливі бонуси заохочують до внесків і створюють ажіотаж навколо вашої кампанії." | transloco}}
+            <br>
+            {{"Як це зробити:" | transloco}}
+            <br>
+            {{"Пропонуйте різноманітні бонуси за різними цінами, щоб зацікавити широку аудиторію. Використовуйте бонуси для ранніх клієнтів, щоб винагородити ранніх спонсорів і створити терміновість. Розгляньте ексклюзивні або обмежені бонуси, щоб додати відчуття ексклюзивності." | transloco}}
+        </p> 
+
+        <p class="secondary-text">           
+            {{"6. Будуйте стосунки, а не лише спонсорів" | transloco}}
+        </p>
+
+        <p class="primary-text2">{{"Краудфандинг — це не лише фінансування, а й створення спільноти прихильників, які вірять у ваше бачення." | transloco}}
+
+        </p>
+        <p class="primary-text2">{{"Чому це важливо: заангажовані спонсори з більшою ймовірністю зроблять внесок, поділяться вашою кампанією та стануть прихильниками вашого проекту." | transloco}}
+            <br>
+            {{"Як це зробити:" | transloco}}
+            <br>
+            {{"Швидко відповідайте на запитання та коментарі спонсорів. Висловіть вдячність, подякувавши спонсорам особисто або через оновлення кампанії. Залучайте свою аудиторію за допомогою регулярних оновлень, етапів і перспективних цілей." | transloco}}
+        </p> 
+
+        <p class="secondary-text">             
+            {{"7. Використовуйте соціальний доказ" | transloco}}
+        </p>
+
+        <p class="primary-text2">{{"Коли потенційні спонсори бачать, що інші підтримують вашу кампанію, вони, швидше за все, приєднаються." | transloco}}
+
+
+        </p>
+        <p class="primary-text2">{{"Чому це важливо: соціальний доказ створює довіру та імпульс." | transloco}}
+            <br>
+            {{"Як це зробити:" | transloco}}
+            <br>
+            {{"Виділіть перші внески та етапи на сторінці кампанії та в соціальних мережах. Поділіться відгуками або цитатами перших прихильників. Заохочуйте спонсорів ділитися своїм захопленням з приводу вашої кампанії зі своїми мережами." | transloco}}
+        </p> 
+
+        <p class="secondary-text">             
+            {{"Заключні думки" | transloco}}
+        </p>
+
+        <p class="primary-text2">{{"Краудфандинг на переповненому ринку може здатися складним, але це також можливість піднятися над конкурентами. Зосереджуючись на своїй унікальній цінності, створюючи міцні зв’язки та створюючи кампанію, яка резонує з вашою аудиторією, ви можете досягти успіху та втілити своє бачення в життя." | transloco}}
+
+
+        </p>
+        <p class="primary-text2">{{"Пам’ятайте, кожна взаємодія з вашою аудиторією – це можливість продемонструвати свою пристрасть і відданість. Зробіть перший крок сьогодні і зробіть свою кампанію незабутньою!" | transloco}}
+        </p> 
+
+         <!-- Текст под фото -->
+        <div class="center-text">
+        <p style="font-size: 27px; font-weight: 700;">{{"Чи була ця стаття корисною?" | transloco}}</p>
+        </div>
+
+        <div class="image-gallery">
+            <div class="image-item">
+                <button style="padding: 12px 15px; border: none; background-color: #247a60; color: white; font-weight: 600; border-radius: 5px; position: relative;  cursor: pointer; font-family: 'Montserrat'; font-size: 24px; width: 150px;">{{"Так" | transloco}}</button>
+                <h3 class="image-title">{{"⇦ Prev" | transloco}}</h3>
+            </div>
+            <div class="image-item second-image">
+                <button style="padding: 12px 15px; border: none; background-color: #ffcf33; color: #247a60; font-weight: 600; border-radius: 5px; position: relative;  cursor: pointer; font-family: 'Montserrat'; font-size: 24px; width: 150px;">{{"Ні" | transloco}}</button>
+                <h3 class="image-title2">{{"Next ⇨" | transloco}}</h3>
+            </div>
+          </div>
+        
+    </div>
+</div>
+
+
+
+
+
+
+
+  <footer class="footer">
+    <div class="footer-container">
+      <div class="footer-header">
+        <div class="footer-logo">
+          <img src="assets/images/greenCoin.png" alt="Seed Flow" />
+          <span style="font-family: 'Montserrat Alternates';">Seed Flow</span>
+        </div>
+        <hr class="footer-line" />
+      </div>
+
+      <div class="subscription" style="background-color: #bde7d6; margin-left: 345px; padding: 25px; text-align: center; border-radius: 8px; margin-bottom: 20px; width: 80%; display: flex; align-items: center; justify-content: center; box-sizing: border-box;">
+        <span style="font-family: 'Montserrat'; font-size: 18px; font-weight: 500; color: #247a60;position: relative; right: 50px; white-space: nowrap;">
+          {{"ПІДПИШИСЬ НА НАШІ НОВИНИ" | transloco}}
+        </span>
+        <input type="email" placeholder="{{'Введіть адресу електронної пошти' | transloco }}" style="padding: 8px; border: none; border-radius: 5px; width: 750px; font-family: 'Montserrat';" />
+        <button style="padding: 12px 15px; border: none; background-color: #247a60; color: white; font-weight: 500; border-radius: 5px; position: relative; left: 50px; cursor: pointer; font-family: 'Montserrat';">
+          {{"ВІДПРАВИТИ" | transloco }}
+        </button>
+      </div>
+  
+      <div class="footer-links">
+        <div class="footer-column">
+          <h4>{{"ПРО НАС" | transloco}}</h4>
+          <ul>
+            <li><a href="#">{{"Політика конфіденційності" | transloco}}</a></li>
+            <li><a href="#">{{"Правила користування порталом" | transloco}}</a></li>
+            <li><a href="#">{{"Про нас" | transloco}}</a></li>
+            <li><a href="#">{{"Супровід" | transloco}}</a></li>
+          </ul>
+        </div>
+        <div class="footer-column">
+          <h4>{{"ПРОЄКТИ" | transloco}}</h4>
+          <ul>
+            <li><a href="#">{{"Список проєктів" | transloco}}</a></li>
+            <li><a href="#">{{"Пошук" | transloco}}</a></li>
+            <li><a href="#">{{"Викласти проєкт" | transloco}}</a></li>
+          </ul>
+        </div>
+        <div class="footer-column">
+          <h4>{{"АКАУНТ" | transloco}}</h4>
+          <ul>
+            <li><a href="#">{{"Налаштування акаунта" | transloco}}</a></li>
+            <li><a href="#">{{"Повідомлення" | transloco}}</a></li>
+            <li><a href="#">{{"Перегляд транзакцій" | transloco}}</a></li>
+            <li><a href="#">{{"Підтримані проєкти" | transloco}}</a></li>
+            <li><a href="#">{{"Вподобані проєкти" | transloco}}</a></li>
+            <li><a href="#">{{"Вподобані товари" | transloco}}</a></li>
+            <li><a href="#">{{"Історія покупок" | transloco}}</a></li>
+          </ul>
+        </div>
+        <div class="footer-column">
+          <h4>{{"ПІДТРИМКА" | transloco}}</h4>
+          <ul>
+            <li><a href="#">FAQ</a></li>
+            <li><a href="#">{{"Супровід проєкту" | transloco}}</a></li>
+            <li><a href="#">{{"Семінари/вебінари" | transloco}}</a></li>
+            <li><a href="#">{{"Блог" | transloco}}</a></li>
+          </ul>
+        </div>
+        <div class="footer-column">
+          <h4>{{"МАГАЗИН" | transloco}}</h4>
+          <ul>
+            <li><a href="#">{{"Політика конфіденційності" | transloco}}</a></li>
+            <li><a href="#">{{"Правила користування порталом" | transloco}}</a></li>
+            <li><a href="#">{{"Про нас" | transloco}}</a></li>
+            <li><a href="#">{{"Карта сайту" | transloco}}</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+     <hr
+      style="
+        border-top: 3px solid #ffcf33;
+        width: 38%;
+        margin-top: 60px;
+        justify-content: left;
+        position: relative;
+        left: -440px;
+      "
+    />
+    <div class="footer-social">
+      <h4 style="font-family: 'Montserrat'">
+        <p class="underline-center">{{"МИ У СОЦМЕРЕЖАХ" | transloco }}</p>
+      </h4>
+
+      <div class="social-icons">
+        <a href="#"><i class="fa-brands fa-instagram"></i></a>
+        <a href="#"><i class="fa-brands fa-telegram"></i></a>
+        <a href="#"><i class="fa-brands fa-youtube"></i></a>
+        <a href="#"><i class="fa-brands fa-linkedin"></i></a>
+      </div>
+    </div>
+
+    <hr
+      style="
+        border-top: 3px solid #ffcf33;
+        width: 38%;
+        margin-top: 80px;
+        justify-content: left;
+        position: relative;
+        left: 365px;
+      "
+    />
+
+    <div class="footer-bottom">
+      <p style="font-weight: 400;">
+        Всі права збережені | All rights save © 2025
+      </p>
+    </div>
+  </footer>

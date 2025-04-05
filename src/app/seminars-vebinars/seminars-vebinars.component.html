@@ -1,0 +1,528 @@
+<!-- Шрифт Montserrat -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+
+<!-- Шрифт unbounded -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Unbounded:wght@200..900&display=swap" rel="stylesheet">
+
+<!-- Шрифт Montserrat Alternates -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat+Alternates:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Unbounded:wght@200..900&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+<header class="header">
+    <div class="header-left">
+      <img src="assets/images/greenCoin.png" class="logo" alt="Seed Flow Logo" />
+      <span class="brand-name">Seed Flow</span>
+    </div>
+  
+    <!-- Блок поиска -->
+<div class="search-container" #searchContainer>
+  <input 
+    style="font-family: 'Montserrat';"
+    type="text"
+    class="search-input"
+    placeholder="🔍"
+    (focus)="showDropdown = true"
+    (input)="filterResults()"
+    [(ngModel)]="searchText"
+  />
+  
+  <div *ngIf="showDropdown" class="search-dropdown" [style.height]="getDropdownHeight()">
+    <!-- 3 основные кнопки: СТАРТАПИ, СОЦІАЛЬНІ, ГУМАНІТАРНІ -->
+    <div class="button-row wide-buttons">
+      <button class="button wide-button"
+        [ngClass]="{ 'active': activeCategoryIndex === 0 }"
+        (click)="onCategoryButtonPress(0)">
+       {{" СТАРТАПИ" | transloco}}</button>
+      <button class="button wide-button"
+        [ngClass]="{ 'active': activeCategoryIndex === 1 }"
+        (click)="onCategoryButtonPress(1)">
+        СОЦІАЛЬНІ</button>
+      <button class="button wide-button"
+        [ngClass]="{ 'active': activeCategoryIndex === 2 }"
+        (click)="onCategoryButtonPress(2)">
+        ГУМАНІТАРНІ</button>
+    </div>
+  
+    <!-- Кнопки для СТАРТАПИ -->
+    <div *ngIf="activeCategoryIndex === 0">
+      <div class="button-row" *ngFor="let row of startupRows">
+        <button *ngFor="let button of row" class="button rounded-button"
+          [ngClass]="{ 'active': activeStartupButtonIndex === button.index }"
+          (click)="onButtonPress('startup', button.index)">
+          {{ button.label }}
+        </button>
+      </div>
+    </div>
+  
+    <!-- Кнопки для СОЦІАЛЬНІ -->
+    <div *ngIf="activeCategoryIndex === 1">
+      <div class="button-row">
+        <button *ngFor="let button of socialButtons" class="button rounded-button"
+          [ngClass]="{ 'active': activeSocialButtonIndex === button.index }"
+          (click)="onButtonPress('social', button.index)">
+          {{ button.label }}
+        </button>
+      </div>
+    </div>
+  
+    <!-- Кнопки для ГУМАНІТАРНІ -->
+    <div *ngIf="activeCategoryIndex === 2">
+      <div class="button-row">
+        <button *ngFor="let button of humanitarianButtons" class="button rounded-button"
+          [ngClass]="{ 'active': activeHumanitarianButtonIndex === button.index }"
+          (click)="onButtonPress('humanitarian', button.index)">
+          {{ button.label }}
+        </button>
+      </div>
+    </div>
+
+    <div class="hot-projects">
+      <span class="hot-projects-text">ГАРЯЧІ ПРОЄКТИ</span>
+      <hr class="hot-projects-line" />
+    </div>
+
+<!-- Результаты поиска (фото и описание) -->
+<div *ngIf="filteredItems.length > 0; else noResults">
+  <div class="search-items">
+    <div *ngFor="let item of filteredItems" class="search-item">
+       <!-- Контейнер для фото и описания, чтобы добавить рамку -->
+       <div class="search-item-content">
+
+        <div class="icon-top-left">
+          <img src="assets/images/LeftUpAngle.png" alt="icon" class="top-left-icon" />
+        </div>
+
+        <div class="icon-top-right">
+          <img src="assets/images/rocket.png" alt="icon 2" class="top-right-icon" />
+        </div>
+
+
+      <!-- Фото элемента -->
+      <img [src]="item.image" alt="image" class="search-item-img" />
+      
+      <!-- Название с суммой и прогресс-баром -->
+      <div class="search-item-body">
+        <p class="search-item-title">{{ item.title }}</p>
+        <!-- Сумма сверху прогресс-бара -->
+        <div class="progress-info">
+          <span class="progress-from">135 457 грн</span>
+          <span class="progress-to">500 000 грн</span>
+        </div>
+        
+        <!-- Прогресс-бар -->
+        <progress class="progress-bar" [value]="item.progress" max="100"></progress>
+      </div>
+
+      <!-- Иконка справа внизу под фото -->
+      <div class="icon-container">
+        <img src="assets/images/socialMedia.png" alt="icon" class="search-item-icon" />
+        <br>
+        <img src="assets/images/like.png" alt="new icon" class="search-item-icon" />
+      </div>
+
+      <!-- Иконки и числа под прогресс-баром -->
+      <div class="icons-container">
+        <div class="icon-item">
+          <img src="assets/images/people.png" alt="icon 1" class="icon-img" />
+          <p class="icon-number">{{ item.value1 }}</p>
+        </div>
+        <div class="icon-item">
+          <img src="assets/images/comments.png" alt="icon 2" class="icon-img" />
+          <p class="icon-number">{{ item.value2 }}</p>
+        </div>
+        <div class="icon-item">
+          <img src="assets/images/money.png" alt="icon 3" class="icon-img" />
+          <p class="icon-number">{{ item.value3 }}%</p>
+        </div>
+
+        <button class="support-button2">ПІДТРИМАТИ</button>
+      </div>
+
+      <div class="search-item-text">
+        Lorem, ipsum dolor sit amet consectetur adipisicing elit. Quia recusandae aliquam rem expedita itaque.
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+
+
+      
+      
+    
+    <ng-template #noResults>
+      <div class="no-results">Нічого не знайдено</div>
+    </ng-template>
+  </div>
+</div>
+  
+    <div class="header-right">
+      <button class="submit-project-btn">{{"Подати проєкт" | transloco}}</button>
+      <img src="assets/images/profile.png" class="profile-icon" alt="User Profile">
+    </div>
+
+    <div class="language-switcher" style="color: #898268;"><img src="assets/images/language.png" class="logo2">
+
+      <mat-select [formControl]="selectedLanguage" style="width: 55px;" (selectionChange)="onLanguageChange($event)">
+        <mat-option style="font-family: 'Montserrat';" *ngFor="let lang of languages" [value]="lang.code">
+          {{ lang.name }}
+        </mat-option>
+      </mat-select>
+  </div>
+   
+  </header>
+
+  <hr>
+
+
+
+  <div class="seminar-container">
+    <div class="seminar-image">
+        <img src="assets/images/seminarsVebinars1.png" alt="Seminar Image" class="seminar-photo">
+        <div class="seminar-info">
+            <div class="seminar-info-item">
+                <p class="seminar-number">10+</p>
+                <p class="seminar-text">{{"Семінарів" | transloco}}</p>
+            </div>
+            <div class="seminar-info-item">
+                <p class="seminar-number">{{"10К+" | transloco}}</p>
+                <p class="seminar-text">{{"Переглядів" | transloco}}</p>
+            </div>
+            <div class="seminar-info-item">
+                <p class="seminar-number">{{"5К+" | transloco}}</p>
+                <p class="seminar-text">{{"Учасників" | transloco}}</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="definition-container">
+    <h2 class="definition-title">{{"1. Визначення ідеї та мети" | transloco}}</h2>
+    <p class="definition-description">
+      {{"Перед тим як запустити кампанію, необхідно чітко визначити:" | transloco}}
+      <br>
+      {{"• Яку проблему вирішує ваш проєкт?" | transloco}}
+      <br>
+      {{"• Хто є цільовою аудиторією?" | transloco}}
+      <br>
+      {{"• Яка кінцева мета та скільки коштів потрібно зібрати?" | transloco}}
+      <br>
+      {{"Приклад: Якщо ви створюєте настільну гру, подумайте, кому вона буде цікава, чим відрізняється від аналогів і яка її унікальність." | transloco}}
+    </p>
+  </div>
+  
+  <div class="definition-container">
+    <h2 class="definition-title">{{"2. Планування та підготовка контенту" | transloco}}</h2>
+    <p class="definition-description">
+      {{"Перед запуском кампанії потрібно підготувати:" | transloco}}
+      <br>
+      {{"• Якісний опис проєкту - що, як і для чого." | transloco}}
+      <br>
+      {{"• Фото та відео - розповідь у форматі відеопрезентації підвищує довіру." | transloco}}
+      <br>
+      {{"• Бюджет та винагороди для бекерів - чітко поясніть, на що підуть зібрані кошти." | transloco}}
+      <br>
+    {{"Порада: Створіть 3-5 варіантів винагород для підтримки, щоб залучити більше людей." | transloco}}
+    </p>
+  </div>
+
+  <div class="definition-container">
+    <h2 class="definition-title">{{"3. Вибір платформи" | transloco}}</h2>
+    <p class="definition-description">
+      {{"Обирайте платформу, яка найкраще відповідає вашій ідеї:" | transloco}}
+      <br>
+      {{"• Seed Flow - для будь-яких твоїх стартапів та творчих проєктів." | transloco}}
+      <br>
+      {{"• Kickstarter - для технологічних стартапів та творчих проєктів." | transloco}}
+      <br>
+      {{"• Indiegogo - для інноваційних ідей та соціальних ініціатив." | transloco}}
+      <br>
+      {{"• Спеціалізовані локальні платформи - для проєктів у певних регіонів." | transloco}}
+    </p>
+  </div>
+
+  <div class="definition-container">
+    <h2 class="definition-title">{{"4. Маркетинг та просування" | transloco}}</h2>
+    <p class="definition-description">
+      {{"Без хорошої промоції навіть найкращий проєкт може залишитися непоміченим." | transloco}}
+      <br>
+      {{"Використовуйте:" | transloco}}
+      <br>
+      {{"• Соціальні мережі - створюйте пости, відео та взаємодійте з аудиторією." | transloco}}
+      <br>
+      {{"• Email-розсилку - надсилайте потенційним інвесторам інформацію про кампанію." | transloco}}
+      <br>
+      {{"• Рекламу та PR - залучайте блогерів та ЗМІ для розповсюдження інформації." | transloco}}
+      <br>
+    {{"Приклад: Якщо ви запускаєте екологічний стартап, зверніться до тематичних спільнот і блогерів." | transloco}}
+    </p>
+  </div>
+
+  <div class="definition-container">
+    <h2 class="definition-title">{{"5. Запуска та ведення кампанії" | transloco}}</h2>
+    <p class="definition-description">
+      {{"Під час активної фази:" | transloco}}
+      <br>
+      {{"• Регулярно оновлюйте інформацію про прогрес зборів." | transloco}}
+      <br>
+      {{"• Спілкуйтеся з бекерами та відповідайте на запитання." | transloco}}
+      <br>
+      {{"• Використовуйте проміжні цілі(stretch goals), щоб мотивувати нових учасників." | transloco}}
+    </p>
+  </div>
+
+  <div class="definition-container">
+    <h2 class="definition-title">{{"6. Завершення та реалізація проєкту" | transloco}}</h2>
+    <p class="definition-description">
+      {{"Якщо кампанія успішна:" | transloco}}
+      <br>
+      {{"• Дякуйте учасникам та інвесторам." | transloco}}
+      <br>
+      {{"• Реалізуйте обіцяне в зазначені терміни." | transloco}}
+      <br>
+      {{"• Аналізуйте результати та готуйтеся до наступних кампаній." | transloco}}
+    </p>
+  </div>
+
+  <!-- Кнопка -->
+<div class="button-container">
+    <button [routerLink]="'/seminar-page'" class="action-button">{{"Завантажити запис" | transloco}}</button>
+  </div>
+
+
+  <div class="comment-section">
+    <div class="line"></div>
+    <span class="comment-title">{{"КОМЕНТАРІ" | transloco}}</span>
+  </div>
+
+  <div class="comment-section-left">
+    <label for="user-comment" class="comment-label-left">{{"Коментувати" | transloco}}</label>
+    <textarea id="user-comment" class="comment-textarea-left" [(ngModel)]="commentText" maxlength="500" placeholder="{{'Почніть вводити коментар...' | transloco}}" ></textarea>
+    <div class="character-count">
+        <span>{{"Залишилось" | transloco}} {{ commentText.length }}</span>/500
+      </div>
+
+    <button class="submit-btn">{{"ЗБЕРЕГТИ" | transloco}}</button>
+</div>
+
+<div class="line-container">
+    <div class="yellow-line"></div>
+  </div>
+  
+  <div class="people-list">
+    <div class="person-item">
+      <div class="photo-container">
+        <img src="assets/images/investor1.png" alt="Person 1">
+      </div>
+      <div class="info-container">
+        <div class="full-name">{{"Іван Іванов" | transloco}}</div>
+        <div class="user-comment">{{"Проект «Хатинка в горах» виглядає справді захоплююче! Ідея створити затишне місце для відпочинку серед природи просто вражає. Я вірю, що така хатинка стане чудовим простором для натхнення і релаксації.Хотілося б дізнатися:" | transloco}}
+            {{"– які будуть екологічні рішення впроваджені у будівництві?" | transloco}}
+            {{"– Чи плануєте ви проводити заходи для гостей?" | transloco}}
+            {{"Бажаю вам успіху в зборі коштів! Вірю, що цей проект отримає багато підтримки!" | transloco}}
+        
+          <!-- Добавляем ссылки под комментарием -->
+      <div class="links-container">
+        <a href="#" class="reply-link">{{"Відповісти" | transloco}}</a>
+        <a href="#" class="report-link">{{"Поскаржитись" | transloco}}</a>
+      </div>
+        </div>
+      </div>
+    </div>
+  
+    <div class="person-item">
+      <div class="photo-container">
+        <img src="assets/images/investor2.png" alt="Person 2">
+      </div>
+      <div class="info-container">
+        <div class="full-name">{{"Іван Іванов" | transloco}}</div>
+        <div class="user-comment">{{"Проект «Хатинка в горах» виглядає справді захоплююче! Ідея створити затишне місце для відпочинку серед природи просто вражає. Я вірю, що така хатинка стане чудовим простором для натхнення і релаксації.Хотілося б дізнатися:" | transloco}}
+          {{"– які будуть екологічні рішення впроваджені у будівництві?" | transloco}}
+          {{"– Чи плануєте ви проводити заходи для гостей?" | transloco}}
+          {{"Бажаю вам успіху в зборі коштів! Вірю, що цей проект отримає багато підтримки!" | transloco}}
+            <div class="links-container">
+                <a href="#" class="reply-link">{{"Відповісти" | transloco}}</a>
+                <a href="#" class="report-link">{{"Поскаржитись" | transloco}}</a>
+            </div>
+        </div>   
+    </div>
+</div>
+  
+    <div class="person-item">
+      <div class="photo-container">
+        <img src="assets/images/investor3.png" alt="Person 3">
+      </div>
+      <div class="info-container">
+        <div class="full-name">{{"Іван Іванов" | transloco}}</div>
+        <div class="user-comment">{{"Проект «Хатинка в горах» виглядає справді захоплююче! Ідея створити затишне місце для відпочинку серед природи просто вражає. Я вірю, що така хатинка стане чудовим простором для натхнення і релаксації.Хотілося б дізнатися:" | transloco}}
+          {{"– які будуть екологічні рішення впроваджені у будівництві?" | transloco}}
+          {{"– Чи плануєте ви проводити заходи для гостей?" | transloco}}
+          {{"Бажаю вам успіху в зборі коштів! Вірю, що цей проект отримає багато підтримки!" | transloco}}
+            <div class="links-container">
+                <a href="#" class="reply-link">{{"Відповісти" | transloco}}</a>
+                <a href="#" class="report-link">{{"Поскаржитись" | transloco}}</a>
+            </div>
+        </div>
+      </div>
+    </div>
+  
+    <div class="person-item">
+      <div class="photo-container">
+        <img src="assets/images/investor4.png" alt="Person 4">
+      </div>
+      <div class="info-container">
+        <div class="full-name">{{"Іван Іванов" | transloco}}</div>
+        <div class="user-comment">{{"Проект «Хатинка в горах» виглядає справді захоплююче! Ідея створити затишне місце для відпочинку серед природи просто вражає. Я вірю, що така хатинка стане чудовим простором для натхнення і релаксації.Хотілося б дізнатися:" | transloco}}
+          {{"– які будуть екологічні рішення впроваджені у будівництві?" | transloco}}
+          {{"– Чи плануєте ви проводити заходи для гостей?" | transloco}}
+          {{"Бажаю вам успіху в зборі коштів! Вірю, що цей проект отримає багато підтримки!" | transloco}}
+            <div class="links-container">
+                <a href="#" class="reply-link">{{"Відповісти" | transloco}}</a>
+                <a href="#" class="report-link">{{"Поскаржитись" | transloco}}</a>
+            </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Ссылка "Дивитись усі" -->
+  <div class="view-all-container">
+    <a href="#" class="view-all-link">{{"Дивитись усі" | transloco}}</a>
+  </div>
+
+
+  <div class="line-container">
+    <div class="yellow-line"></div>
+  </div>
+
+  <div class="text-container">
+    <h1 class="title-text">{{"Приєднуйтесь до нашої спільноти" | transloco}}</h1>
+    <p class="sub-text">{{"Ставайте учасником нашої спільноти" | transloco}}</p>
+    <button class="action-btn">{{"Приєднатися" | transloco}}</button>
+</div>
+
+
+
+  
+
+
+
+  <footer class="footer">
+    <div class="footer-container">
+      <div class="footer-header">
+        <div class="footer-logo">
+          <img src="assets/images/greenCoin.png" alt="Seed Flow" />
+          <span style="font-family: 'Montserrat Alternates';">Seed Flow</span>
+        </div>
+        <hr class="footer-line" />
+      </div>
+
+      <div class="subscription" style="background-color: #bde7d6; margin-left: 345px; padding: 25px; text-align: center; border-radius: 8px; margin-bottom: 20px; width: 80%; display: flex; align-items: center; justify-content: center; box-sizing: border-box;">
+        <span style="font-family: 'Montserrat'; font-size: 18px; font-weight: 500; color: #247a60;position: relative; right: 50px; white-space: nowrap;">
+          {{"ПІДПИШИСЬ НА НАШІ НОВИНИ" | transloco}}
+        </span>
+        <input type="email" placeholder="{{'Введіть адресу електронної пошти' | transloco }}" style="padding: 8px; border: none; border-radius: 5px; width: 750px; font-family: 'Montserrat';" />
+        <button style="padding: 12px 15px; border: none; background-color: #247a60; color: white; font-weight: 500; border-radius: 5px; position: relative; left: 50px; cursor: pointer; font-family: 'Montserrat';">
+          {{"ВІДПРАВИТИ" | transloco }}
+        </button>
+      </div>
+  
+      <div class="footer-links">
+        <div class="footer-column">
+          <h4>{{"ПРО НАС" | transloco}}</h4>
+          <ul>
+            <li><a href="#">{{"Політика конфіденційності" | transloco}}</a></li>
+            <li><a href="#">{{"Правила користування порталом" | transloco}}</a></li>
+            <li><a href="#">{{"Про нас" | transloco}}</a></li>
+            <li><a href="#">{{"Супровід" | transloco}}</a></li>
+          </ul>
+        </div>
+        <div class="footer-column">
+          <h4>{{"ПРОЄКТИ" | transloco}}</h4>
+          <ul>
+            <li><a href="#">{{"Список проєктів" | transloco}}</a></li>
+            <li><a href="#">{{"Пошук" | transloco}}</a></li>
+            <li><a href="#">{{"Викласти проєкт" | transloco}}</a></li>
+          </ul>
+        </div>
+        <div class="footer-column">
+          <h4>{{"АКАУНТ" | transloco}}</h4>
+          <ul>
+            <li><a href="#">{{"Налаштування акаунта" | transloco}}</a></li>
+            <li><a href="#">{{"Повідомлення" | transloco}}</a></li>
+            <li><a href="#">{{"Перегляд транзакцій" | transloco}}</a></li>
+            <li><a href="#">{{"Підтримані проєкти" | transloco}}</a></li>
+            <li><a href="#">{{"Вподобані проєкти" | transloco}}</a></li>
+            <li><a href="#">{{"Вподобані товари" | transloco}}</a></li>
+            <li><a href="#">{{"Історія покупок" | transloco}}</a></li>
+          </ul>
+        </div>
+        <div class="footer-column">
+          <h4>{{"ПІДТРИМКА" | transloco}}</h4>
+          <ul>
+            <li><a href="#">FAQ</a></li>
+            <li><a href="#">{{"Супровід проєкту" | transloco}}</a></li>
+            <li><a href="#">{{"Семінари/вебінари" | transloco}}</a></li>
+            <li><a href="#">{{"Блог" | transloco}}</a></li>
+          </ul>
+        </div>
+        <div class="footer-column">
+          <h4>{{"МАГАЗИН" | transloco}}</h4>
+          <ul>
+            <li><a href="#">{{"Політика конфіденційності" | transloco}}</a></li>
+            <li><a href="#">{{"Правила користування порталом" | transloco}}</a></li>
+            <li><a href="#">{{"Про нас" | transloco}}</a></li>
+            <li><a href="#">{{"Карта сайту" | transloco}}</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+     <hr
+      style="
+        border-top: 3px solid #ffcf33;
+        width: 38%;
+        margin-top: 60px;
+        justify-content: left;
+        position: relative;
+        left: -440px;
+      "
+    />
+    <div class="footer-social">
+      <h4 style="font-family: 'Montserrat'">
+        <p class="underline-center">{{"МИ У СОЦМЕРЕЖАХ" | transloco }}</p>
+      </h4>
+
+      <div class="social-icons">
+        <a href="#"><i class="fa-brands fa-instagram"></i></a>
+        <a href="#"><i class="fa-brands fa-telegram"></i></a>
+        <a href="#"><i class="fa-brands fa-youtube"></i></a>
+        <a href="#"><i class="fa-brands fa-linkedin"></i></a>
+      </div>
+    </div>
+
+    <hr
+      style="
+        border-top: 3px solid #ffcf33;
+        width: 38%;
+        margin-top: 80px;
+        justify-content: left;
+        position: relative;
+        left: 365px;
+      "
+    />
+
+    <div class="footer-bottom">
+      <p style="font-weight: 400;">
+        Всі права збережені | All rights save © 2025
+      </p>
+    </div>
+  </footer>

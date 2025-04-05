@@ -1,0 +1,1219 @@
+<!-- Шрифт Montserrat -->
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link
+  href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap"
+  rel="stylesheet"
+/>
+
+<!-- Шрифт unbounded -->
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link
+  href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Unbounded:wght@200..900&display=swap"
+  rel="stylesheet"
+/>
+
+<!-- Шрифт Montserrat Alternates -->
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link
+  href="https://fonts.googleapis.com/css2?family=Montserrat+Alternates:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Unbounded:wght@200..900&display=swap"
+  rel="stylesheet"
+/>
+
+<link
+  rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+  integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg=="
+  crossorigin="anonymous"
+  referrerpolicy="no-referrer"
+/>
+
+<div class="container">
+  <header class="header">
+    <div class="header-content">
+      <button
+        [routerLink]="'/general-page'"
+        class="submit-project-btn"
+        onclick="submitProject()"
+        style="font-family: 'Montserrat'"
+      >
+        {{ "Подати проєкт" | transloco }}
+      </button>
+    </div>
+
+<div class="search-container" #searchContainer>
+  <input 
+    style="font-family: 'Montserrat';"
+    type="text"
+    class="search-input"
+    placeholder="🔍"
+    (focus)="showDropdown = true"
+    (input)="filterResults()"
+    [(ngModel)]="searchText"
+  />
+  
+  <div *ngIf="showDropdown" class="search-dropdown" [style.height]="getDropdownHeight()">
+    <div class="button-row wide-buttons">
+      <button class="button2 wide-button"
+        [ngClass]="{ 'active': activeCategoryIndex === 0 }"
+        (click)="onCategoryButtonPress(0)">
+        СТАРТАПИ</button>
+      <button class="button2 wide-button"
+        [ngClass]="{ 'active': activeCategoryIndex === 1 }"
+        (click)="onCategoryButtonPress(1)">
+        СОЦІАЛЬНІ</button>
+      <button class="button2 wide-button"
+        [ngClass]="{ 'active': activeCategoryIndex === 2 }"
+        (click)="onCategoryButtonPress(2)">
+        ГУМАНІТАРНІ</button>
+    </div>
+  
+    <div *ngIf="activeCategoryIndex === 0">
+      <div class="button-row" *ngFor="let row of startupRows">
+        <button *ngFor="let button of row" class="button2 rounded-button"
+          [ngClass]="{ 'active': activeStartupButtonIndex === button.index }"
+          (click)="onButtonPress('startup', button.index)">
+          {{ button.label }}
+        </button>
+      </div>
+    </div>
+  
+    <div *ngIf="activeCategoryIndex === 1">
+      <div class="button-row">
+        <button *ngFor="let button of socialButtons" class="button2 rounded-button"
+          [ngClass]="{ 'active': activeSocialButtonIndex === button.index }"
+          (click)="onButtonPress('social', button.index)">
+          {{ button.label }}
+        </button>
+      </div>
+    </div>
+  
+    <div *ngIf="activeCategoryIndex === 2">
+      <div class="button-row">
+        <button *ngFor="let button of humanitarianButtons" class="button2 rounded-button"
+          [ngClass]="{ 'active': activeHumanitarianButtonIndex === button.index }"
+          (click)="onButtonPress('humanitarian', button.index)">
+          {{ button.label }}
+        </button>
+      </div>
+    </div>
+
+    <div class="hot-projects">
+      <span class="hot-projects-text">ГАРЯЧІ ПРОЄКТИ</span>
+      <hr class="hot-projects-line" />
+    </div>
+
+<div *ngIf="filteredItems.length > 0; else noResults">
+  <div class="search-items">
+    <div *ngFor="let item of filteredItems" class="search-item">
+       <div class="search-item-content">
+
+        <div class="icon-top-left">
+          <img src="assets/images/LeftUpAngle.png" alt="icon" class="top-left-icon" />
+        </div>
+
+        <div class="icon-top-right">
+          <img src="assets/images/rocket.png" alt="icon 2" class="top-right-icon" />
+        </div>
+
+
+      <img [src]="item.image" alt="image" class="search-item-img" />
+      
+      <div class="search-item-body">
+        <p class="search-item-title">{{ item.title }}</p>
+        <div class="progress-info">
+          <span class="progress-from">135 457 грн</span>
+          <span class="progress-to">500 000 грн</span>
+        </div>
+        
+        <progress class="progress-bar3" [value]="item.progress" max="100"></progress>
+      </div>
+
+      <div class="icon-container2">
+        <img src="assets/images/socialMedia.png" alt="icon" class="search-item-icon" />
+        <br>
+        <img src="assets/images/like.png" alt="new icon" class="search-item-icon" />
+      </div>
+
+      <div class="icons-container">
+        <div class="icon-item">
+          <img src="assets/images/people.png" alt="icon 1" class="icon-img" />
+          <p class="icon-number">{{ item.value1 }}</p>
+        </div>
+        <div class="icon-item">
+          <img src="assets/images/comments.png" alt="icon 2" class="icon-img" />
+          <p class="icon-number">{{ item.value2 }}</p>
+        </div>
+        <div class="icon-item">
+          <img src="assets/images/money.png" alt="icon 3" class="icon-img" />
+          <p class="icon-number">{{ item.value3 }}%</p>
+        </div>
+
+        <button class="support-button2">ПІДТРИМАТИ</button>
+      </div>
+
+      <div class="search-item-text">
+        Lorem, ipsum dolor sit amet consectetur adipisicing elit. Quia recusandae aliquam rem expedita itaque.
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+    <ng-template #noResults>
+      <div class="no-results">Нічого не знайдено</div>
+    </ng-template>
+  </div>
+</div>
+  
+    
+     
+
+    <div class="language-switcher" style="color: #898268">
+      <img src="assets/images/language.png" class="logo2" />
+
+      <mat-select [formControl]="selectedLanguage" style="width: 55px" (selectionChange)="onLanguageChange($event)">
+        <mat-option
+          style="font-family: 'Montserrat'"
+          *ngFor="let lang of languages"
+          [value]="lang.code"
+        >
+          {{ lang.name }}
+        </mat-option>
+      </mat-select>
+
+      <a
+        [routerLink]="'/login-page'"
+        style="
+          position: absolute;
+          left: 120px;
+          margin: 20px;
+          text-decoration: underline;
+          color: black;
+          cursor: pointer;
+          font-family: 'Montserrat';
+          top:-6px;
+        "
+        >{{ "Увійти" | transloco }}</a
+      >
+    </div>
+  </header>
+
+    <button class="addProject">ПОДАТИ ПРОЄКТ</button>
+ 
+
+  <button class="fixed-button" (click)="scrollToTop()">
+    <i class="fas fa-arrow-up"></i>
+  </button>
+
+  <img src="assets/images/lineFour.png" class="lineFour">
+
+  <div class="coin-background" id="first"></div>
+
+  <div class="coin-background" id="second"></div>
+
+  <div class="coin-background" id="third"></div>
+
+  <div class="coin-background" id="fourth"></div>
+
+  <div class="coin-background" id="five"></div>
+
+  <div class="coin-background" id="six"></div>
+
+  <div class="coin-background" id="seven"></div>
+
+  <div class="pig-background"></div>
+
+  <div class="textVidIdey" style="font-family: 'Montserrat'">
+    {{ "Від ідей до змін" | transloco }}
+  </div>
+
+  <div class="ellipse" style="position: relative; margin-left: 1550px; top: 250px; z-index: 10">
+    <img src="assets/images/Ellipse.png" />
+  </div>
+
+  <div id="lineFirst" style="position: relative; margin-left: 1300px; top: 55px; z-index: 10">
+    <img src="assets/images/lineFirst.png" />
+  </div>
+  <span
+    id="firstText"
+    style="
+      position: relative;
+      margin-left: 1300px;
+      top: 25px;
+      width: 190px;
+      z-index: 10;
+      font-family: 'Montserrat Alternates';
+      color: black;
+    "
+    >{{ "Постійни інвестори" | transloco }}</span
+  >
+
+  <div id="lineSecond" style="position: relative; margin-left: 1325px; top: 115px; z-index: 10">
+    <img src="assets/images/lineSecond.png" />
+  </div>
+  <span
+    id="secondText"
+    style="
+      position: relative;
+      margin-left: 1326px;
+      top: 85px;
+      width: 150px;
+      z-index: 10;
+      font-family: 'Montserrat Alternates';
+      color: black;
+    "
+    >{{ "Відкриті збори" | transloco }}</span
+  >
+
+  <div id="lineThird" style="position: relative; margin-left: 1550px; top: 120px; z-index: 10">
+    <img src="assets/images/lineThird.png" />
+  </div>
+  <span
+    id="thirdText"
+    >{{ "Успішно закриті збори" | transloco }}</span
+  >
+
+  <div class="coin-background" id="eight"></div>
+
+  <div class="firstBtn" (click)="scrollToSection3()"></div>
+
+  <div class="secondBtn" (click)="scrollToSection()"></div>
+
+  <div class="thirdBtn" (click)="scrollToSection2()"></div>
+</div>
+
+<div class="button-container">
+  <div
+    class="button"
+    style="font-family: 'Montserrat Alternates';"
+    [routerLink]="'/projects-list-page'"
+  >
+    {{ "Проєкти" | transloco }}
+    <img src="assets/images/projects.png" class="projectImg" id="projectImg" />
+  </div>
+  <div
+    class="button"
+    style="font-family: 'Montserrat Alternates';"
+    [routerLink]="'/about-us-page'"
+  >
+    {{ "Про нас" | transloco }}
+    <img src="assets/images/aboutUs.png" class="aboutUs" id="aboutUs" />
+  </div>
+
+  <div
+    class="button"
+    style="font-family: 'Montserrat Alternates';"
+    (click)="onAccountClick()"
+  >
+    {{ "Акаунт" | transloco }}
+    <img src="assets/images/account.png" class="account" id="account" />
+  </div>
+
+  <div
+    class="button"
+    style="font-family: 'Montserrat Alternates';"
+    [routerLink]="'/support-page'"
+    >
+    {{ "Підтримка" | transloco }}
+    <img src="assets/images/help.png" class="help" id="help" />
+  </div>
+
+  <div
+    class="button"
+    style="font-family: 'Montserrat Alternates';"
+    [routerLink]="'/shop-main-page-page'"
+  >
+     {{ "Магазин" | transloco }}
+    <img src="assets/images/shop.png" class="shop" id="shop" />
+  </div>
+</div>
+
+<!-- 2-ой блок -->
+
+
+<div class="sidebar">
+  <div>
+    <img src="assets/images/Rectangle.png">
+  </div>
+
+  <div class="icon-container" style="position: fixed; margin-top: 45px; margin-left: 25px; z-index: 10;">
+    <img src="assets/images/Kvadrat.png" (click)="onKvadratClick($event)">
+    <img class="icon-inside" src="assets/images/projects.png">
+  </div>
+
+  <div class="icon-container" style="position: fixed; margin-top: 125px; margin-left: 25px; z-index: 10;">
+    <img src="assets/images/Kvadrat.png" (click)="onKvadratClick($event)">  
+    <img class="icon-inside" src="assets/images/aboutUs.png">
+  </div>
+
+  <div class="icon-container" style="position: fixed; margin-top: 205px; margin-left: 25px; z-index: 10;">
+    <img src="assets/images/Kvadrat.png" (click)="onKvadratClick($event)">
+    <img class="icon-inside" src="assets/images/account.png">
+  </div>
+
+  <div class="icon-container" style="position: fixed; margin-top: 285px; margin-left: 25px; z-index: 10;">
+    <img src="assets/images/Kvadrat.png" (click)="onKvadratClick($event)">
+    <img class="icon-inside" src="assets/images/help.png">
+  </div>
+
+  <div class="icon-container" style="position: fixed; margin-top: 365px; margin-left: 25px; z-index: 10;">
+    <img src="assets/images/Kvadrat.png" (click)="onKvadratClick($event)">
+    <img class="icon-inside" src="assets/images/shop.png">
+  </div>
+</div>
+
+<div class="container2">
+  <div class="photo-slider">
+    <div class="slider">
+      <img [src]="images[currentIndex]" alt="Фото" />
+      <div class="nazva">{{ "Хатинка у горах" | transloco }}</div>
+      <img
+        src="assets/images/like.png"
+        class="like-icon"
+        [src]="isLiked ? 'assets/images/likeRed.png' : 'assets/images/like.png'"
+        (click)="toggleLikeFirst()"
+        style="
+          width: 30px;
+          height: 25px;
+          position: relative;
+          right: 60px;
+          top: 25px;
+          cursor: pointer;
+        "
+      />
+      <img id="LeftUpAngle"
+        src="assets/images/LeftUpAngle.png"
+      />
+      <img
+        src="assets/images/rocket.png"
+        style="
+          width: 35px;
+          height: 35px;
+          position: relative;
+          right: 106.5%;
+          top: 45px;
+        "
+      />
+    </div>
+    <button class="prev-btn" (click)="previousImage()">&#10094;</button>
+    <button class="next-btn" (click)="nextImage()">&#10095;</button>
+  </div>
+
+  <div class="dots">
+    <span
+      *ngFor="let img of images; let i = index"
+      class="dot"
+      [class.active]="i === currentIndex"
+      (click)="goToImage(i)"
+    >
+    </span>
+  </div>
+
+  <div class="info-block">
+    <div class="progress-bar">
+      <div
+        class="progress"
+        [ngStyle]="{ width: progressPercentage + '%' }"
+      ></div>
+      <span class="progress-text-start">{{ collectedMoney }} {{ "грн" | transloco }}</span>
+      <span class="progress-text-end">{{ targetMoney }} {{ "грн" | transloco }}</span>
+    </div>
+
+    <div id="people">
+      <img src="assets/images/people.png" />
+    </div>
+    <span id="peoplecount"
+      >25</span
+    >
+
+    <div id="comments">
+      <img src="assets/images/comments.png" />
+    </div>
+    <span id="commentscount"
+      >36</span
+    >
+
+    <div id="money2">
+      <img src="assets/images/money.png" />
+    </div>
+    <span id="money2percents"
+      >27%</span
+    >
+
+    <div class="description">
+      <p>{{ description | transloco }}</p>
+    </div>
+     
+    <button [routerLink]="'/donation-page'" class="support-btn" (click)="supportProject()"> {{ "ПІДТРИМАТИ" | transloco }}</button>
+    <div>
+      <img
+        class="MediaSocial"
+        src="assets/images/socialMedia.png"
+      />
+    </div>
+  </div>
+</div>
+
+<div id="targetSection3" style="position: relative; top: -10px"></div>
+
+<!-- 3-ий блок -->
+
+<div class="projects-container">
+  <h2
+    style="
+      font-family: 'Montserrat';
+      font-weight: 500;
+      font-size: 25px;
+      margin-left: 210px;
+      position: relative;
+    "
+  >
+     {{ "У ГРУДНІ МИ СПІЛЬНО ЗАКРИЛИ" | transloco }}
+    <span
+      style="
+        font-family: 'Unbounded';
+        font-weight: 700;
+        font-size: 35px;
+        position: relative;
+        left: 10px;
+      "
+      >{{ "9 ВАЖЛИВИХ ЗБОРІВ" | transloco }}</span
+    >
+  </h2>
+
+  <hr
+    style="
+      border-top: 2px solid #ffcf33;
+      width: 35%;
+      margin-top: -45px;
+      justify-content: left;
+      position: relative;
+      margin-right: 0%;
+      height: 3px;
+      background-color: #ffcf33;
+    "
+  />
+
+  <br />
+
+  <br />
+
+  <hr
+    style="
+      border-top: 2px solid #ffcf33;
+      width: 46%;
+      top: 15px;
+      justify-content: left;
+      position: relative;
+      margin-left: 0%;
+      height: 3px;
+      background-color: #ffcf33;
+    "
+  />
+
+  <h3 class="Title"
+    style="
+      font-family: 'Montserrat';
+      font-weight: 500;
+      font-size: 25px;
+      margin-left: 1070px;
+      position: relative;
+      top: -40px;
+      color: #247a60;
+    "
+  >
+    {{ "У СІЧНІ НА ПІДТРИМКУ ЧЕКАЮТЬ" | transloco }}
+    <span style="font-family: 'Unbounded'; font-weight: 700; font-size: 35px;"
+      >{{ "15 ПРОЄКТІВ" | transloco }}</span
+    >
+  </h3>
+
+  <div class="projects-grid">
+    <div
+      class="project-card"
+      *ngFor="let project of projects2; let i = index"
+      [ngClass]="'project-card-' + i"
+    >
+      <div class="icon-container"></div>
+
+      <div class="project-overlay">
+
+        <div class="project-title">{{ project.title | transloco}}</div>
+
+        <div class="project-extra">
+          <div class="progress-bar2">
+            <div class="progress2" [style.width]="project.progress + '%'"></div>
+          </div>
+          <p
+            style="
+              position: relative;
+              font-size: 16px;
+              font-weight: 400;
+              left: -212px;
+              top: 70px;
+              font-family: 'Montserrat';
+            "
+          >
+            {{ project.amountRaised }} {{ "грн" | transloco }}
+          </p>
+          <p
+            style="
+              position: relative;
+              font-size: 16px;
+              font-weight: 600;
+              left: -60px;
+              top: 35px;
+              font-family: 'Montserrat';
+              color: #645740;
+            "
+          >
+            {{ project.goal }} {{ "грн" | transloco }}
+          </p>
+
+          <div style="position: relative; top: 70px; left: -225px">
+            <img src="assets/images/people.png" />
+          </div>
+          <span
+            style="
+              position: relative;
+              top: 75px;
+              left: -225px;
+              font-size: 17px;
+              font-weight: 400;
+              font-family: 'Montserrat';
+            "
+            >25</span
+          >
+
+          <div style="position: relative; top: 25px; left: -134px">
+            <img src="assets/images/comments.png" />
+          </div>
+          <span
+            style="
+              position: relative;
+              top: 30px;
+              left: -133px;
+              font-size: 17px;
+              font-weight: 400;
+              font-family: 'Montserrat';
+            "
+            >36</span
+          >
+
+          <div style="position: relative; top: -20px; margin-left: -80px">
+            <img src="assets/images/money.png" />
+          </div>
+          <span
+            style="
+              position: relative;
+              top: -15px;
+              left: -35px;
+              font-size: 17px;
+              font-weight: 400;
+              font-family: 'Montserrat';
+            "
+            >27%</span
+          >
+
+          <div>
+            <img
+              src="assets/images/socialMedia.png"
+              style="
+                position: relative;
+                top: -183px;
+                margin-right: -490px;
+                height: 25px;
+                cursor: pointer;
+              "
+            />
+          </div>
+
+          <div>
+            <img
+              class="like-icon"
+              [src]="
+                likedProjects[i]
+                  ? 'assets/images/likeRed.png'
+                  : 'assets/images/like.png'
+              "
+              (click)="toggleLike(i)"
+              style="
+                width: 28px;
+                height: 25px;
+                position: relative;
+                right: -245px;
+                top: -175px;
+                cursor: pointer;
+              "
+            />
+          </div>
+
+          <button [routerLink]="'/donation-page'" class="support-button">{{ "ПІДТРИМАТИ" | transloco }}</button>
+          <div class="project-extra">
+            <p
+              style="
+                position: relative;
+                top: -115px;
+                left: -5px;
+                font-family: 'Montserrat';
+                font-weight: 400;
+                font-size: 15px;
+                width: 500px;
+                text-align: left;
+              "
+            >
+              Lorem ipsum dolor sit amet consectetur adipisicing elit. Rem aut
+              consequatur blanditiis incidunt doloremque nesciunt. Consectetur
+              cum quidem fugit nihil sequi, dignissimos eaque?
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <img
+          src="assets/images/LeftUpAngle.png"
+          style="
+            width: 119px;
+            height: 60px;
+            position: relative;
+            right: 217px;
+            top: 40px;
+            z-index: 10;
+          "
+        />
+      </div>
+      <div>
+        <img
+          src="assets/images/rocket.png"
+          style="
+            width: 35px;
+            height: 35px;
+            position: relative;
+            right: 210px;
+            top: -10px;
+            z-index: 10;
+          "
+        />
+      </div>
+  
+      <img
+        [src]="project.image"
+        alt="{{ project.title }}"
+        class="project-image"
+      />
+    </div>
+  </div>
+  <a
+    href="#"
+    style="
+      position: relative;
+      left: 48.5%;
+      top: -80px;
+      text-decoration: underline;
+      font-family: 'Montserrat';
+      cursor: pointer;
+      color: gray;
+    "
+    > {{ "Дивитись далі" | transloco}} </a
+  >
+</div>
+<div id="targetSection2" style="position: relative; top: -100px;"></div>
+
+<!-- Карусель -->
+
+<div class="carousel-wrapper">
+  <h2 class="carousel-title-text"> {{ "УСПІШНО ЗАВЕРШЕНІ ПРОЄКТИ" | transloco }}</h2>
+
+  <div class="carousel-container">
+    <button class="nav-btn left" (click)="prevSlide()">
+      <span class="arrow arrow-left"></span>
+    </button>
+
+    <div class="carousel">
+      <div
+        class="carousel-track"
+        [style.transform]="
+          'translateX(' + -currentIndex * (100 / visibleItems) + '%)'
+        "
+      >
+        <div
+          *ngFor="let project of projects; let i = index"
+          class="carousel-item"
+        >
+          <img [src]="project.image" alt="Project Image" />
+
+          <div class="carousel-info-block">
+            <div
+              style="
+                font-size: 25px;
+                position: relative;
+                margin-top: 10px;
+                margin-left: -18px;
+              "
+            >
+              {{ project.title | transloco }}
+            </div>
+            <div class="carousel-info-content">
+              <p
+                style="
+                  color: black;
+                  font-weight: 400;
+                  position: relative;
+                  left: -100px;
+                  font-size: 14px;
+                  margin-top: 10px;
+                "
+              >
+                 {{ "Збір закрито" | transloco }}
+                <span
+                  style="font-weight: 600; position: relative; left: 14px"
+                  >{{ project.closingDate }}</span
+                >
+              </p>
+              <p
+                style="
+                  color: black;
+                  font-weight: 400;
+                  position: relative;
+                  left: -135px;
+                  font-size: 14px;
+                  margin-top: 10px;
+                "
+              >
+                {{ "Учасників" | transloco }}<span
+                  style="font-weight: 600; position: relative; left: 45px"
+                  >{{ project.participants }}</span
+                >
+              </p>
+              <p
+                style="
+                  color: black;
+                  font-size: 20px;
+                  position: relative;
+                  top: -53px;
+                  left: 90px;
+                "
+              >
+                {{ project.amount }} {{"грн" | transloco}}
+              </p>
+              <p
+                style="
+                  color: black;
+                  position: relative;
+                  top: -48px;
+                  font-size: 14px;
+                  font-weight: 400;
+                  left: 55px;
+                "
+              >
+                ({{ project.percentage }}%)
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <button class="nav-btn right" (click)="nextSlide()">
+      <span class="arrow arrow-right"></span>
+    </button>
+  </div>
+</div>
+
+<!-- 6 зеленых квадратов -->
+
+<div class="blog-container">
+  <div
+    class="blog-card"
+    *ngFor="let post of blogPosts; let i = index"
+    [ngClass]="'post-' + i"
+  >
+    <img [src]="post.image" alt="{{ post.title }}" />
+    <div class="overlay">
+      <h3 style="font-family: 'Montserrat'; position: relative; left: 35px">
+        {{ post.title | transloco}}
+      </h3>
+      <p style="position: relative; left: 80px;">{{ post.description | transloco }}</p>
+    </div>
+  </div>
+  <a
+    href="#"
+    style="
+      position: relative;
+      left: 790px;
+      margin-top: -180px;
+      margin-bottom: 50px;
+      font-family: 'Montserrat';
+      text-decoration: underline;
+      color: gray;
+      width: 135px;
+      font-size: 16px;
+    "
+    >{{"Перейти в блог" | transloco }}</a
+  >
+</div>
+
+<!-- Статистика -->
+
+<div class="stats-container">
+  <img id="shar1"
+    src="assets/images/shar.png"
+    style="
+      position: relative;
+      left: 1800px;
+      top: 5px;
+      width: 64px;
+      height: 64px;
+    "
+  />
+  <img id="shar2"
+    src="assets/images/shar.png"
+    style="
+      position: relative;
+      left: 1075px;
+      top: -35px;
+      width: 30px;
+      height: 30px;
+    "
+  />
+  <img id="shar3"
+    src="assets/images/shar.png"
+    style="
+      position: relative;
+      left: 750px;
+      top: 140px;
+      width: 47px;
+      height: 47px;
+    "
+  />
+  <img id="shar4"
+    src="assets/images/shar.png"
+    style="position: relative; left: 73px; top: 40px; width: 30px; height: 30px"
+  />
+  <img id="dollar1"
+    src="assets/images/dollar.png"
+    style="
+      position: relative;
+      left: 1651px;
+      top: 5px;
+      width: 20px;
+      height: 40px;
+    "
+  />
+  <img id="dollar2"
+    src="assets/images/dollar.png"
+    style="
+      position: relative;
+      left: 958px;
+      top: -35px;
+      width: 10px;
+      height: 20px;
+    "
+  />
+  <img id="dollar3"
+    src="assets/images/dollar.png"
+    style="
+      position: relative;
+      left: 657px;
+      top: 140px;
+      width: 20px;
+      height: 30px;
+    "
+  />
+  <img id="dollar4"
+    src="assets/images/dollar.png"
+    style="position: relative; left: 3px; top: 40px; width: 10px; height: 20px"
+  />
+
+  <div class="stat-item small" id="first">325 471 {{"КОРИСТУВАЧІВ" | transloco}}</div>
+<div class="stat-item large" id="second">514 {{"УСПІШНО ЗАКРИТИХ ЗБОРІВ" | transloco }}</div>
+  <div class="stat-item small" id="third">4 457 {{"ІНВЕСТОРІВ" | transloco }}</div>
+  <div class="stat-item small" id="fourth">{{"ТОП 10 ПОСТІЙНИХ ІНВЕСТОРІВ" | transloco }}</div>
+</div>
+
+<!-- Креатівний простір "LOFT" -->
+
+<hr
+  style="
+    width: 79.5%;
+    margin-bottom: 30px;
+    left: 108px;
+    position: relative;
+    top: -30px;
+  "
+/>
+
+<div class="container4">
+  <div class="image-section">
+    <img
+      src="assets/images/loftImg.png"
+      alt="Креативний простір"
+      style="position: relative; width: 1130px"
+    />
+  </div>
+
+  <div class="text-section">
+    <h2 class="title"> {{ "КРЕАТИВНИЙ ПРОСТІР «LOFT»" | transloco }}</h2>
+    <p class="subtitle">
+      {{ "Довгострокова" | transloco}} <br />
+      {{"короткострокова аренда" | transloco}}
+    </p>
+    <p class="description2">
+      Lorem ipsum dolor sit amet consectetur. Mattis laoreet dolor facilisis ac
+      magnis ullamcorper sed quis. Lectus vel nunc tellus fringilla.
+      Pellentesque eu dapibus purus leo orci dignissim id.
+    </p>
+    <p class="description3">
+      Pellentesque eu dapibus purus leo orci dignissim id. Felis malesuada
+      habitant tempor odio dolor.
+    </p>
+    <p class="contact">{{"Тел." | transloco }} +38 (073) 123-45-67</p>
+    <a href="#" class="more">{{"Більше" | transloco }}</a>
+    <div id="targetSection" style="position: relative; top: 69px"></div>
+  </div>
+</div>
+
+<hr
+  style="
+    width: 79.5%;
+    margin-bottom: 30px;
+    left: 108px;
+    position: relative;
+    top: -99px;
+  "
+/>
+
+<!-- Топ інвестори -->
+
+<div class="top-investors">
+  <h2
+    style="
+      position: relative;
+      top: -55px;
+      left: 67.5%;
+      font-family: 'Montserrat';
+      font-weight: 600;
+      font-size: 44px;
+      width: 500px;
+    "
+  >
+    {{ "ТОП ІНВЕСТОРІВ" | transloco}}
+  </h2>
+  <div class="investors-grid">
+    <div
+      *ngFor="let investor of investors"
+      class="investor"
+      [ngClass]="{
+        gold: investor.rank <= 5,
+        green: investor.rank >= 6 && investor.rank <= 10
+      }"
+      style="position: relative"
+    >
+      <div
+        class="investor-photo"
+        style="
+          width: 200px;
+          height: 200px;
+          border-radius: 50%;
+          overflow: hidden;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          left: 120px;
+        "
+      >
+        <img
+          [src]="investor.photo"
+          alt="Investor Photo"
+          style="width: 200px; height: 200px; object-fit: cover"
+        />
+      </div>
+      <span
+        class="rank"
+        [ngClass]="{
+          yellow: investor.rank <= 5,
+          'green-bg': investor.rank >= 6 && investor.rank <= 10
+        }"
+        >{{ investor.rank }}</span
+      >
+      <p class="investName">{{ investor.name | transloco }}</p>
+    </div>
+  </div>
+</div>
+
+<!-- Партнери -->
+
+<div class="partners">
+  <h2
+    style="
+      position: relative;
+      left: -35.2%;
+      font-family: 'Montserrat';
+      font-weight: 600;
+      font-size: 48px;
+      top: -70px;
+      width: 285px;
+    "
+  >
+    {{ "ПАРТНЕРИ" | transloco}}
+  </h2>
+  <div class="partners-list">
+    <img
+      *ngFor="let logo of partnerLogos; let i = index"
+      [src]="logo.src"
+      [alt]="logo.alt"
+      class="partner-logo"
+      [ngClass]="'logo-' + i"
+    />
+  </div>
+</div>
+
+<!-- footer -->
+
+<hr
+  style="
+    border-top: 2px solid #ffcf33;
+    width: 99.9%;
+    margin-top: 20px;
+    height: 8px;
+    background-color: #ffcf33;
+  "
+/>
+
+<hr
+  style="
+    border-top: 2px solid #ffcf33;
+    width: 54.2%;
+    justify-content: left;
+    position: relative;
+    margin-right: 13%;
+    top: 133px;
+  "
+/>
+
+<footer class="footer">
+
+  <div class="container3">
+    <div class="footer-logo">
+      <img
+        src="assets/images/greenCoin.png"
+        style="width: 35px; height: 35px; position: relative; top: -40px"
+        alt="Seed Flow"
+      />
+      <span
+        style="
+          font-family: 'Montserrat Alternates';
+          font-weight: 500;
+          font-size: 32px;
+          margin-left: 10px;
+          position: relative;
+          top: -40px;
+        "
+        >Seed Flow</span
+      >
+    </div>
+
+    <div class="subscription" style="background-color: #bde7d6; margin-left: 240px; padding: 25px; text-align: center; border-radius: 8px; margin-bottom: 20px; width: 95%; display: flex; align-items: center; justify-content: center; box-sizing: border-box;">
+      <span style="font-family: 'Montserrat'; font-size: 18px; font-weight: 500; color: #247a60; margin-right: 15px; white-space: nowrap;">
+        {{"ПІДПИШИСЬ НА НАШІ НОВИНИ" | transloco}}
+      </span>
+      <input type="email" placeholder="{{'Введіть адресу електронної пошти' | transloco }}" style="padding: 8px; border: none; border-radius: 5px; width: 600px; font-family: 'Montserrat';" />
+      <button style="padding: 12px 15px; border: none; background-color: #247a60; color: white; font-weight: 500; border-radius: 5px; position: relative; left: 20px; cursor: pointer; font-family: 'Montserrat';">
+        {{"ВІДПРАВИТИ" | transloco }}
+      </button>
+    </div>
+
+    <div class="footer-columns">
+      <div class="footer-column">
+        <h4>{{"ПРО НАС" | transloco}}</h4>
+        <ul>
+          <li><a href="#">{{"Політика конфіденційності" | transloco}}</a></li>
+          <li><a href="#">{{"Правила користування порталом" | transloco}}</a></li>
+          <li><a href="#">{{"Про нас" | transloco}}</a></li>
+          <li><a href="#">{{"Супровід" | transloco }}</a></li>
+        </ul>
+      </div>
+      <div class="footer-column" id="second">
+        <h4> {{ "ПРОЄКТИ" | transloco }}</h4>
+        <ul>
+          <li><a href="#">{{"Список проєктів" | transloco}}</a></li>
+          <li><a href="#">{{"Пошук" | transloco }}</a></li>
+          <li><a href="#">{{"Викласти проєкт" | transloco }}</a></li>
+        </ul>
+      </div>
+      <div class="footer-column">
+        <h4>{{"АКАУНТ" | transloco}}</h4>
+        <ul>
+          <li><a  [routerLink]="'/account-settings-page'" href="#">{{"Налаштування акаунта" | transloco}}</a></li>
+          <li><a href="#">{{"Повідомлення" | transloco }}</a></li>
+          <li><a href="#">{{"Перегляд транзакцій" | transloco }}</a></li>
+          <li><a href="#">{{"Підтримані проєкти" | transloco }}</a></li>
+          <li><a href="#">{{"Вподобані проєкти" | transloco }}</a></li>
+          <li><a href="#">{{"Вподобані товари" | transloco }}</a></li>
+          <li><a href="#">{{"Історія покупок" | transloco }}</a></li>
+        </ul>
+      </div>
+      <div class="footer-column">
+        <h4>{{ "ПІДТРИМКА" | transloco }}</h4>
+        <ul>
+          <li><a [routerLink]="'/faq-page'" href="#">FAQ</a></li>
+          <li><a [routerLink]="'/accompaniment-page'" href="#">{{ "Супровід проєкту" | transloco }}</a></li>
+          <li><a [routerLink]="'/seminar2-page'" href="#">{{"Семінари/вебінари" | transloco }}</a></li>
+          <li><a [routerLink]="'/blog-page'" href="#">{{"Блог" | transloco }}</a></li>
+        </ul>
+      </div>
+      <div class="footer-column">
+        <h4>{{ "МАГАЗИН" | transloco }}</h4>
+        <ul>
+          <li><a href="#">{{ "Політика конфіденційності" | transloco }}</a></li>
+          <li><a href="#">{{ "Правила користування порталом" | transloco}}</a></li>
+          <li><a href="#">{{ "Про нас" | transloco }}</a></li>
+          <li><a href="#">{{"Карта сайту" | transloco}}</a></li>
+        </ul>
+      </div>
+    </div>
+    <hr
+      style="
+        border-top: 2px solid #ffcf33;
+        width: 48%;
+        margin-top: 60px;
+        justify-content: left;
+        position: relative;
+        margin-left: 0px;
+      "
+    />
+    <div class="footer-social">
+      <h4 style="font-family: 'Montserrat'">
+        <p class="underline-center">{{"МИ У СОЦМЕРЕЖАХ" | transloco }}</p>
+      </h4>
+
+      <div class="social-icons">
+        <a href="#"><i class="fa-brands fa-instagram"></i></a>
+        <a href="#"><i class="fa-brands fa-telegram"></i></a>
+        <a href="#"><i class="fa-brands fa-youtube"></i></a>
+        <a href="#"><i class="fa-brands fa-linkedin"></i></a>
+      </div>
+    </div>
+
+    <hr
+      style="
+        border-top: 2px solid #ffcf33;
+        width: 50%;
+        margin-top: 80px;
+        justify-content: left;
+        position: relative;
+        margin-right: -9%;
+      "
+    />
+
+    <div class="footer-bottom">
+      <p style="font-weight: 400">
+        Всі права збережені | All rights save © 2025
+      </p>
+    </div>
+  </div>
+</footer>
