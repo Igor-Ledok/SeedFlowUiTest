@@ -157,7 +157,7 @@ export class ProjectService {
 
     console.log('Sending project data:', completeProjectData);
   
-    return this.http.post("https://localhost:7193/api/project/add", completeProjectData, { headers:headers });
+    return this.http.post("https://peaceful-ridge-38908-36bf3f3e0719.herokuapp.com/api/project/add", completeProjectData, { headers:headers });
   }
 
   private handleError(error: HttpErrorResponse) {
@@ -180,6 +180,6 @@ export class ProjectService {
   }
 
   getTopics(): Observable<TopicDto[]> {
-    return this.http.get<TopicDto[]>("https://localhost:7193/api/project/topics");
+    return this.http.get<TopicDto[]>("https://peaceful-ridge-38908-36bf3f3e0719.herokuapp.com/api/project/topics");
   }
 }
