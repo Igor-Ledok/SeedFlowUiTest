@@ -18,7 +18,7 @@ export class AuthService
   constructor(private http: HttpClient) { }
 
   baseUrl = environment.baseApiUrl + "api/auth";
-  twobaseUrl = environment.baseApiUrl + "api/user";
+  // twobaseUrl = environment.baseApiUrl + "api/user";
 
 
 
@@ -118,7 +118,7 @@ export class AuthService
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
   
     return this.http.post<void>(
-      this.twobaseUrl + '/register',
+      this.baseUrl + '/register',
       request,
       { headers, withCredentials: true } 
     );
