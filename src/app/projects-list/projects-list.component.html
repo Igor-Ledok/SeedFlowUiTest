@@ -507,14 +507,14 @@
       <div class="icon-container"></div>
 
       <div class="project-overlay">
-        <div class="project-title">{{ project.Title | transloco }}</div>
+        <div class="project-title">{{project.title}}</div>
 
         <div class="project-extra">
           <div class="progress-bar2">
             <div class="progress2" [style.width]="getProgress(project)"></div>
           </div>
-          <p class="amount-raised">{{ project.CollectionAmount }} {{ "грн" | transloco }}</p>
-          <p class="goal-amount">{{ project.CollectedAmount }} {{ "грн" | transloco }}</p>
+          <p class="amount-raised">{{ project.collectionAmount }} {{ "грн" | transloco }}</p>
+          <p class="goal-amount">{{ project.collectedAmount }} {{ "грн" | transloco }}</p>
 
           <div class="icon-container2">
             <img src="assets/images/people.png" />
@@ -528,7 +528,7 @@
 
           <div class="icon-container4">
             <img src="assets/images/money.png" />
-            <span style="position: relative; top: 30px; left: -20px; font-size: 18px; font-weight: 400; font-family: 'Montserrat';">{{PercentageOfMoney(project.CollectedAmount,project.CollectionAmount)}}</span>
+            <span style="position: relative; top: 30px; left: -20px; font-size: 18px; font-weight: 400; font-family: 'Montserrat';">{{PercentageOfMoney(project.collectedAmount,project.collectionAmount)}}</span>
           </div>
 
           <div>
@@ -538,7 +538,7 @@
           <div>
             <img
               class="like-icon"
-              [src]="project.MainPhotoUrl ? 'assets/images/likeRed.png' : 'assets/images/like.png'"
+              [src]="project.mainPhotoUrl ? 'assets/images/likeRed.png' : 'assets/images/like.png'"
               (click)="toggleLike(i)"
             />
           </div>
@@ -546,7 +546,7 @@
           <button [routerLink]="'/donation-page'" class="support-button">{{ "ПІДТРИМАТИ" | transloco }}</button>
           
           <div class="project-description">
-            <p>{{project.ShortDescription}}</p>
+            <p>{{project.shortDescription}}</p>
           </div>
         </div>
       </div>
@@ -558,7 +558,7 @@
         <img src="assets/images/rocket.png" class="rocket-icon" />
       </div>
 
-      <img [src]="project.MainPhotoUrl" alt="{{ project.Title }}" class="project-image" />
+      <img [src]="project.mainPhotoUrl" alt="{{ project.title }}" class="project-image" />
     </div>
   </div>
   

@@ -1,8 +1,8 @@
 export interface ProjectList {
-    Title: string;
-    ShortDescription: string;
-    MainPhotoUrl: string;
-    CollectionAmount: number;
-    CollectedAmount?: number;
-    CollectionDuration: number;
+    title: string;
+    shortDescription: string;
+    mainPhotoUrl: string;
+    collectionAmount: number;
+    collectedAmount?: number;
+    collectionDuration: number;
   }

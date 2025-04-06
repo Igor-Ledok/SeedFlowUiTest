@@ -245,6 +245,7 @@ export class ProjectsListComponent
             this.projectService.getProjects().subscribe(
               (data: ProjectList[]) => {
                 this.projectsList = data;
+                console.log('projectsList', this.projectsList);
               },
               (error: any) => {
                 console.error('Ошибка загрузки проектов', error);
