@@ -8,16 +8,16 @@ import { environment } from '../../environment';
 })
 export class EmailService 
 {
-  private baseUrl = environment.baseApiUrl + '/email/';
+  private baseUrl = environment.baseApiUrl + 'api/email';
 
   constructor(private http: HttpClient) {}
 
   sendResetCode(request: SendResetCodeRequestDto): Observable<any> {
-    console.log("📨 Отправка запроса на API:", this.baseUrl + 'send-reset-code', request);
+    console.log("📨 Отправка запроса на API:", this.baseUrl + '/send-reset-code', request);
     
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
   
-    return this.http.post(this.baseUrl + 'send-reset-code', request, { headers });
+    return this.http.post(this.baseUrl + '/send-reset-code', request, { headers });
   }
 }
 

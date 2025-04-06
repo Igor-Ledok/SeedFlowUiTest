@@ -10,7 +10,8 @@ export class UserService
 {
   constructor(private http: HttpClient) { }
 
-  baseUrl = environment.baseApiUrl + "/user/";
+  baseUrl = environment.baseApiUrl + "api/user";
+  twobaseUrl = environment.baseApiUrl + "api/auth";
   
   private getHeaders(): HttpHeaders {
     return new HttpHeaders({
@@ -23,11 +24,11 @@ export class UserService
   create(request: CreateUserRequestDto): Observable<any> 
   {
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
-    return this.http.post(this.baseUrl + "create", request, { headers });
+    return this.http.post(this.baseUrl + "/create", request, { headers });
   }
 
   getUserInfo(): Observable<{ user: UserInfo }> {
-    return this.http.get<{ user: UserInfo }>("https://localhost:7193/api/auth/info", { headers: this.getHeaders() });
+    return this.http.get<{ user: UserInfo }>(this.twobaseUrl + "/info", { headers: this.getHeaders() });
   }
 }
 

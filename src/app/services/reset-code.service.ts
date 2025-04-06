@@ -8,7 +8,7 @@ import { environment } from '../../environment';
 })
 export class ResetCodeService 
 {
-  private baseUrl = environment.baseApiUrl + '/reset-password/';
+  private baseUrl = environment.baseApiUrl + 'api/reset-password';
 
   constructor(private http: HttpClient) {}
 
@@ -16,7 +16,7 @@ export class ResetCodeService
   {
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
 
-    return this.http.post(this.baseUrl + 'verify-reset-code', request , {headers});
+    return this.http.post(this.baseUrl + '/verify-reset-code', request , {headers});
   }
 }
 

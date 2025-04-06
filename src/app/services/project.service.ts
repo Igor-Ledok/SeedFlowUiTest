@@ -26,7 +26,7 @@ export class ProjectService {
   selectedFileNameDocx: string = '';
   BudgetArticlesFileName: string = '';
   
-  baseUrl = environment.baseApiUrl + '/project';
+  baseUrl = environment.baseApiUrl + 'api/project';
 
   constructor(private http: HttpClient, private authService: AuthService) {}
 

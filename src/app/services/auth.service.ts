@@ -17,8 +17,8 @@ export class AuthService
 {
   constructor(private http: HttpClient) { }
 
-  baseUrl = environment.baseApiUrl + "/auth/";
-  twobaseUrl = environment.baseApiUrl + "/user/";
+  baseUrl = environment.baseApiUrl + "api/auth";
+  twobaseUrl = environment.baseApiUrl + "api/user";
 
 
 
@@ -42,7 +42,7 @@ export class AuthService
   authenticate(request: AuthRequestDto): Observable<AuthResponseDto> {
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
   
-    return this.http.post<AuthResponseDto>(this.baseUrl + "authenticate", request, { headers })
+    return this.http.post<AuthResponseDto>(this.baseUrl + "/authenticate", request, { headers })
       .pipe(
         tap(response => console.log("Серверный ответ:", response)),
         map(response => {
@@ -73,20 +73,20 @@ export class AuthService
 
   // Вход через Google
   loginWithGoogle(): void {
-    const googleLoginUrl = `${this.baseUrl}google-login`;
+    const googleLoginUrl = `${this.baseUrl}/google-login`;
     console.log("Google Login URL:", googleLoginUrl); // Проверка
 
     window.location.href = googleLoginUrl;
   }
   loginWithFacebook(): void {
-    const facebookLoginUrl = `${this.baseUrl}facebook-login`;
+    const facebookLoginUrl = `${this.baseUrl}/facebook-login`;
     console.log("Facebook Login URL:", facebookLoginUrl); // Проверка
 
     window.location.href = facebookLoginUrl;
   }
 
   loginWithTwitter(): void {
-    const twitterLoginUrl = `${this.baseUrl}twitter-login`;
+    const twitterLoginUrl = `${this.baseUrl}/twitter-login`;
     console.log("Twitter Login URL:", twitterLoginUrl); // Проверка
 
     window.location.href = twitterLoginUrl;
@@ -118,7 +118,7 @@ export class AuthService
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
   
     return this.http.post<void>(
-      'https://localhost:7193/api/auth/register',
+      this.twobaseUrl + '/register',
       request,
       { headers, withCredentials: true } 
     );
@@ -134,7 +134,7 @@ export class AuthService
       });
     }
 
-    return this.http.post<{ token: string }>(`${this.baseUrl}refresh-token`, { oldToken }).pipe(
+    return this.http.post<{ token: string }>(`${this.baseUrl}/refresh-token`, { oldToken }).pipe(
       tap(response => this.setToken(response.token)), 
       switchMap(response => new Observable<string>((observer) => {
         observer.next(response.token);
