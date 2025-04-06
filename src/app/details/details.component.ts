@@ -292,7 +292,7 @@ filteredItems = this.items;
     this.checkScreenSize();    
     this.likedProjects = new Array(this.filteredItems.length).fill(false);
     this.totalSlides = this.filteredItems.length; // Инициализация общего количества слайдов
-    this.phone = this.projectData.phone;
+    this.phone = this.projectData.Phone;
   }
 
   onFileSelectedDocx(event: Event): void {
@@ -374,7 +374,7 @@ updateBudgetCharCount() {
   charCount2: number = 0;
 
   updateCharCount() {
-    this.charCount = this.projectData.shortDescription?.length || 0;
+    this.charCount = this.projectData.ShortDescription?.length || 0;
     this.budgetCharCount = this.projectData.BudgetArticles?.length || 0;
   }
 
@@ -430,12 +430,12 @@ updateBudgetCharCount() {
 
   validateCity() 
   {
-    const city = this.projectData.address?.trim();
+    const city = this.projectData.Address?.trim();
     this.cityError = !(city && /^[A-ZА-ЯЁ]/.test(city));
   }
 
   validateEmail() {
-    const email = this.projectData.email?.trim();
+    const email = this.projectData.Email?.trim();
     
     // Регулярное выражение для простой валидации email
     const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
@@ -459,7 +459,7 @@ updateBudgetCharCount() {
 
   validateShortDescription() 
   {
-    this.shortDescriptionError = !this.projectData.shortDescription?.trim();
+    this.shortDescriptionError = !this.projectData.ShortDescription?.trim();
   }
 
   validateDetailedDescription(i: number, fieldName: string) 

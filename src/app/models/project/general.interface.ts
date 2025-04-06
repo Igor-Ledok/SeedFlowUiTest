@@ -1,11 +1,11 @@
 export interface general {
-    title: string;
+    Title: string;
     // title2: string;
-    collectionAmount: number;
-    collectionDuration: number;
+    CollectionAmount: number;
+    CollectionDuration: number;
     YouTubeVideoUrl: string;
-    selectedCategoryId: string; 
-    selectedFileNameDocx: string; // Это будет имя файла для .docx
+    SelectedCategoryId: string; 
+    SelectedFileNameDocx: string; // Это будет имя файла для .docx
     // файлы
     BudgetPlan: string;
     BudgetPlanUrl: string; // Это будет URL для .docx

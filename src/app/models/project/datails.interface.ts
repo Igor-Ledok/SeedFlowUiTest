@@ -1,22 +1,22 @@
 export interface details {
-    shortDescription: string;
-    phone: string;
-    telegram: string;
-    viber: string;
-    whatsApp: string;
-    linkedIn: string;
+    ShortDescription: string;
+    Phone: string;
+    Telegram: string;
+    Viber: string;
+    WhatsApp: string;
+    LinkedIn: string;
     YouTubeVideoUrl: string;
 
-    email: string;
-    address: string;
+    Email: string;
+    Address: string;
 
     BudgetArticles: string;
     BudgetArticlesUrl: string;
     BudgetArticlesFileName: string;
 
-    instagram: string;
-    facebook: string;
-    telegramChannel: string;
-    twitter: string;
-    linkedInGroup: string;
+    Instagram: string;
+    Facebook: string;
+    TelegramChannel: string;
+    Twitter: string;
+    LinkedInGroup: string;
 } 

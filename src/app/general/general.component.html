@@ -437,7 +437,7 @@
             <input 
             type="text" 
             class="form-input" 
-            [(ngModel)]="projectData.title"
+            [(ngModel)]="projectData.Title"
             (input)="updateCharCount()"
             maxlength="50"
             minlength="3"
@@ -478,7 +478,7 @@
             type="number" 
             class="form-input" 
             min="0"  
-            [(ngModel)]="projectData.collectionAmount"
+            [(ngModel)]="projectData.CollectionAmount"
             #collectionAmount="ngModel"
             required
             min="10"
@@ -553,8 +553,8 @@
               </div>
             </div>
     
-            <div *ngIf="projectData.selectedFileNameDocx" class="file-info">
-              <p>{{ projectData.selectedFileNameDocx }}</p>
+            <div *ngIf="projectData.SelectedFileNameDocx" class="file-info">
+              <p>{{ projectData.SelectedFileNameDocx }}</p>
               <button (click)="clearFile()" class="remove-button">
                 Видалити файл
               </button>
@@ -575,11 +575,11 @@
         </span>
         <div class="fields">
           <div class="input-wrapper">
-            <input type="number" class="form-input" [(ngModel)]="projectData.collectionDuration" />
+            <input type="number" class="form-input" [(ngModel)]="projectData.CollectionDuration" />
             <span class="input-suffix">{{"днів" | transloco}}</span>
           </div>
         </div>
-      </div>
+      </div> 
     </div>
   
 <div class="form-group">

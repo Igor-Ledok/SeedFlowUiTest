@@ -33,19 +33,19 @@ export class ProjectService {
   //Generel
   getProjectDataGenerel(general: general): void {
     this.projectData = { ...this.projectData, ...general };
-    this.selectedFileNameDocx = general.selectedFileNameDocx;
+    this.selectedFileNameDocx = general.SelectedFileNameDocx;
   }
   returnProjectDataGeneral(): general {
     return {
-      title: this.projectData.Title,
-      collectionAmount: this.projectData.CollectionAmount,
+      Title: this.projectData.Title,
+      CollectionAmount: this.projectData.CollectionAmount,
       BudgetPlan: this.projectData.BudgetPlan,
-      selectedFileNameDocx: this.selectedFileNameDocx,
-      collectionDuration: this.projectData.CollectionDuration,
+      SelectedFileNameDocx: this.selectedFileNameDocx,
+      CollectionDuration: this.projectData.CollectionDuration,
       BudgetPlanUrl: this.projectData.BudgetPlanUrl,
       YouTubeVideoUrl: this.projectData.YouTubeVideoUrl,
       MainPhotoUrl: this.projectData.MainPhotoUrl,
-      selectedCategoryId: this.projectData.SelectedCategoryId,
+      SelectedCategoryId: this.projectData.SelectedCategoryId,
     };
   }
   //Details
@@ -72,23 +72,23 @@ export class ProjectService {
   
   returnProjectDataDetails(): details {
     return {
-      shortDescription: this.projectData.ShortDescription,
-      phone: this.projectData.Phone,
-      telegram: this.projectData.Telegram,
-      viber: this.projectData.Viber,
-      whatsApp: this.projectData.WhatsApp,
-      linkedIn: this.projectData.LinkedIn,
+      ShortDescription: this.projectData.ShortDescription,
+      Phone: this.projectData.Phone,
+      Telegram: this.projectData.Telegram,
+      Viber: this.projectData.Viber,
+      WhatsApp: this.projectData.WhatsApp,
+      LinkedIn: this.projectData.LinkedIn,
       YouTubeVideoUrl: this.projectData.YouTubeVideoUrl,
-      email: this.projectData.Email,
-      address: this.projectData.Address, 
+      Email: this.projectData.Email,
+      Address: this.projectData.Address, 
       BudgetArticles: this.projectData.BudgetArticles,
       BudgetArticlesUrl: this.projectData.BudgetArticlesUrl,
       BudgetArticlesFileName: this.BudgetArticlesFileName,
-      instagram: this.projectData.Instagram,
-      facebook: this.projectData.Facebook,
-      telegramChannel: this.projectData.TelegramChannel,
-      twitter: this.projectData.Twitter,
-      linkedInGroup: this.projectData.LinkedInGroup
+      Instagram: this.projectData.Instagram,
+      Facebook: this.projectData.Facebook,
+      TelegramChannel: this.projectData.TelegramChannel,
+      Twitter: this.projectData.Twitter,
+      LinkedInGroup: this.projectData.LinkedInGroup
     };
   }
   returnProjectDataDetailsProjectDescription(index: number): detailsdescription {

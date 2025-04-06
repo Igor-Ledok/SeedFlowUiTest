@@ -111,11 +111,11 @@ export class GeneralComponent
   }
 
   onCategoryButtonPress(index: string): void {
-    this.projectData.selectedCategoryId = index;
+    this.projectData.SelectedCategoryId = index;
     this.activeStartupButtonIndex = -1;
     this.activeSocialButtonIndex = -1;
     this.activeHumanitarianButtonIndex = -1;
-    console.log('Selected category ID:', this.projectData.selectedCategoryId);
+    console.log('Selected category ID:', this.projectData.SelectedCategoryId);
   }
   
   isButtonActive: boolean[] = [false, false, false];
@@ -260,7 +260,7 @@ export class GeneralComponent
       this.projectData = this.projectService.returnProjectDataGeneral();
 
       this.checkScreenSize();    
-      this.activeCategoryId = this.projectData.selectedCategoryId;
+      this.activeCategoryId = this.projectData.SelectedCategoryId;
       this.likedProjects = new Array(this.filteredItems.length).fill(false);
       this.totalSlides = this.filteredItems.length; // Инициализация общего количества слайдов
       this.loadTopics();
@@ -325,7 +325,7 @@ export class GeneralComponent
     if (!input.files || input.files.length === 0) {
       this.fileError = 'Будь ласка, виберіть файл.';
       this.projectData.BudgetPlanUrl = null;
-      this.projectData.selectedFileNameDocx = null;
+      this.projectData.SelectedFileNameDocx = null;
       this.validateBudgetFields();
       return;
     }
@@ -338,13 +338,13 @@ export class GeneralComponent
     if (!allowedExtensions.includes(fileExtension || '')) {
       this.fileError = 'Дозволені лише файли .doc, .docx, .pdf';
       this.projectData.BudgetPlanUrl = null;
-      this.projectData.selectedFileNameDocx = null;
+      this.projectData.SelectedFileNameDocx = null;
       this.validateBudgetFields();
       return;
     }
   
     this.fileError = '';
-    this.projectData.selectedFileNameDocx = file.name;
+    this.projectData.SelectedFileNameDocx = file.name;
     this.validateBudgetFields();
   
     // Конвертация файла в Base64
@@ -362,7 +362,7 @@ export class GeneralComponent
   
   clearFile(): void {
     this.projectData.BudgetPlanUrl = null;
-    this.projectData.selectedFileNameDocx = null;
+    this.projectData.SelectedFileNameDocx = null;
   }
 
   
@@ -392,7 +392,7 @@ export class GeneralComponent
 
   updateCharCount() 
   {
-    this.charCount = this.projectData.title?.length || 0;
+    this.charCount = this.projectData.Title?.length || 0;
   }
 
   updateCharCountStr() 
@@ -470,18 +470,18 @@ export class GeneralComponent
     isValid2 = false;
   }
 
-  if (!this.projectData.collectionDuration || this.projectData.collectionDuration <= 0) {
+  if (!this.projectData.CollectionDuration || this.projectData.CollectionDuration <= 0) {
     this.collectionDurationError = 'Заповніть тривалість збору. Це обов\'язково';
     isValid2 = false;
   }
 
-  if (!this.projectData.collectionAmount || this.projectData.collectionAmount <= 0) 
+  if (!this.projectData.CollectionAmount || this.projectData.CollectionAmount <= 0) 
   {
     this.collectionAmountError = ' ';
     isValid2 = false;
   }  
 
-  if (!this.projectData.title || this.projectData.title.trim() === '') 
+  if (!this.projectData.Title || this.projectData.Title.trim() === '') 
   {
     this.projectTitleError = ' ';
     isValid2 = false;
@@ -496,9 +496,9 @@ export class GeneralComponent
     console.log('Есть ошибки в данных:', {
       selectedFile: this.selectedFile,
       previewURL: this.previewURL, // Теперь учитывается фото
-      title: this.projectData.title,
-      collectionAmount: this.projectData.collectionAmount,
-      collectionDuration: this.projectData.collectionDuration
+      title: this.projectData.Title,
+      collectionAmount: this.projectData.CollectionAmount,
+      collectionDuration: this.projectData.CollectionDuration
     });
   }
 }
