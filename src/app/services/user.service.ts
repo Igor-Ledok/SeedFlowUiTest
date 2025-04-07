@@ -2,6 +2,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from '../../environment';
 import { Observable } from 'rxjs/internal/Observable';
+import { UpdateUserDto } from '../models/user/update-user-dto';
 
 @Injectable({
   providedIn: 'root'
@@ -24,11 +25,15 @@ export class UserService
   create(request: CreateUserRequestDto): Observable<any> 
   {
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
-    return this.http.post(this.baseUrl + "/create", request, { headers });
+    return this.http.post(this.twobaseUrl + "/create", request, { headers });
   }
 
   getUserInfo(): Observable<{ user: UserInfo }> {
     return this.http.get<{ user: UserInfo }>(this.twobaseUrl + "/info", { headers: this.getHeaders() });
+  }
+
+  updateUser(user: UpdateUserDto): Observable<any> {
+    return this.http.post(this.twobaseUrl + '/update', user, { headers: this.getHeaders() }); // путь к твоему API
   }
 }
 
@@ -44,4 +49,5 @@ export interface UserInfo {
   description: string;
   email: string;
   date: string;
+  photo: string;
 }

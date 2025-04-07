@@ -409,44 +409,54 @@
 
       <div class="input-group">
         <label id="email" for="email">{{"Електронна пошта" | transloco}}</label>
-        <input type="email" id="email" value="{{email}}" readonly placeholder="Example1234@gmail.com"/>
+        <input type="email" id="email" [(ngModel)]="email" />
         <i class="fa fa-pencil"></i>
       </div>
-
+  
       <div class="input-group">
         <label id="fullName" for="fullName">{{"Ім'я та прізвище" | transloco}}</label>
-        <input type="text" id="fullName" value="{{name}}" readonly placeholder="Imya ta prizvishe" />
+        <input type="text" id="fullName" [(ngModel)]="name" />
         <i class="fa fa-pencil"></i>
       </div>
-
+  
       <div class="input-group">
         <div class="avatar-container">
-        <label id="fullName" for="fullName">{{"Зміна аватара" | transloco}}</label>
-        <div class="avatar-wrapper">
-          <img src="assets/images/greenEllipse.png" alt="Аватар" class="avatar-image" />
-          <div class="overlay2">
+          <label id="fullName" for="fullName">{{"Зміна аватара" | transloco}}</label>
+          <div class="avatar-wrapper">
+            <img [src]="photoBase64 || 'assets/images/greenEllipse.png'" alt="Аватар" class="avatar-image" />
+            <div class="overlay2" (click)="fileInput.click()">
               <i class="fa fa-camera"></i>
+            </div>
+            <input type="file" #fileInput style="display: none;" (change)="changeAvatar($event)" />
           </div>
+        </div>
       </div>
-      </div>
-      </div>
-
+  
       <div class="input-group">
         <label id="fullName" for="fullName">{{"Опис профілю" | transloco}}</label>
         <textarea
-          id="profileDescription"
-          [formControl]="profileDescriptionControl"
+          id="profileForm"
+          [(ngModel)]="profileForm"
           maxlength="250"
           placeholder='{{"Почніть вводити" | transloco}}'
-          >
+          (input)="updateCharCount()"
+        >
         </textarea>
-        <!-- (input)="updateCharCount()"> --> 
       </div>
       <div class="char-counter">{{ charCount }}/250</div>
+  
+      <div class="input-group">
+        <label id="showDos">{{"Зберегти дані" | transloco}}</label>
+        <button (click)="saveUserData()" class="custom-button">{{"Зберегти" | transloco}}</button>
+      </div>
       
-      
-      
+      <br>
     
+
+
+
+
+
       
 
       <div class="input-group">
@@ -533,23 +543,26 @@
         </div>
     
         <div class="input-group">
-          <label id="haveEmail">{{"Дублювати повідомлення на електронну пошту" | transloco}}</label>
+            <label id="haveEmail">{{"Дублювати повідомлення на електронну пошту" | transloco}}</label>
           <div class="with-margin-left11">
-          <mat-slide-toggle></mat-slide-toggle>
-        </div>
+            <mat-slide-toggle></mat-slide-toggle>
+          </div>
         </div>
 
         <h1 class="setting-title">{{"БЕЗПЕКА" | transloco}}</h1>
         <br>
         <div class="input-group">
-            <label id="seeEnter">{{"Переглянути історію входів до акаунту" | transloco}}</label>
-            <button class="custom-button2">{{"Переглянути" | transloco}}</button>
-          </div>
+          <label id="seeEnter">{{"Переглянути історію входів до акаунту" | transloco}}</label>
+          <button class="custom-button2">{{"Переглянути" | transloco}}</button>
+        </div>
 
-          <div class="input-group">
-            <label id="showDos">{{"Вийти з усіх пристроїв" | transloco}}</label>
-            <button class="custom-button3">{{"Вийти" | transloco}}</button>
-          </div>
+        <div class="input-group">
+          <label id="showDos">{{"Вийти з усіх пристроїв" | transloco}}</label>
+          <button class="custom-button3">{{"Вийти" | transloco}}</button>
+        </div>
+
+        <br>
+        
 
     </div>
   </div>

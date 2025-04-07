@@ -108,6 +108,10 @@ export class GeneralComponent
   humanitarianRows = [this.humanitarianButtons]; 
 
   onCategoryButtonPress2(index: number): void {
+    this.activeCategoryIndex = index;
+    this.activeStartupButtonIndex = -1;
+    this.activeSocialButtonIndex = -1;
+    this.activeHumanitarianButtonIndex = -1;
   }
 
   onCategoryButtonPress(index: string): void {
@@ -400,11 +404,11 @@ export class GeneralComponent
     this.charCount2 = this.projectData.BudgetPlan?.length || 0;
   }
 
-  // categories: { [key: string]: string[] } = {
-  //   Стартапи: ['освіта', 'культура', 'медицина', 'харчування', 'транспорт', 'музика', 'дизайн', 'література', 'діти', 'кіно', 'медіа', 'технології'],
-  //   Соціальні: ['освіта', 'наука', 'культура', 'мистецтво', 'медицина'],
-  //   Гуманітарні: ['воєнні дії', 'стихійні лиха', 'техногенні катастрофи', 'екологія']
-  // };
+  categories: { [key: string]: string[] } = {
+    Стартапи: ['освіта', 'культура', 'медицина', 'харчування', 'транспорт', 'музика', 'дизайн', 'література', 'діти', 'кіно', 'медіа', 'технології'],
+    Соціальні: ['освіта', 'наука', 'культура', 'мистецтво', 'медицина'],
+    Гуманітарні: ['воєнні дії', 'стихійні лиха', 'техногенні катастрофи', 'екологія']
+  };
 
   selectedButton: string | null = null;
 

@@ -44,8 +44,8 @@
   
 
   <div *ngIf="showDropdown" class="search-dropdown" [style.height]="getDropdownHeight()">
-    <!-- 3 основные кнопки: СТАРТАПИ, СОЦІАЛЬНІ, ГУМАНІТАРНІ -->
-    <!-- <div class="button-row wide-buttons">
+    3 основные кнопки: СТАРТАПИ, СОЦІАЛЬНІ, ГУМАНІТАРНІ -->
+ <div class="button-row wide-buttons">
       <button class="button wide-button"
         [ngClass]="{ 'active': activeCategoryIndex === 0 }"
         (click)="onCategoryButtonPress2(0)">
@@ -58,7 +58,7 @@
         [ngClass]="{ 'active': activeCategoryIndex === 2 }"
         (click)="onCategoryButtonPress2(2)">
         {{"ГУМАНІТАРНІ" | transloco}}</button>
-    </div> -->
+    </div>
   
     <!-- Кнопки для СТАРТАПИ -->
     <div *ngIf="activeCategoryIndex === 0">

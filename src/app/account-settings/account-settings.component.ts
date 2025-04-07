@@ -8,6 +8,7 @@ import { TranslocoModule } from '@jsverse/transloco';
 import { LanguageService } from '../services/language.service';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { UserService } from '../services/user.service';
+import { UpdateUserDto } from '../models/user/update-user-dto';
 
 @Component({
   selector: 'app-account-settings',
@@ -29,6 +30,10 @@ export class AccountSettingsComponent {
   
   public name: string = '';
   public email: string = '';
+  public photoBase64: string = '';
+  // public profileDescription: string = '';
+  public charCount: number = 0;
+  public profileForm: string; // FormGroup
 
   previewURLs: string[] = []; // Список загруженных фото
   activeButtonIndex: number = -1;
@@ -36,6 +41,7 @@ export class AccountSettingsComponent {
   activeSocialButtonIndex: number = -1;
   activeHumanitarianButtonIndex: number = -1;
   activeCategoryIndex: number = -1;
+  
 
   someString:string = 'UA';
 
@@ -248,8 +254,6 @@ filteredItems = this.items;
       
     }
 
-    profileForm: FormGroup;
-
   ngOnInit() 
   {
     this.route.url.subscribe(urlSegments => {
@@ -259,36 +263,54 @@ filteredItems = this.items;
     this.userService.getUserInfo().subscribe(response => {
       this.name = response.user.name;
       this.email = response.user.email;
+      this.photoBase64 = response.user.photo;
+      this.profileForm = response.user.description;
     });
 
     const savedLanguage = localStorage.getItem('selectedLanguage') ||'ua'; 
     this.selectedLanguage.setValue(savedLanguage);
     this.onLanguageChange({ value: savedLanguage });
 
-    this.profileForm = new FormGroup({
-      profileDescription: new FormControl('')
-    });
-
-    this.profileForm.get('profileDescription')?.valueChanges.subscribe(value => {
-      this.charCount = value.length;
-    });
-
     this.checkScreenSize();    
     this.likedProjects = new Array(this.filteredItems.length).fill(false);
     this.totalSlides = this.filteredItems.length;
   }
 
-  profileDescription: string = '';
-  charCount: number = 0;
+  changeAvatar(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    if (input?.files?.length) {
+      const file = input.files[0];
+      const reader = new FileReader();
 
-  // updateCharCount() 
-  // {
-  //   const profileDescription = this.profileForm.get('profileDescription')?.value;
-  //   this.charCount = profileDescription.length;
-  // }
+      reader.onload = () => {
+        // Конвертируем файл в Base64 и сохраняем его в переменную
+        this.photoBase64 = reader.result as string;
+      };
 
-  get profileDescriptionControl() {
-    return this.profileForm.get('profileDescription') as FormControl;
+      reader.readAsDataURL(file); // Читаем файл как Data URL (Base64)
+    }
+  }
+
+  saveUserData(): void {
+    const dto: UpdateUserDto = {
+      name: this.name,
+      email: this.email,
+      photo: this.photoBase64,
+      description: this.profileForm
+    };
+
+    this.userService.updateUser(dto).subscribe({
+      next: () => {
+        alert("Дані збережено!");
+      },
+      error: () => {
+        alert("Сталася помилка під час збереження.");
+      }
+    });
+  }
+
+  updateCharCount() {
+    this.charCount = this.profileForm.length;
   }
 
 

@@ -37,6 +37,8 @@ export class ProfileComponent
   public description: string;
   public date: string;
   public rule: string;
+  public photo: string;
+  public email: string;
 
   data = [
     { name: 'Лютий', value: 10 },
@@ -327,6 +329,8 @@ export class ProfileComponent
           this.userService.getUserInfo().subscribe(response => {
             this.name = response.user.name;
             this.description = response.user.description;
+            this.photo = response.user.photo;
+            this.email = response.user.email;
             this.date = response.user.date;
           });
 
