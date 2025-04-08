@@ -6,6 +6,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { RouterModule } from '@angular/router';
 import { LanguageService } from '../services/language.service';
 import { TranslocoModule } from '@jsverse/transloco';
+import { SafeLocalStorageService } from '../services/safe-local-storage.service';
 
 @Component({
   selector: 'app-reg-access',
@@ -48,7 +49,7 @@ export class RegAccessComponent
 
     ngOnInit() 
     {
-      const savedLanguage = localStorage.getItem('selectedLanguage') || 'ua';
+      const savedLanguage = this.storage.getItem('selectedLanguage') || 'ua';
       this.selectedLanguage.setValue(savedLanguage);
       this.onLanguageChange({ value: savedLanguage });
     }
@@ -58,7 +59,8 @@ export class RegAccessComponent
       {code: 'ua', name: "UA"}
     ];
 
-    constructor(private languageService: LanguageService) {}
+    constructor(private languageService: LanguageService,
+      private storage: SafeLocalStorageService) {}
 
     switchLanguage(language: string) 
     {

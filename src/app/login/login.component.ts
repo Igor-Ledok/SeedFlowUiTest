@@ -8,6 +8,7 @@ import { TranslocoModule } from '@jsverse/transloco';
 import { LanguageService } from '../services/language.service';
 import { AuthRequestDto, AuthService } from '../services/auth.service';
 import { Router, ActivatedRoute } from '@angular/router';
+import { SafeLocalStorageService } from '../services/safe-local-storage.service';
 
 @Component({
   selector: 'app-login',
@@ -44,7 +45,8 @@ export class LoginComponent implements OnInit {
     private authService: AuthService,
     private router: Router,
     private route: ActivatedRoute, // Добавил для обработки OAuth
-    private cd: ChangeDetectorRef 
+    private cd: ChangeDetectorRef ,
+    private storage: SafeLocalStorageService
   ) {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
@@ -62,7 +64,7 @@ export class LoginComponent implements OnInit {
       }
     });
 
-    const savedLanguage = localStorage.getItem('selectedLanguage') || 'ua';
+    const savedLanguage = this.storage.getItem('selectedLanguage') || 'ua';
     this.selectedLanguage.setValue(savedLanguage);
     this.onLanguageChange({ value: savedLanguage });
   }

@@ -16,6 +16,7 @@ import { TranslocoModule } from '@jsverse/transloco';
 import { LanguageService } from '../services/language.service';
 import { ProjectList } from '../models/project/project-list-data';
 import { ProjectService } from '../services/project.service';
+import { SafeLocalStorageService } from '../services/safe-local-storage.service';
 
 @Component({
   selector: 'app-projects-list',
@@ -219,7 +220,8 @@ export class ProjectsListComponent
             private route: ActivatedRoute,
             private eRef: ElementRef,
             private languageService: LanguageService,
-            private projectService: ProjectService
+            private projectService: ProjectService,
+            private storage: SafeLocalStorageService
            ) 
            {
   
@@ -238,7 +240,7 @@ export class ProjectsListComponent
             this.getActiveProjects();
             this.getInactiveProjects();
 
-            const savedLanguage = localStorage.getItem('selectedLanguage') ||'ua'; 
+            const savedLanguage = this.storage.getItem('selectedLanguage') ||'ua'; 
             this.selectedLanguage.setValue(savedLanguage);
             this.onLanguageChange({ value: savedLanguage });
           }

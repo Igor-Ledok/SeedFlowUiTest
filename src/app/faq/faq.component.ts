@@ -8,6 +8,7 @@ import { ActivatedRoute, RouterModule } from '@angular/router';
 import { TranslocoModule } from '@jsverse/transloco';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { LanguageService } from '../services/language.service';
+import { SafeLocalStorageService } from '../services/safe-local-storage.service';
 
 @Component({
   selector: 'app-faq',
@@ -336,7 +337,8 @@ export class FAQComponent {
         constructor(
           private route: ActivatedRoute,
           private eRef: ElementRef,
-          private languageService: LanguageService
+          private languageService: LanguageService,
+          private storage: SafeLocalStorageService
          ) 
          {
 
@@ -348,7 +350,7 @@ export class FAQComponent {
             this.activeTab = urlSegments.length > 1 ? urlSegments[1].path : 'general';
           });
       
-          const savedLanguage = localStorage.getItem('selectedLanguage') ||'ua'; 
+          const savedLanguage = this.storage.getItem('selectedLanguage') ||'ua'; 
           this.selectedLanguage.setValue(savedLanguage);
           this.onLanguageChange({ value: savedLanguage });
         }

@@ -13,6 +13,7 @@ import { CompleteProjectData } from '../models/project/completeproject-data';
 import { ProjectList } from '../models/project/project-list-data';
 import { TopicDto } from '../models/project/topic.interface';
 import { detailsdescription } from '../models/project/datailsDescription.interface';
+import { SafeLocalStorageService } from './safe-local-storage.service';
 
 @Injectable({
   providedIn: 'root',
@@ -28,7 +29,7 @@ export class ProjectService {
   
   baseUrl = environment.baseApiUrl + 'api/project';
 
-  constructor(private http: HttpClient, private authService: AuthService) {}
+  constructor(private http: HttpClient, private authService: AuthService, private storage: SafeLocalStorageService) {}
 
   //Generel
   getProjectDataGenerel(general: general): void {
@@ -151,7 +152,7 @@ export class ProjectService {
   
   // Для отправки данных на сервер
   sendProjectData(): Observable<any> {
-    const token = localStorage.getItem('token');
+    const token = this.storage.getItem('token');
     if (!token) {
       console.error('Token not found in localStorage.');
       return throwError(() => new Error('Token not found.'));
@@ -203,7 +204,7 @@ export class ProjectService {
   getInactiveProjects(): Observable<ProjectList[]> {
     return this.http.get<ProjectList[]>(this.baseUrl + "/list/inactive");
   }
-  
+
   getTopics(): Observable<TopicDto[]> {
     return this.http.get<TopicDto[]>(this.baseUrl + "/topics");
   }

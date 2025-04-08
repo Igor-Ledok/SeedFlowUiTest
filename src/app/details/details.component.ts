@@ -9,6 +9,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { details } from '../models/project/datails.interface';
 import { ProjectService } from '../services/project.service';
 import { detailsdescription } from '../models/project/datailsDescription.interface';
+import { SafeLocalStorageService } from '../services/safe-local-storage.service';
 
 @Component({
   selector: 'app-details',
@@ -233,7 +234,8 @@ filteredItems = this.items;
     private eRef: ElementRef,
     private languageService: LanguageService,
     private projectService: ProjectService,
-    private cdr: ChangeDetectorRef ) 
+    private cdr: ChangeDetectorRef,
+    private storage: SafeLocalStorageService ) 
     {
       
     }
@@ -245,7 +247,12 @@ filteredItems = this.items;
     }
   
     checkScreenSize() {
-      this.isGridView = window.innerWidth > 1350;
+      if (typeof window !== 'undefined') {
+        this.isGridView = window.innerWidth > 1350;
+      } else {
+        // Можно задать значение по умолчанию, если это выполняется на сервере
+        this.isGridView = false;
+      }
     }
 
 
@@ -285,7 +292,7 @@ filteredItems = this.items;
       }
     }
 
-    const savedLanguage = localStorage.getItem('selectedLanguage') ||'ua'; 
+    const savedLanguage = this.storage.getItem('selectedLanguage') ||'ua'; 
     this.selectedLanguage.setValue(savedLanguage);
     this.onLanguageChange({ value: savedLanguage });
 

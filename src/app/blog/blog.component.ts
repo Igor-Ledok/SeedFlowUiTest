@@ -8,6 +8,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { SafeLocalStorageService } from '../services/safe-local-storage.service';
 
 @Component({
   selector: 'app-blog',
@@ -269,7 +270,8 @@ previewURLs: string[] = []; // Список загруженных фото
         constructor(
           private route: ActivatedRoute,
           private eRef: ElementRef,
-          private languageService: LanguageService
+          private languageService: LanguageService,
+          private storage: SafeLocalStorageService
          ) 
          {
 
@@ -281,7 +283,7 @@ previewURLs: string[] = []; // Список загруженных фото
             this.activeTab = urlSegments.length > 1 ? urlSegments[1].path : 'general';
           });
       
-          const savedLanguage = localStorage.getItem('selectedLanguage') ||'ua'; 
+          const savedLanguage = this.storage.getItem('selectedLanguage') ||'ua'; 
           this.selectedLanguage.setValue(savedLanguage);
           this.onLanguageChange({ value: savedLanguage });
         }

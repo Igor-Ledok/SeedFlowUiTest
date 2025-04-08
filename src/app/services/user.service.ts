@@ -3,13 +3,14 @@ import { Injectable } from '@angular/core';
 import { environment } from '../../environment';
 import { Observable } from 'rxjs/internal/Observable';
 import { UpdateUserDto } from '../models/user/update-user-dto';
+import { SafeLocalStorageService } from './safe-local-storage.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserService 
 {
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private storage: SafeLocalStorageService) { }
 
   baseUrl = environment.baseApiUrl + "api/user";
   twobaseUrl = environment.baseApiUrl + "api/auth";
@@ -17,7 +18,7 @@ export class UserService
   private getHeaders(): HttpHeaders {
     return new HttpHeaders({
       'Content-Type': 'application/json',
-      'Authorization': `Bearer ${localStorage.getItem('token')}` // Получение токена из localStorage
+      'Authorization': `Bearer ${this.storage.getItem('token')}` // Получение токена из localStorage
     });
   }
 

@@ -11,6 +11,7 @@ import { LanguageService } from '../services/language.service';
 import { AuthService } from '../services/auth.service';
 import { CreateUserRequestDto, UserService } from '../services/user.service';
 import { Router } from '@angular/router';
+import { SafeLocalStorageService } from '../services/safe-local-storage.service';
 
 
 @Component({
@@ -62,7 +63,8 @@ export class RegistrationComponent implements OnInit
     private languageService: LanguageService, 
     private authService: AuthService, 
     private userService: UserService,
-    private router: Router) 
+    private router: Router,
+    private storage: SafeLocalStorageService) 
   {
     
   }
@@ -89,7 +91,7 @@ export class RegistrationComponent implements OnInit
 
   ngOnInit(): void 
   {
-    const savedLanguage = localStorage.getItem('selectedLanguage') ||'ua'; 
+    const savedLanguage = this.storage.getItem('selectedLanguage') ||'ua'; 
     this.selectedLanguage.setValue(savedLanguage);
     this.onLanguageChange({ value: savedLanguage });
 

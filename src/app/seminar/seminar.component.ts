@@ -8,6 +8,7 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { TranslocoModule } from '@jsverse/transloco';
 import { LanguageService } from '../services/language.service';
+import { SafeLocalStorageService } from '../services/safe-local-storage.service';
 
 @Component({
   selector: 'app-seminar',
@@ -278,7 +279,8 @@ export class SeminarComponent {
         constructor(
           private route: ActivatedRoute,
           private eRef: ElementRef,
-          private languageService: LanguageService
+          private languageService: LanguageService,
+          private storage: SafeLocalStorageService
          ) 
          {
 
@@ -290,7 +292,7 @@ export class SeminarComponent {
             this.activeTab = urlSegments.length > 1 ? urlSegments[1].path : 'general';
           });
       
-          const savedLanguage = localStorage.getItem('selectedLanguage') ||'ua'; 
+          const savedLanguage = this.storage.getItem('selectedLanguage') ||'ua'; 
           this.selectedLanguage.setValue(savedLanguage);
           this.onLanguageChange({ value: savedLanguage });
         }

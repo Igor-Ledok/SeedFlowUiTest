@@ -9,6 +9,7 @@ import { TranslocoModule } from '@jsverse/transloco';
 import { EmailService, SendResetCodeRequestDto } from '../services/email.service';
 import { Router } from '@angular/router';
 import { ResetCodeService, VerifyResetCodeRequestDto } from '../services/reset-code.service';
+import { SafeLocalStorageService } from '../services/safe-local-storage.service';
 
 @Component({
   selector: 'app-password-reset',
@@ -66,7 +67,7 @@ export class PasswordResetComponent
 
     ngOnInit() 
     {
-      const savedLanguage = localStorage.getItem('selectedLanguage') || 'ua';
+      const savedLanguage = this.storage.getItem('selectedLanguage') || 'ua';
       this.selectedLanguage.setValue(savedLanguage);
       this.onLanguageChange({ value: savedLanguage });
     }
@@ -76,7 +77,8 @@ export class PasswordResetComponent
       private languageService: LanguageService,
       private emailService: EmailService,
       private router: Router,
-      private resetCodeService: ResetCodeService
+      private resetCodeService: ResetCodeService,
+      private storage: SafeLocalStorageService
     ) {
 
     this.emailForm = this.fb.group({

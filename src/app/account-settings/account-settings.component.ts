@@ -9,6 +9,7 @@ import { LanguageService } from '../services/language.service';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { UserService } from '../services/user.service';
 import { UpdateUserDto } from '../models/user/update-user-dto';
+import { SafeLocalStorageService } from '../services/safe-local-storage.service';
 
 @Component({
   selector: 'app-account-settings',
@@ -239,7 +240,11 @@ filteredItems = this.items;
   }
 
   checkScreenSize() {
-    this.isGridView = window.innerWidth > 1350;
+    if (typeof window !== 'undefined') {
+      this.isGridView = window.innerWidth > 1350;
+    } else {
+      this.isGridView = false; // Для серверной среды
+    }
   }
 
 
@@ -249,7 +254,8 @@ filteredItems = this.items;
     private eRef: ElementRef,
     private languageService: LanguageService,
     private userService: UserService,
-    private router: Router ) 
+    private router: Router,
+    private storage: SafeLocalStorageService ) 
     {
       
     }
@@ -267,7 +273,7 @@ filteredItems = this.items;
       this.profileForm = response.user.description;
     });
 
-    const savedLanguage = localStorage.getItem('selectedLanguage') ||'ua'; 
+    const savedLanguage = this.storage.getItem('selectedLanguage') ||'ua'; 
     this.selectedLanguage.setValue(savedLanguage);
     this.onLanguageChange({ value: savedLanguage });
 

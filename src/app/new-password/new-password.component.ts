@@ -6,6 +6,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { RouterLink } from '@angular/router';
 import { TranslocoModule } from '@jsverse/transloco';
 import { LanguageService } from '../services/language.service';
+import { SafeLocalStorageService } from '../services/safe-local-storage.service';
 
 @Component({
   selector: 'app-new-password',
@@ -59,12 +60,13 @@ export class NewPasswordComponent
 
   ngOnInit() 
   {
-    const savedLanguage = localStorage.getItem('selectedLanguage') || 'ua';
+    const savedLanguage = this.storage.getItem('selectedLanguage') || 'ua';
     this.selectedLanguage.setValue(savedLanguage);
     this.onLanguageChange({ value: savedLanguage });
   }
 
-  constructor(private fb: FormBuilder, private languageService: LanguageService) 
+  constructor(private fb: FormBuilder, private languageService: LanguageService,
+    private storage: SafeLocalStorageService) 
   {
     this.resetPasswordForm = this.fb.group(
       {

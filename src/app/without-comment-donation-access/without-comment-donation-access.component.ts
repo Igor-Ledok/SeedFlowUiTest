@@ -245,7 +245,11 @@ export class WithoutCommentDonationAccessComponent {
           }
         
           checkScreenSize() {
-            this.isGridView = window.innerWidth > 1350;
+            if (typeof window !== 'undefined') {
+              this.isGridView = window.innerWidth > 1350;
+            } else {
+              this.isGridView = false; // Для серверной среды
+            }
           }
         
 

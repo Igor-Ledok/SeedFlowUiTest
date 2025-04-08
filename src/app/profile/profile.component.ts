@@ -10,6 +10,7 @@ import { LanguageService } from '../services/language.service';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { UserService } from '../services/user.service';
 import { AuthService } from '../services/auth.service';
+import { SafeLocalStorageService } from '../services/safe-local-storage.service';
 
 @Component({
   selector: 'app-profile',
@@ -314,7 +315,8 @@ export class ProfileComponent
           private eRef: ElementRef,
           private languageService: LanguageService,
           private userService: UserService,
-          private authService: AuthService
+          private authService: AuthService,
+          private storage: SafeLocalStorageService
          ) 
          {
 
@@ -336,7 +338,7 @@ export class ProfileComponent
 
           this.rule = this.authService.getUserRole();
 
-          const savedLanguage = localStorage.getItem('selectedLanguage') ||'ua'; 
+          const savedLanguage = this.storage.getItem('selectedLanguage') ||'ua'; 
           this.selectedLanguage.setValue(savedLanguage);
           this.onLanguageChange({ value: savedLanguage });
         }

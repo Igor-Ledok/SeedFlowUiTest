@@ -8,6 +8,7 @@ import { ActivatedRoute, RouterModule } from '@angular/router';
 import { TranslocoModule } from '@jsverse/transloco';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { LanguageService } from '../services/language.service';
+import { SafeLocalStorageService } from '../services/safe-local-storage.service';
 
 @Component({
   selector: 'app-search-result',
@@ -329,7 +330,8 @@ export class SearchResultComponent {
           constructor(
             private route: ActivatedRoute,
             private eRef: ElementRef,
-            private languageService: LanguageService
+            private languageService: LanguageService,
+            private storage: SafeLocalStorageService
            ) 
            {
   
@@ -341,8 +343,13 @@ export class SearchResultComponent {
            }
          
            checkScreenSize() {
-             this.isGridView = window.innerWidth > 1350;
-           }
+            if (typeof window !== 'undefined') {
+              this.isGridView = window.innerWidth > 1350;
+            } else {
+              // Можно задать значение по умолчанию, если это выполняется на сервере
+              this.isGridView = false;
+            }
+          }
         
           ngOnInit() 
           {
@@ -350,7 +357,7 @@ export class SearchResultComponent {
               this.activeTab = urlSegments.length > 1 ? urlSegments[1].path : 'general';
             });
         
-            const savedLanguage = localStorage.getItem('selectedLanguage') ||'ua'; 
+            const savedLanguage = this.storage.getItem('selectedLanguage') ||'ua'; 
             this.selectedLanguage.setValue(savedLanguage);
             this.onLanguageChange({ value: savedLanguage });
 

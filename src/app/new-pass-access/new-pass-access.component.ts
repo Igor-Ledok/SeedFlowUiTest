@@ -6,6 +6,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { RouterModule } from '@angular/router';
 import { TranslocoModule } from '@jsverse/transloco';
 import { LanguageService } from '../services/language.service';
+import { SafeLocalStorageService } from '../services/safe-local-storage.service';
 
 @Component({
   selector: 'app-new-pass-access',
@@ -49,12 +50,13 @@ export class NewPassAccessComponent
 
   ngOnInit() 
   {
-    const savedLanguage = localStorage.getItem('selectedLanguage') || 'ua';
+    const savedLanguage = this.storage.getItem('selectedLanguage') || 'ua';
     this.selectedLanguage.setValue(savedLanguage);
     this.onLanguageChange({ value: savedLanguage });
   }
 
-  constructor(private languageService: LanguageService) { }
+  constructor(private languageService: LanguageService,
+    private storage: SafeLocalStorageService) { }
 
   switchLanguage(language: string) 
   {

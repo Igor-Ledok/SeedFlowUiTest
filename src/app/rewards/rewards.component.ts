@@ -265,7 +265,12 @@ export class RewardsComponent {
   }
 
   checkScreenSize() {
-    this.isGridView = window.innerWidth > 1350;
+    if (typeof window !== 'undefined') {
+      this.isGridView = window.innerWidth > 1350;
+    } else {
+      // Можно задать значение по умолчанию, если это выполняется на сервере
+      this.isGridView = false;
+    }
   }
 
   ngOnInit() 

@@ -9,6 +9,7 @@ import { TranslocoModule } from '@jsverse/transloco';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { LanguageService } from '../services/language.service';
 import { Router } from '@angular/router';
+import { SafeLocalStorageService } from '../services/safe-local-storage.service';
 
 @Component({
   selector: 'app-support',
@@ -367,7 +368,8 @@ export class SupportComponent {
           private route: ActivatedRoute,
           private eRef: ElementRef,
           private languageService: LanguageService,
-          private router: Router
+          private router: Router,
+          private storage: SafeLocalStorageService
          ) 
          {
 
@@ -379,8 +381,13 @@ export class SupportComponent {
          }
        
          checkScreenSize() {
-           this.isGridView = window.innerWidth > 1350;
-         }
+          if (typeof window !== 'undefined') {
+            this.isGridView = window.innerWidth > 1350;
+          } else {
+            // Можно задать значение по умолчанию, если это выполняется на сервере
+            this.isGridView = false;
+          }
+        }
       
         ngOnInit() 
         {
@@ -388,7 +395,7 @@ export class SupportComponent {
             this.activeTab = urlSegments.length > 1 ? urlSegments[1].path : 'general';
           });
       
-          const savedLanguage = localStorage.getItem('selectedLanguage') ||'ua'; 
+          const savedLanguage = this.storage.getItem('selectedLanguage') ||'ua'; 
           this.selectedLanguage.setValue(savedLanguage);
           this.onLanguageChange({ value: savedLanguage });
 

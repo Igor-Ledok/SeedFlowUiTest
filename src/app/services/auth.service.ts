@@ -7,6 +7,8 @@ import { catchError, map, switchMap, tap, throwError } from 'rxjs';
 import { CreateUserRequestDto } from './user.service';
 import { ProjectData } from '../models/project/project-data.interface';
 import { jwtDecode } from 'jwt-decode';
+import { SafeLocalStorageService } from './safe-local-storage.service';
+import { SafeNavigationService } from './safe-navigation.service';
 
 
 
@@ -15,7 +17,7 @@ import { jwtDecode } from 'jwt-decode';
 })
 export class AuthService 
 {
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private storage: SafeLocalStorageService, private navigator: SafeNavigationService) { }
 
   baseUrl = environment.baseApiUrl + "api/auth";
   // twobaseUrl = environment.baseApiUrl + "api/user";
@@ -37,7 +39,6 @@ export class AuthService
     }
   }
   
-
 
   authenticate(request: AuthRequestDto): Observable<AuthResponseDto> {
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
@@ -94,13 +95,15 @@ export class AuthService
 
   // Сохранение токена после редиректа
   setToken(token: string): void {
-    localStorage.setItem('token', token);
+    // localStorage.setItem('token', token);
+    this.storage.setItem('token', token);
   }
 
   
 
   getToken(): string | null {
-    return localStorage.getItem('token');
+    // return localStorage.getItem('token');
+    return  this.storage.getItem('token');
   }
 
   // Проверка авторизации
@@ -110,8 +113,10 @@ export class AuthService
 
   // Выход
   logout(): void {
-    localStorage.removeItem('token');
-    window.location.href = '/login';
+    // localStorage.removeItem('token');
+    // window.location.href = '/login';
+    this.storage.removeItem('token');
+    this.navigator.redirect('/login');
   }
 
   register(request: CreateUserRequestDto): Observable<void> {
