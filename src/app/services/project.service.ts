@@ -197,9 +197,13 @@ export class ProjectService {
   }
 
 
-  getProjects(): Observable<ProjectList[]> {
-    return this.http.get<ProjectList[]>(this.baseUrl + "/list");
+  getActiveProjects(): Observable<ProjectList[]> {
+    return this.http.get<ProjectList[]>(this.baseUrl + "/list/active");
   }
+  getInactiveProjects(): Observable<ProjectList[]> {
+    return this.http.get<ProjectList[]>(this.baseUrl + "/list/inactive");
+  }
+  
   getTopics(): Observable<TopicDto[]> {
     return this.http.get<TopicDto[]>(this.baseUrl + "/topics");
   }

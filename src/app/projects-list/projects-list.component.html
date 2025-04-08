@@ -570,7 +570,7 @@
 <div class="projects-grid2" *ngIf="!showActive">
     <div
       class="project-card2 completed"
-      *ngFor="let project of projects; let i = index"
+      *ngFor="let project of projectsInactiveList; let i = index"
       [ngClass]="'project-card-' + i"
     >
       <div class="icon-container"></div>
@@ -580,30 +580,27 @@
   
         <div class="project-extra2">
           <p class="completed-text">{{ "Збір закрито" | transloco }}: 
-            <span class="closing-date">{{ project.closingDate }}</span>
+            <span class="closing-date">{{PercentageOfMoney(project.collectedAmount,project.collectionAmount)}}%</span>
           </p>
   
           <p class="participants-text">
             {{ "Учасників" | transloco }}: 
-            <span class="participants">{{ project.participants }}</span>
+            <span class="participants">10</span> 
           </p>
   
           <p class="amount-raised2">
-            {{ project.amount }} {{ "грн" | transloco }}
+            {{ project.collectionAmount }} {{ "грн" | transloco }}
           </p>
   
-          <p class="goal-percentage">
-            ({{ project.percentage }}%)
-          </p>
   
           <div class="icon-container2">
             <img [src]="" />
-            <span>{{ project.participants }}</span>
+            <span>11</span>
           </div>
         </div>
       </div>
   
-      <img [src]="project.image" alt="{{ project.title }}" class="project-image" />
+      <img [src]="project.mainPhotoUrl" alt="{{ project.title }}" class="project-image" />
     </div>
   </div>
   

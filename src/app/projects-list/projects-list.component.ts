@@ -46,6 +46,7 @@ export class ProjectsListComponent
       activeHumanitarianButtonIndex: number = -1;
       activeCategoryIndex: number = -1;
       public projectsList: ProjectList[] = [];
+      public projectsInactiveList: ProjectList[] = [];
 
           someString:string = 'UA';
         
@@ -234,15 +235,16 @@ export class ProjectsListComponent
               this.activeTab = urlSegments.length > 1 ? urlSegments[1].path : 'general';
             });
         
-            this.getProjects();
-            
+            this.getActiveProjects();
+            this.getInactiveProjects();
+
             const savedLanguage = localStorage.getItem('selectedLanguage') ||'ua'; 
             this.selectedLanguage.setValue(savedLanguage);
             this.onLanguageChange({ value: savedLanguage });
           }
 
-          getProjects(): void {
-            this.projectService.getProjects().subscribe(
+          getActiveProjects(): void {
+            this.projectService.getActiveProjects().subscribe(
               (data: ProjectList[]) => {
                 this.projectsList = data;
                 console.log('projectsList', this.projectsList);
@@ -252,7 +254,17 @@ export class ProjectsListComponent
               }
             );
           }
-
+          getInactiveProjects(): void {
+            this.projectService.getInactiveProjects().subscribe(
+              (data: ProjectList[]) => {
+                this.projectsInactiveList = data;
+                console.log('projectsList', this.projectsInactiveList);
+              },
+              (error: any) => {
+                console.error('Ошибка загрузки проектов', error);
+              }
+            );
+          }
           
           PercentageOfMoney(num1: number,num2: number): number {
             return Math.round((num1 / num2) * 100);
